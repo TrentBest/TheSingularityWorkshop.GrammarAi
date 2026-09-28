@@ -1,3 +1,4 @@
+using Xunit;
 using TheSingularityWorkshop.GrammarAi;
 
 namespace GrammarAi.Tests;
