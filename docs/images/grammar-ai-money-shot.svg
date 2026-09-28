@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#080d1a"/><stop offset="1" stop-color="#17112b"/></linearGradient>
+<linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#67e8f9"/></linearGradient>
+<linearGradient id="violet" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#ddd6fe"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#67e8f9"/></marker>
+</defs>
+<rect width="1400" height="900" fill="url(#bg)"/>
+<text x="700" y="68" text-anchor="middle" fill="#f8fafc" font-family="Arial,sans-serif" font-size="40" font-weight="700" letter-spacing="5">GIVE MEANING A LANGUAGE</text>
+<text x="700" y="105" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="18" letter-spacing="2">THE GRAMMARAI BOUNDARY</text>
+
+<text x="175" y="190" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">PROTOCOLAI</text>
+<rect x="55" y="225" width="240" height="245" rx="22" fill="#0b1728" stroke="#22d3ee" stroke-width="2"/>
+<text x="175" y="270" text-anchor="middle" fill="#67e8f9" font-family="monospace" font-size="20">[1001] People</text>
+<text x="175" y="320" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="20">[2001] Bob</text>
+<text x="175" y="365" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="20">[2002] Jane</text>
+<text x="175" y="425" text-anchor="middle" fill="#64748b" font-family="Arial,sans-serif" font-size="15">WHAT</text>
+
+<path d="M310 350 C385 350 395 350 465 350" stroke="#67e8f9" stroke-width="4" fill="none" marker-end="url(#arrow)" filter="url(#glow)"/>
+<text x="385" y="325" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="14">owned identities</text>
+
+<rect x="465" y="165" width="470" height="540" rx="32" fill="#0b1425" stroke="url(#violet)" stroke-width="3" filter="url(#glow)"/>
+<text x="700" y="220" text-anchor="middle" fill="#c4b5fd" font-family="Arial,sans-serif" font-size="20" letter-spacing="4">GRAMMARAI</text>
+<text x="700" y="270" text-anchor="middle" fill="#f8fafc" font-family="Arial,sans-serif" font-size="38" font-weight="700">HOW?</text>
+<text x="700" y="306" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="16">The grammar owns the relationships.</text>
+
+<rect x="540" y="350" width="320" height="250" rx="18" fill="#111827" stroke="#475569" stroke-width="2"/>
+<text x="700" y="390" text-anchor="middle" fill="#c4b5fd" font-family="monospace" font-size="19">[4001] Greeting</text>
+<line x1="700" y1="410" x2="700" y2="445" stroke="#475569" stroke-width="2"/>
+<text x="700" y="478" text-anchor="middle" fill="#f8fafc" font-family="monospace" font-size="18">[4001] → [1001:2001]</text>
+<text x="700" y="520" text-anchor="middle" fill="#f8fafc" font-family="monospace" font-size="18">[4001] → [1001:2002]</text>
+<text x="700" y="565" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="15">nonterminal → protocol terminal</text>
+
+<path d="M935 430 C1015 430 1035 350 1105 350" stroke="#a78bfa" stroke-width="4" fill="none" marker-end="url(#arrow)" filter="url(#glow)"/>
+<path d="M935 520 C1015 520 1035 600 1105 600" stroke="#a78bfa" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+
+<text x="1230" y="190" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="16" letter-spacing="3">HOST / ADAPTER</text>
+<rect x="1080" y="225" width="300" height="180" rx="20" fill="#0f172a" stroke="#a78bfa" stroke-width="2"/>
+<text x="1230" y="270" text-anchor="middle" fill="#ddd6fe" font-family="Arial,sans-serif" font-size="17">ABSTRACT STRUCTURE</text>
+<text x="1230" y="315" text-anchor="middle" fill="#f8fafc" font-family="monospace" font-size="20">provider A</text>
+<text x="1230" y="350" text-anchor="middle" fill="#f8fafc" font-family="monospace" font-size="20">provider B</text>
+<text x="1230" y="385" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="14">translate, validate, constrain</text>
+
+<rect x="1080" y="510" width="300" height="180" rx="20" fill="#0f172a" stroke="#22d3ee" stroke-width="2"/>
+<text x="1230" y="555" text-anchor="middle" fill="#67e8f9" font-family="Arial,sans-serif" font-size="17">MODEL / EXECUTION</text>
+<text x="1230" y="605" text-anchor="middle" fill="#f8fafc" font-family="Arial,sans-serif" font-size="22">outside GrammarAI</text>
+<text x="1230" y="645" text-anchor="middle" fill="#94a3b8" font-family="Arial,sans-serif" font-size="14">the package describes structure</text>
+
+<text x="700" y="785" text-anchor="middle" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="21">ProtocolAI says WHAT.</text>
+<text x="700" y="828" text-anchor="middle" fill="#c4b5fd" font-family="Arial,sans-serif" font-size="30" font-weight="700">GrammarAI says HOW.</text>
+<text x="700" y="864" text-anchor="middle" fill="#64748b" font-family="Arial,sans-serif" font-size="14">Structure becomes a reusable, provider-neutral artifact.</text>
+</svg>
