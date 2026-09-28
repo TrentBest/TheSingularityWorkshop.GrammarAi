@@ -228,7 +228,7 @@ That makes the grammar itself a data structure that can be described, serialized
 
 ## Modern structured AI context
 
-Structured model output is now a mainstream application pattern. Current OpenAI documentation describes schema-adherent Structured Outputs, and its function-calling documentation includes context-free grammars for constraining custom tool output. citehttps://developers.openai.com/api/docs/guides/structured-outputshttps://developers.openai.com/api/docs/guides/function-calling
+Structured model output is now a mainstream application pattern. Current OpenAI documentation describes schema-adherent Structured Outputs, and its function-calling documentation includes context-free grammars for constraining custom tool output. [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) and [Function Calling](https://developers.openai.com/api/docs/guides/function-calling)
 
 GrammarAI is not an implementation of a model provider's grammar format.
 
