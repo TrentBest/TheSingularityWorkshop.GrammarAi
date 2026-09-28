@@ -127,7 +127,7 @@ A model may be asked to produce:
 - a schema-constrained response;
 - grammar-constrained text.
 
-OpenAI's current documentation explicitly describes grammar-constrained tool output and structured outputs. citehttps://developers.openai.com/api/docs/guides/function-callinghttps://developers.openai.com/api/docs/guides/structured-outputs
+OpenAI's current documentation explicitly describes grammar-constrained tool output and structured outputs. [OpenAI Function Calling](https://developers.openai.com/api/docs/guides/function-calling) and [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 
 GrammarAI asks a complementary architectural question:
 
