@@ -1,5 +1,33 @@
 # GrammarAI Theory
 
+## The deterministic boundary after the model
+
+GrammarAI sits one step beyond ProtocolAI in the same funnel.
+
+ProtocolAI turns candidate language into owned identities. GrammarAI constrains how those identities may be arranged.
+
+```text
+probabilistic model
+        |
+        v
+ProtocolAI
+   WHAT / identity
+        |
+        v
+GrammarAI
+   HOW / structure
+        |
+        v
+host validation
+        |
+        v
+deterministic protocol
+```
+
+The model remains probabilistic. The protocol representation does not have to remain probabilistic.
+
+---
+
 ## From vocabulary to language
 
 ProtocolAI gives a system a vocabulary.
