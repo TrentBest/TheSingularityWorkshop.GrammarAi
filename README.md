@@ -39,7 +39,7 @@ A grammar contains:
 - production rules;
 - references to terminal symbols supplied by ProtocolAI.
 
-This is deliberately close to the traditional idea of a grammar: a production connects a left-hand-side nonterminal to an ordered sequence of terminals and/or nonterminals. citeturn0search12turn0search0
+This is deliberately close to the traditional idea of a grammar: a production connects a left-hand-side nonterminal to an ordered sequence of terminals and/or nonterminals.
 
 ## Example
 
