@@ -29,6 +29,37 @@ public sealed class GrammarDefinitionTests
     }
 
     [Fact]
+    public void Builder_snapshot_is_immutable_after_subsequent_builder_changes()
+    {
+        var builder = new GrammarBuilder(3001, "Greeting", 4001)
+            .Rule(5001, 4001, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2001)));
+        var first = builder.Build();
+
+        builder.Rule(5002, 4001, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2002)));
+
+        Assert.Single(first.Rules);
+    }
+
+    [Fact]
+    public void Duplicate_rule_ids_are_rejected()
+    {
+        Assert.Throws<ArgumentException>(() => new GrammarBuilder(3001, "Greeting", 4001)
+            .Rule(5001, 4001, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2001)))
+            .Rule(5001, 4001, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2002)))
+            .Build());
+    }
+
+    [Fact]
+    public void Recursive_nonterminals_are_allowed_as_structure()
+    {
+        var grammar = new GrammarBuilder(3001, "Recursive", 4001)
+            .Rule(5001, 4001, GrammarSymbol.NonTerminal(4001))
+            .Build();
+
+        Assert.Equal((ulong)4001, grammar.Rules[0].RightHandSide[0].Id);
+    }
+
+    [Fact]
     public void Description_is_deterministic()
     {
         var grammar = new GrammarBuilder(3001, "Greeting", 4001)
