@@ -8,6 +8,31 @@
 
 **The structure layer for self-defining, integer-backed AI protocols.**
 
+> **Give application-owned identities a language of composition.**
+
+```mermaid
+flowchart LR
+    A["ProtocolAI / owned vocabulary"] --> B["GrammarAI"]
+    B --> C["Nonterminals + productions"]
+    B --> D["Protocol terminals"]
+    C --> E["Abstract structure"]
+    D --> E
+    E --> F["Host / provider adapter"]
+    F --> G["Model or execution environment"]
+```
+
+### Start here
+
+| If you want to... | Go to |
+|---|---|
+| Install and use the package | **[Consuming GrammarAI](docs/CONSUMING.md)** |
+| See practical patterns | **[GrammarAI Examples](docs/EXAMPLES.md)** |
+| Understand the architecture | [Theory](docs/THEORY.md) |
+| Understand the current boundary | [Reflection](docs/REFLECTION.md) |
+
+The fastest path is **reference a vocabulary → define nonterminals → add productions → inspect the self-describing grammar**.
+
+
 ProtocolAI answers:
 
 > **What is this?**
