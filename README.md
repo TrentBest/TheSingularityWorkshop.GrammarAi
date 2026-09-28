@@ -8,6 +8,13 @@
 
 **The structure layer for self-defining, integer-backed AI protocols.**
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/docs/images/grammar-ai-money-shot.svg" alt="GrammarAI money shot: ProtocolAI identities become structured through GrammarAI" width="1100">
+</p>
+
+<p align="center"><strong>ProtocolAI gives meaning an address. GrammarAI gives those addresses a language.</strong></p>
+
+
 > **Give application-owned identities a language of composition.**
 
 ```mermaid
@@ -31,6 +38,20 @@ flowchart LR
 | Understand the current boundary | [Reflection](docs/REFLECTION.md) |
 
 The fastest path is **reference a vocabulary → define nonterminals → add productions → inspect the self-describing grammar**.
+
+### Try it in 60 seconds
+
+```bash
+dotnet run --project examples/GrammarAi.QuickStart/GrammarAi.QuickStart.csproj
+```
+
+Or install the package directly:
+
+```bash
+dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.1
+```
+
+The executable example is intentionally tiny: it builds a grammar over two externally owned ProtocolAI symbols and prints the resulting self-description.
 
 
 ProtocolAI answers:
@@ -86,6 +107,10 @@ GrammarAI owns the structure.
 The LLM remains outside both packages.
 
 ---
+
+## The idea in one picture
+
+The image above is the shortest version of the argument. ProtocolAI owns the vocabulary. GrammarAI does not copy or reinterpret it; it establishes the legal relationships between those identities. A host can then translate the abstract structure into whatever model or execution environment it controls.
 
 ## Why grammar belongs here
 
