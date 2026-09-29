@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <IsPackable>true</IsPackable>
     <PackageId>TheSingularityWorkshop.GrammarAi</PackageId>
-    <Version>0.1.0-alpha.1</Version>
+    <Version>0.1.0-alpha.2</Version>
     <Authors>Trent Best</Authors>
     <Company>The Singularity Workshop</Company>
     <Description>Self-defining grammar structures for connecting integer-backed AI protocols.</Description>
@@ -15,7 +15,7 @@
     <PackageProjectUrl>https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi</PackageProjectUrl>
     <RepositoryUrl>https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageReleaseNotes>Initial alpha: self-defining grammar definitions, integer nonterminals, protocol symbol references, production rules, and deterministic grammar descriptions.</PackageReleaseNotes>
+    <PackageReleaseNotes>Alpha 2: expanded progressive documentation and clarified the GrammarAI structural boundary.</PackageReleaseNotes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
