@@ -17,7 +17,7 @@ dotnet add package TheSingularityWorkshop.GrammarAi
 Or:
 
 `xml
-<PackageReference Include="TheSingularityWorkshop.GrammarAi" Version="0.1.0-alpha.1" />
+<PackageReference Include="TheSingularityWorkshop.GrammarAi" Version="0.1.0-alpha.2" />
 `
 
 > Use the version currently published on NuGet when consuming a later release.

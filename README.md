@@ -9,168 +9,315 @@
 **The structure layer for self-defining, integer-backed AI protocols.**
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/docs/images/grammar-ai-money-shot.svg" alt="GrammarAI money shot: ProtocolAI identities become structured through GrammarAI" width="1100">
+  <img src="https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/docs/images/grammar-ai-money-shot.svg" alt="GrammarAI architecture: ProtocolAI identities become structured through GrammarAI" width="1100">
 </p>
 
 <p align="center"><strong>ProtocolAI gives meaning an address. GrammarAI gives those addresses a language.</strong></p>
 
+> **GrammarAI defines how application-owned identities may be connected without owning the identities or the model that eventually consumes them.**
 
-> **Give application-owned identities a language of composition.**
+---
 
-```mermaid
-flowchart LR
-    A["ProtocolAI / owned vocabulary"] --> B["GrammarAI"]
-    B --> C["Nonterminals + productions"]
-    B --> D["Protocol terminals"]
-    C --> E["Abstract structure"]
-    D --> E
-    E --> F["Host / provider adapter"]
-    F --> G["Model or execution environment"]
-```
-
-### Start here
-
-| If you want to... | Go to |
-|---|---|
-| Install and use the package | **[Consuming GrammarAI](docs/CONSUMING.md)** |
-| See practical patterns | **[GrammarAI Examples](docs/EXAMPLES.md)** |
-| Understand the architecture | [Theory](docs/THEORY.md) |
-| Understand the current boundary | [Reflection](docs/REFLECTION.md) |
-
-The fastest path is **reference a vocabulary → define nonterminals → add productions → inspect the self-describing grammar**.
-
-### Try it in 60 seconds
-
-```bash
-dotnet run --project examples/GrammarAi.QuickStart/GrammarAi.QuickStart.csproj
-```
-
-Or install the package directly:
-
-```bash
-dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.1
-```
-
-The executable example is intentionally tiny: it builds a grammar over two externally owned ProtocolAI symbols and prints the resulting self-description.
-
-
-ProtocolAI answers:
-
-> **What is this?**
+## If you only have a minute
 
 GrammarAI answers:
 
 > **How can these things be connected?**
 
-The package explores a deliberately small idea: a tool can define a vocabulary independently from the rules that describe how that vocabulary may be composed.
+ProtocolAI answers:
 
-That separation matters because modern AI systems are moving toward structured generation and grammar-constrained interfaces. GrammarAI asks what it looks like when the **grammar itself is a self-describing, integer-addressed artifact** rather than a provider-specific configuration.
+> **What is this thing?**
 
----
-
-## WHAT → HOW
-
-The conceptual split is:
+Together:
 
 ```text
-             +----------------+
-             |      Tool      |
-             +--------+-------+
-                      |
-               defines vocabulary
-                      |
-                      v
-             +----------------+
-             |   ProtocolAI   |
-             |      WHAT      |
-             +--------+-------+
-                      |
-              symbol references
+ProtocolAI                         GrammarAI
+WHAT                               HOW
+identity                           structure
+vocabulary                         productions
+owned symbols                      relationships
+     |                                  |
+     +------------ references ----------+
                       |
                       v
-             +----------------+
-             |   GrammarAI    |
-             |       HOW      |
-             +--------+-------+
+             abstract AI structure
                       |
                       v
-                 AI-facing host
-                      |
-                      v
-                     LLM
+                 host / adapter
 ```
 
-ProtocolAI owns the vocabulary.
+The smallest useful GrammarAI program is:
 
-GrammarAI owns the structure.
+```csharp
+using TheSingularityWorkshop.GrammarAi;
 
-The LLM remains outside both packages.
+var grammar = new GrammarBuilder(
+        3001,
+        "Greeting",
+        4001)
+    .Rule(
+        5001,
+        4001,
+        GrammarSymbol.Terminal(
+            new GrammarProtocolReference(1001, 2001)))
+    .Rule(
+        5002,
+        4001,
+        GrammarSymbol.Terminal(
+            new GrammarProtocolReference(1001, 2002)))
+    .Build();
+
+Console.WriteLine(grammar.Describe());
+```
+
+It produces a self-description such as:
+
+```text
+[3001] Greeting start=[4001]
+  rule [5001] [4001] -> [1001:2001]
+  rule [5002] [4001] -> [1001:2002]
+```
+
+**That is the core idea. The rest of this document progressively explains the boundary, the API, the architecture, and the current limits.**
+
+### Go directly to the depth you need
+
+| I want to... | Read |
+|---|---|
+| Install and use GrammarAI | [Consuming GrammarAI](docs/CONSUMING.md) |
+| See concrete patterns | [Examples](docs/EXAMPLES.md) |
+| Understand why the boundary exists | [Theory](docs/THEORY.md) |
+| Understand what is intentionally unresolved | [Reflection](docs/REFLECTION.md) |
 
 ---
 
-## The idea in one picture
+# 1. What GrammarAI actually does
 
-The image above is the shortest version of the argument. ProtocolAI owns the vocabulary. GrammarAI does not copy or reinterpret it; it establishes the legal relationships between those identities. A host can then translate the abstract structure into whatever model or execution environment it controls.
+GrammarAI is a deliberately small structural layer.
 
-## Why grammar belongs here
+It gives an application a way to describe:
 
-A vocabulary can tell us:
+- a grammar identity;
+- a start symbol;
+- integer-backed nonterminals;
+- ordered production rules;
+- references to externally owned protocol symbols;
+- deterministic structural validation;
+- deterministic self-description.
+
+```text
+application meaning
+        |
+        v
+   ProtocolAI
+      WHAT
+        |
+        v
+   GrammarAI
+       HOW
+        |
+        v
+ host / adapter
+        |
+        v
+ model / system
+```
+
+**GrammarAI stops at the structural boundary.**
+
+Deeper: [Theory — The deterministic boundary](docs/THEORY.md#the-deterministic-boundary-after-the-model).
+
+---
+
+# 2. What GrammarAI does not do
+
+This boundary is just as important.
+
+GrammarAI does **not** own:
+
+- an LLM client;
+- model selection;
+- inference;
+- tokenization;
+- prompt transport;
+- a universal protocol vocabulary;
+- REST/OpenAPI;
+- GUI rendering;
+- MicroBundle hosting;
+- tool execution;
+- application workflows;
+- provider-specific grammar formats.
+
+So this is intentional:
+
+```text
+GrammarAI
+    |
+    +--> "Here is the structure."
+```
+
+This is not:
+
+```text
+GrammarAI
+    |
+    +--> call a model
+    +--> execute a tool
+    +--> render a GUI
+    +--> run an application
+```
+
+Those concerns belong downstream.
+
+Deeper: [Reflection — What is deliberately not decided](docs/REFLECTION.md#what-is-deliberately-not-decided).
+
+---
+
+# 3. WHAT → HOW
+
+A vocabulary and a grammar solve different problems.
+
+Suppose an application owns:
 
 ```text
 [1001] People
 
-[2001] bobId  = "Bob"
-[2002] janeId = "Jane"
+[2001] Bob
+[2002] Jane
 ```
 
-But that does not tell us how those symbols may be arranged.
+That tells us what the symbols mean.
 
-A grammar can say:
+It does not tell us how they may participate in a structure.
+
+GrammarAI can describe:
 
 ```text
-[3001] Greeting
-  start = [4001]
-
-  [5001] [4001] -> [1001:2001]
-  [5002] [4001] -> [1001:2002]
+[4001] -> [1001:2001]
+[4001] -> [1001:2002]
 ```
 
-The grammar owns the **relationships**.
+Now there is a relationship.
 
-The protocol owns the **meaning**.
+**The grammar owns the relationship. The protocol owns the meaning.**
+
+```text
+ProtocolAI
+   |
+   | WHAT
+   | [1001:2001] = Bob
+   |
+   v
+GrammarAI
+   |
+   | HOW
+   | [4001] -> [1001:2001]
+   |
+   v
+structured representation
+```
+
+Deeper: [Theory — From vocabulary to language](docs/THEORY.md#from-vocabulary-to-language).
 
 ---
 
-## A grammar is a structure, not a vocabulary
+# 4. Ownership: reference, don't copy
 
-GrammarAI deliberately references protocol symbols instead of copying their definitions.
+GrammarAI represents an external terminal as:
+
+```text
+[protocolId:symbolId]
+```
+
+For example:
+
+```text
+[1001:2001]
+```
+
+means:
+
+```text
+protocol = 1001
+symbol   = 2001
+```
+
+GrammarAI can therefore say:
+
+> This grammar position references symbol 2001 from protocol 1001.
+
+It does **not** say:
+
+> GrammarAI owns symbol 2001.
+
+That keeps the structural layer from becoming a second vocabulary system.
 
 ```text
 ProtocolAI
     |
-    | [1001:2001] = Bob
-    |
-    v
+    +-- owns [1001:2001]
+    +-- owns [1001:2002]
+
 GrammarAI
     |
-    | [4001] -> [1001:2001]
-    |
-    v
-structured protocol
+    +-- owns [4001]
+    +-- owns production [5001]
+    +-- references [1001:2001]
+    +-- references [1001:2002]
 ```
 
-That keeps ownership clear.
-
-If the People vocabulary changes, GrammarAI does not silently become the owner of People.
-
-It continues to reference the protocol that owns the symbol.
+Deeper: [Consuming GrammarAI — Protocol identities](docs/CONSUMING.md#2-start-with-protocol-identities).
 
 ---
 
-## The API
+# 5. The two fundamental symbol types
+
+## Nonterminal
+
+A nonterminal belongs to the grammar:
 
 ```csharp
-var grammar = new GrammarBuilder(3001, "Greeting", 4001)
+var greeting = GrammarSymbol.NonTerminal(4001);
+```
+
+A referenced nonterminal must have a production rule.
+
+## Protocol terminal
+
+A protocol terminal belongs to an external vocabulary:
+
+```csharp
+var bob = GrammarSymbol.Terminal(
+    new GrammarProtocolReference(1001, 2001));
+```
+
+So:
+
+```text
+[4001]
+  |
+  +--> [1001:2001]
+```
+
+means the grammar references an external protocol identity; it does not redefine it.
+
+Deeper: [Examples — One protocol symbol](docs/EXAMPLES.md#example-1--one-protocol-symbol).
+
+---
+
+# 6. Build a grammar
+
+A grammar currently has three central pieces:
+
+1. its identity;
+2. its start symbol;
+3. its production rules.
+
+```csharp
+var grammar = new GrammarBuilder(
+        3001,
+        "Greeting",
+        4001)
     .Rule(
         5001,
         4001,
@@ -184,7 +331,73 @@ var grammar = new GrammarBuilder(3001, "Greeting", 4001)
     .Build();
 ```
 
-The definition describes itself:
+Conceptually:
+
+```text
+[3001] Greeting
+    |
+    +-- start = [4001]
+             |
+             +-- rule [5001] -> [1001:2001]
+             +-- rule [5002] -> [1001:2002]
+```
+
+The builder creates the structural artifact.
+
+It does not turn that artifact into an execution engine.
+
+Deeper: [Consuming GrammarAI — Define a grammar](docs/CONSUMING.md#3-define-a-grammar).
+
+---
+
+# 7. Grammars can be nested
+
+A grammar can reference another nonterminal:
+
+```csharp
+var grammar = new GrammarBuilder(
+        3001,
+        "Greeting",
+        4001)
+    .Rule(
+        5001,
+        4001,
+        GrammarSymbol.NonTerminal(4002))
+    .Rule(
+        5002,
+        4002,
+        GrammarSymbol.Terminal(
+            new GrammarProtocolReference(1001, 2001)))
+    .Build();
+```
+
+That produces:
+
+```text
+[4001]
+   |
+   v
+[4002]
+   |
+   v
+[1001:2001]
+```
+
+This is structural composition, not an execution instruction.
+
+Deeper: [Examples — Nested structure](docs/EXAMPLES.md#example-3--nested-structure).
+
+---
+
+# 8. A grammar describes itself
+
+The grammar exposes a deterministic description:
+
+```csharp
+Console.WriteLine(grammar.Describe());
+```
+
+For example:
 
 ```text
 [3001] Greeting start=[4001]
@@ -192,157 +405,228 @@ The definition describes itself:
   rule [5002] [4001] -> [1001:2002]
 ```
 
-The important part is not the syntax.
+That makes the grammar inspectable as data.
 
-It is the ownership boundary:
+A self-describing structure can eventually be:
 
-```text
-[1001:2001]
-    |
-    +--> ProtocolAI owns the symbol
+- diagnosed;
+- documented;
+- tested;
+- serialized;
+- compared;
+- versioned;
+- visualized;
+- translated;
+- composed.
 
-[4001]
-    |
-    +--> GrammarAI owns the nonterminal
-```
+Those capabilities do not need to be forced into the current core.
 
----
-
-## Nonterminals and terminals
-
-GrammarAI distinguishes between two kinds of symbol:
-
-### Nonterminal
-
-An integer-backed grammar symbol that must have a production rule.
-
-```text
-[4001]
-```
-
-### Protocol terminal
-
-A symbol supplied by an external protocol.
-
-```text
-[1001:2001]
-```
-
-This produces a simple composition model:
-
-```text
-Grammar
- |
- +-- nonterminal
- |      |
- |      +--> another nonterminal
- |
- +-- protocol terminal
-        |
-        +--> external protocol symbol
-```
-
-The grammar defines structure without importing the external vocabulary.
+Deeper: [Theory — The grammar as a self-describing artifact](docs/THEORY.md#the-grammar-as-a-self-describing-artifact).
 
 ---
 
-## Why integer-backed grammar?
+# 9. Why integer-backed?
 
-Grammar identity is explicit:
+The integer is an address, not the meaning.
 
 ```text
 [3001] Greeting
-```
-
-Its start symbol is explicit:
-
-```text
 start = [4001]
+rule  = [5001]
+terminal = [1001:2001]
 ```
 
-Its rules are explicit:
+That makes identity explicit and transportable.
+
+The same identity can survive later operations such as:
+
+- serialization;
+- composition;
+- inspection;
+- comparison;
+- storage;
+- versioning;
+- translation between hosts.
+
+The owning system supplies the meaning.
+
+GrammarAI supplies the structural address and relationship.
+
+---
+
+# 10. Why this matters for AI
+
+An AI-facing structure eventually crosses a boundary.
+
+The model may be probabilistic.
+
+The application may need deterministic structure.
+
+So the architecture can separate:
 
 ```text
-[5001] [4001] -> ...
+probabilistic language
+        |
+        v
+owned identity
+   ProtocolAI
+        |
+        v
+owned structure
+   GrammarAI
+        |
+        v
+host translation
+        |
+        v
+validated / constrained representation
+        |
+        v
+execution
 ```
 
-And protocol terminals retain both identities:
+GrammarAI is not claiming to solve every step.
+
+It provides the structural artifact that later steps can consume.
+
+Deeper: [Theory — Provider neutrality](docs/THEORY.md#provider-neutrality).
+
+---
+
+# 11. Provider neutrality
+
+The grammar should not contain:
 
 ```text
-[1001:2001]
+if OpenAI ...
+if Anthropic ...
+if Gemini ...
 ```
 
-That makes the grammar itself a data structure that can be described, serialized, inspected, compared, or eventually supplied to another composition layer.
+That would make GrammarAI a provider integration layer.
 
----
-
-## Modern structured AI context
-
-Structured model output is now a mainstream application pattern. Current OpenAI documentation describes schema-adherent Structured Outputs, and its function-calling documentation includes context-free grammars for constraining custom tool output. [OpenAI Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) and [Function Calling](https://developers.openai.com/api/docs/guides/function-calling)
-
-GrammarAI is not an implementation of a model provider's grammar format.
-
-It is an independent C# representation of the structural layer.
-
-That distinction is intentional.
-
-A provider adapter can eventually translate a GrammarAI definition into whatever representation a target model host requires.
-
-The grammar itself should not need to know which model provider will consume it.
-
----
-
-## Self-defining structure
-
-The same philosophy used by ProtocolAI applies here.
-
-A tool should be able to define:
-
-1. its vocabulary;
-2. its nonterminals;
-3. its productions;
-4. its references to external protocol symbols.
-
-The package should not contain a universal catalog of commands or domains.
+Instead:
 
 ```text
-Tool
- |
- +-- ProtocolAI ----> WHAT
- |
- +-- GrammarAI  ----> HOW
- |
- +-- Host        ----> EXECUTION
+                     GrammarAI
+                         |
+                  abstract grammar
+                         |
+             +-----------+-----------+
+             |           |           |
+             v           v           v
+        provider A  provider B   validator
+          adapter      adapter      adapter
+             |           |           |
+             +-----------+-----------+
+                         |
+                         v
+                        host
 ```
 
-That is the architectural seam.
+The provider-specific representation belongs downstream.
+
+Deeper: [Reflection — The likely next architectural pressure](docs/REFLECTION.md#the-likely-next-architectural-pressure).
 
 ---
 
-## GrammarAI does not own the model
+# 12. Grammar is not execution
 
-GrammarAI does not own:
+This distinction is fundamental.
 
-- an LLM client;
-- model selection;
-- tokenization;
-- inference;
-- prompt transport;
-- protocol vocabularies;
-- MicroBundle hosting;
-- REST/OpenAPI;
-- GUI manifestation;
-- tool execution.
+A rule such as:
 
-It owns the structural description.
+```text
+[4001] -> [1001:2001]
+```
+
+does **not** mean:
+
+> Execute Bob.
+
+It means:
+
+> This structural position may resolve to the symbol owned by protocol 1001 with symbol identity 2001.
+
+The grammar describes a legal structural relationship.
+
+A host decides what that relationship means operationally.
+
+That prevents GrammarAI from quietly becoming a workflow engine.
+
+Deeper: [Theory — Grammar is not execution](docs/THEORY.md#grammar-is-not-execution).
 
 ---
 
-## Current alpha boundary
+# 13. Independent protocols can meet at the grammar
 
-**Version: `0.1.0-alpha.1`**
+Imagine:
 
-The current release establishes:
+```text
+Protocol A
+[7100] Commands
+[7101] move
+
+Protocol B
+[7200] Objects
+[7201] forge
+```
+
+A grammar can reference both.
+
+The grammar becomes the structural meeting point while neither protocol loses ownership of its vocabulary.
+
+The current alpha deliberately stops before assigning execution semantics to that combination.
+
+Deeper: [Examples — Combining independent protocols](docs/EXAMPLES.md#example-4--combining-independent-protocols).
+
+---
+
+# 14. The Workshop stack
+
+Within The Singularity Workshop:
+
+```text
+                    DOMAIN
+                       |
+                       v
+                  ProtocolAI
+                     WHAT
+                       |
+                       v
+                  GrammarAI
+                      HOW
+                       |
+                       v
+              provider / host adapter
+                       |
+                       v
+                     model
+                       |
+                       v
+                 host validation
+                       |
+                       v
+                    execution
+```
+
+The principle is simple:
+
+> A foundation should know the shape of its capability without becoming coupled to every environment that may use it.
+
+GrammarAI provides structure.
+
+The host provides environment and execution.
+
+A future composition layer can assemble those capabilities.
+
+---
+
+# 15. Current alpha boundary
+
+**Current source version: `0.1.0-alpha.2`.**
+
+This release establishes:
 
 - grammar identity;
 - integer start symbols;
@@ -350,9 +634,9 @@ The current release establishes:
 - ordered production rules;
 - external protocol references;
 - deterministic self-description;
-- validation of referenced nonterminals.
+- structural validation of referenced nonterminals.
 
-It does not yet establish:
+It does **not** establish:
 
 - grammar parsing;
 - grammar compilation;
@@ -360,83 +644,166 @@ It does not yet establish:
 - constrained decoding;
 - protocol negotiation;
 - grammar version negotiation;
-- execution semantics.
+- execution semantics;
+- a model client;
+- a runtime workflow engine.
 
 Those are future composition questions.
 
-See:
-
-- [GrammarAI Theory](docs/THEORY.md)
-- [GrammarAI Reflection](docs/REFLECTION.md)
+Deeper: [Reflection](docs/REFLECTION.md).
 
 ---
 
-## The Workshop stack
+# 16. What happens when you consume it?
 
-GrammarAI sits above the lexicon boundary and below execution:
+The intended flow is:
 
 ```text
-Domain meaning
-      |
-      v
-ProtocolAI
-   WHAT
-      |
-      v
-GrammarAI
-   HOW
-      |
-      v
-protocol / provider adapter
-      |
-      v
-tool host
-      |
-      v
-FSM / GUI / Experience
+1. Obtain or define protocol identities
+                |
+                v
+2. Reference those identities
+                |
+                v
+3. Define grammar nonterminals
+                |
+                v
+4. Add production rules
+                |
+                v
+5. Build the grammar
+                |
+                v
+6. Inspect / validate
+                |
+                v
+7. Give the artifact to a host or adapter
 ```
 
-This keeps the grammar reusable.
+The first six steps are where the current package is useful.
 
-The same grammar can eventually be translated for different execution environments without putting those environments into the grammar package.
+The final step deliberately belongs outside the core.
 
 ---
 
-## Development
+# 17. Install and use
+
+```bash
+dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.2
+```
+
+Or:
+
+```xml
+<PackageReference Include="TheSingularityWorkshop.GrammarAi" Version="0.1.0-alpha.2" />
+```
+
+Then:
+
+```csharp
+using TheSingularityWorkshop.GrammarAi;
+
+var grammar = new GrammarBuilder(
+        3001,
+        "Greeting",
+        4001)
+    .Rule(
+        5001,
+        4001,
+        GrammarSymbol.Terminal(
+            new GrammarProtocolReference(1001, 2001)))
+    .Build();
+
+Console.WriteLine(grammar.Describe());
+```
+
+For the complete practical guide: [Consuming GrammarAI](docs/CONSUMING.md).
+
+For runnable patterns: [Examples](docs/EXAMPLES.md).
+
+---
+
+# 18. Try the repository example
+
+The repository contains an executable quickstart:
+
+```bash
+dotnet run --project examples/GrammarAi.QuickStart/GrammarAi.QuickStart.csproj
+```
+
+The example intentionally stays small.
+
+The goal is to make the structural boundary obvious before adding infrastructure.
+
+---
+
+# 19. Development
 
 ```bash
 dotnet restore TheSingularityWorkshop.GrammarAi.slnx
 dotnet build TheSingularityWorkshop.GrammarAi.slnx --configuration Release
-dotnet test tests/GrammarAi.Tests/GrammarAi.Tests.csproj --configuration Release
+dotnet test TheSingularityWorkshop.GrammarAi.slnx --configuration Release
 dotnet pack TheSingularityWorkshop.GrammarAi.csproj --configuration Release --output ./artifacts
 ```
 
-The public package workflow runs on every push to `master`: it restores, builds, tests with coverage, packs the NuGet artifact, and publishes it through NuGet Trusted Publishing. It can also be dispatched manually.
+The public workflow restores, builds, tests with coverage, packs the NuGet artifact, and publishes it through NuGet Trusted Publishing.
 
 ---
 
-## Documentation
+# 20. Documentation map
 
-- [Theory](docs/THEORY.md)
-- [Reflection](docs/REFLECTION.md)
+The README is the **map**.
+
+The linked documents are the **rooms**.
+
+| Need | Go here |
+|---|---|
+| Install and consume | [CONSUMING.md](docs/CONSUMING.md) |
+| Concrete patterns | [EXAMPLES.md](docs/EXAMPLES.md) |
+| Architectural reasoning | [THEORY.md](docs/THEORY.md) |
+| Current limits and open questions | [REFLECTION.md](docs/REFLECTION.md) |
+| Package | [NuGet](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi) |
+| Source | [GitHub](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi) |
+
+The README answers **what is this?**
+
+The linked documents answer **how does it work?**
+
+The source answers **exactly how is it implemented?**
+
+That gives a reader a high-level path without throwing away the detail needed by someone who wants to understand the machinery.
 
 ---
 
-## License
+# 21. Architectural invariant
 
-MIT. See [LICENSE.txt](LICENSE.txt).
+> **GrammarAI describes how protocol symbols may be connected without owning the symbols' meaning or the model that consumes the structure.**
+
+In one line:
+
+```text
+ProtocolAI = WHAT
+GrammarAI  = HOW
+Host       = EXECUTION
+```
+
+That is the boundary.
+
+Everything else composes around it rather than blurring it.
 
 ---
 
-## 🔗 Resources & Support
+## Resources
 
-- **NuGet:** [TheSingularityWorkshop.GrammarAi](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
-- **Source:** [GitHub](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi)
+- **NuGet:** https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi
+- **Source:** https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi
 - **Theory:** [docs/THEORY.md](docs/THEORY.md)
+- **Examples:** [docs/EXAMPLES.md](docs/EXAMPLES.md)
+- **Consuming:** [docs/CONSUMING.md](docs/CONSUMING.md)
 - **Reflection:** [docs/REFLECTION.md](docs/REFLECTION.md)
-- **ProtocolAI:** [TheSingularityWorkshop.ProtocolAi](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi)
-- **FSM_API:** [TheSingularityWorkshop.FSM_API](https://www.nuget.org/packages/TheSingularityWorkshop.FSM_API)
-- **MicroBundleDomain:** [TheSingularityWorkshop.MicroBundleDomain](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleDomain)
+- **ProtocolAI:** https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi
+- **FSM_API:** https://www.nuget.org/packages/TheSingularityWorkshop.FSM_API
+- **MicroBundleDomain:** https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleDomain
 
 <p align="center">
   <a href="https://github.com/TrentBest/FSM_API">
