@@ -415,10 +415,17 @@ The public package workflow runs on every push to `master`: it restores, builds,
 
 ---
 
+<p align="center">
+  <img src="docs/images/ai-exchange-stack.svg" alt="GrammarAI AI Exchange architecture" width="1100">
+</p>
+
+<p align="center"><strong>Grammar is the structural voice of the exchange; transport remains outside the grammar.</strong></p>
+
 ## Documentation
 
 - [Theory](docs/THEORY.md)
 - [Reflection](docs/REFLECTION.md)
+- [AI Exchange](docs/AI_EXCHANGE.md)
 
 ---
 
