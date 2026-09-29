@@ -310,3 +310,45 @@ FSM_COS / host
 
 GrammarAI's role is therefore stable even as the transport changes.
 
+
+
+---
+
+## Command semantics sit above grammar
+
+GrammarAI defines **HOW protocol identities may legally compose**.
+
+It does not need to know what a command does.
+
+That distinction permits a later CommandAI layer to consume GrammarAI:
+
+```text
+ProtocolAI
+    WHAT
+
+GrammarAI
+    HOW identities may organize
+
+CommandAI
+    WHAT functionality is assembled from that grammar
+```
+
+For example, a tool may expose a button with protocol identity `A`. GrammarAI can describe the legal statement structure required to express an action over that identity. A command layer can then define the executable semantic composition.
+
+A conceptual statement might therefore resemble:
+
+```text
+[Actions #]
+    [Click]
+        [Button A]
+```
+
+Here `[Actions #]` is not arbitrary prose. It identifies the semantic collection from which GrammarAI can obtain legal choices.
+
+The important boundary is:
+
+- **ProtocolAI** resolves what the symbols mean.
+- **GrammarAI** determines how those symbols may be organized.
+- **CommandAI** may assemble executable functionality from valid grammar.
+
+GrammarAI itself remains free of execution, providers, GUI frameworks, and API credentials.
