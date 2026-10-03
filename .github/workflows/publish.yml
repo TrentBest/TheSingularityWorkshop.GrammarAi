@@ -1,0 +1,34 @@
+name: Publish GrammarAI
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  verify-and-publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore
+        run: dotnet restore TheSingularityWorkshop.GrammarAi.slnx
+      - name: Build
+        run: dotnet build TheSingularityWorkshop.GrammarAi.slnx --configuration Release --no-restore
+      - name: Test
+        run: dotnet test TheSingularityWorkshop.GrammarAi.slnx --configuration Release --no-build --verbosity normal
+      - name: Pack
+        run: dotnet pack TheSingularityWorkshop.GrammarAi.csproj --configuration Release --no-build --output ./artifacts
+      - name: Authenticate with NuGet Trusted Publishing
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: TheSingularityWorkshop
+      - name: Publish package to NuGet.org
+        run: dotnet nuget push "./artifacts/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --skip-duplicate
