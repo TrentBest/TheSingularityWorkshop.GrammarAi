@@ -622,7 +622,17 @@ A future composition layer can assemble those capabilities.
 
 ---
 
-# 15. Current alpha boundary
+# 15. Deprobabilization in one sentence
+
+**ProtocolAI reduces semantic ambiguity; GrammarAI reduces structural ambiguity.**
+
+Neither package makes an LLM deterministic. Together they give a host explicit artifacts against which model output can be resolved and validated before execution.
+
+See **[GrammarAI Theory](docs/THEORY.md)** for the deeper argument and its limits.
+
+---
+
+# 16. Current alpha boundary
 
 **Current source version: `0.1.0-alpha.2`.**
 
@@ -654,7 +664,7 @@ Deeper: [Reflection](docs/REFLECTION.md).
 
 ---
 
-# 16. What happens when you consume it?
+# 17. What happens when you consume it?
 
 The intended flow is:
 
@@ -686,7 +696,7 @@ The final step deliberately belongs outside the core.
 
 ---
 
-# 17. Install and use
+# 18. Install and use
 
 ```bash
 dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.2
@@ -723,7 +733,7 @@ For runnable patterns: [Examples](docs/EXAMPLES.md).
 
 ---
 
-# 18. Try the repository example
+# 19. Try the repository example
 
 The repository contains an executable quickstart:
 
@@ -737,7 +747,7 @@ The goal is to make the structural boundary obvious before adding infrastructure
 
 ---
 
-# 19. Development
+# 20. Development
 
 ```bash
 dotnet restore TheSingularityWorkshop.GrammarAi.slnx
@@ -750,7 +760,7 @@ The public workflow restores, builds, tests with coverage, packs the NuGet artif
 
 ---
 
-# 20. Documentation map
+# 21. Documentation map
 
 The README is the **map**.
 
@@ -775,7 +785,7 @@ That gives a reader a high-level path without throwing away the detail needed by
 
 ---
 
-# 21. Architectural invariant
+# 22. Architectural invariant
 
 > **GrammarAI describes how protocol symbols may be connected without owning the symbols' meaning or the model that consumes the structure.**
 
