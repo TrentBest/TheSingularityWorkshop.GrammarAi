@@ -1,4 +1,4 @@
-name: Verify GrammarAI
+name: Package GrammarAI
 
 on:
   push:
@@ -8,6 +8,12 @@ on:
     branches:
       - master
   workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish the verified package to NuGet.org"
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -65,3 +71,24 @@ jobs:
         with:
           name: grammar-ai-test-results
           path: ./TestResults/*
+
+  publish_nuget:
+    needs: build-and-test
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish == true }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download NuGet package
+        uses: actions/download-artifact@v8
+        with:
+          name: grammar-ai-nuget-package
+          path: ./artifacts
+      - name: Authenticate with NuGet Trusted Publishing
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: TheSingularityWorkshop
+      - name: Publish package to NuGet.org
+        run: dotnet nuget push "./artifacts/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --skip-duplicate
