@@ -1,13 +1,20 @@
 # GrammarAI Theory
 
-## The deterministic boundary after the model
+## The structural boundary after semantic identity
 
-GrammarAI sits one step beyond ProtocolAI in the same funnel.
+GrammarAI sits one step beyond ProtocolAI.
 
-ProtocolAI turns candidate language into owned identities. GrammarAI constrains how those identities may be arranged.
+ProtocolAI establishes **WHAT** a known value means.
+
+GrammarAI establishes **HOW** known identities may be arranged.
+
+The model may remain probabilistic. The semantic and structural artifacts do not have to remain probabilistic.
 
 ```text
 probabilistic model
+        |
+        v
+candidate language
         |
         v
 ProtocolAI
@@ -18,21 +25,17 @@ GrammarAI
    HOW / structure
         |
         v
-host validation
+validation / adaptation
         |
         v
-deterministic protocol
+deterministic host representation
 ```
 
-The model remains probabilistic. The protocol representation does not have to remain probabilistic.
+This is not a claim that GrammarAI constrains a model by itself. It is the abstract artifact a host or provider adapter can later use for that purpose.
 
 ---
 
 ## From vocabulary to language
-
-ProtocolAI gives a system a vocabulary.
-
-That is not yet a language.
 
 A vocabulary tells us what symbols exist:
 
@@ -43,42 +46,53 @@ A vocabulary tells us what symbols exist:
 [2002] Jane
 ```
 
-A grammar tells us how those symbols can participate in a structure:
+A grammar tells us how those symbols can participate in structure:
 
 ```text
 [4001] -> [1001:2001]
 [4001] -> [1001:2002]
 ```
 
-This creates the central distinction:
+The central distinction is:
 
 > **ProtocolAI defines the WHAT. GrammarAI defines the HOW.**
 
+The grammar owns relationships.
+
+The protocol owns semantic identity.
+
+Neither needs to own the model.
+
 ---
 
-## A grammar is a relationship system
+## Grammar as deterministic structure
 
-GrammarAI does not own the meaning of `Bob`.
+A grammar is useful because its structure can be reasoned about independently of the system that eventually consumes it.
 
-It owns the rule that says a particular grammar symbol may resolve to a protocol symbol:
+A grammar can have:
+
+- an identity;
+- a start symbol;
+- nonterminals;
+- ordered production rules;
+- references to external protocol symbols;
+- deterministic validation;
+- deterministic self-description.
+
+That makes it a portable artifact.
 
 ```text
-Grammar nonterminal
-      |
-      v
-[4001]
-      |
-      +----> [1001:2001]
-      |
-      +----> [1001:2002]
+grammar definition
+       |
+       +--> inspect
+       +--> validate
+       +--> compare
+       +--> serialize
+       +--> translate
+       +--> visualize
 ```
 
-The grammar therefore connects independently owned semantic vocabularies.
-
-That is the architectural reason protocol references carry both:
-
-- protocol identity;
-- symbol identity.
+Those are properties of the artifact, not execution semantics.
 
 ---
 
@@ -90,40 +104,106 @@ A grammar has its own identity:
 [3001] Greeting
 ```
 
-It has a start symbol:
+a start symbol:
 
 ```text
 start = [4001]
 ```
 
-It has rules:
+and rules:
 
 ```text
 rule [5001] [4001] -> [1001:2001]
 ```
 
-The complete structure can therefore be represented as data.
+The structure can therefore describe itself.
 
-That matters because a grammar may eventually be:
-
-- serialized;
-- compared;
-- versioned;
-- generated;
-- translated;
-- visualized;
-- supplied to a model host;
-- composed with another capability.
-
-The grammar does not need to know which of those things will happen.
+That matters for AI because a host can inspect and present the same artifact to a human, a model adapter, a validator, a serializer, or another system without requiring each consumer to invent its own hidden interpretation.
 
 ---
 
-## Context-free grammar as a useful reference point
+## Grammar as a deprobabilization surface
 
-A conventional context-free grammar defines a language through production rules.
+ProtocolAI narrows **meaning**.
 
-GrammarAI intentionally resembles that model because it provides a useful conceptual foundation:
+GrammarAI narrows **arrangement**.
+
+That gives us two different forms of deprobabilization:
+
+```text
+probabilistic output
+        |
+        v
+semantic resolution
+   ProtocolAI
+        |
+        v
+structural validation
+   GrammarAI
+        |
+        v
+host policy
+        |
+        v
+execution
+```
+
+ProtocolAI can distinguish:
+
+```text
+known / unknown / invalid
+```
+
+GrammarAI can distinguish whether the resulting identities occupy a structure permitted by the grammar.
+
+Neither step proves that the model's intent was correct.
+
+They make the application's acceptance criteria explicit.
+
+That is the important architectural improvement.
+
+---
+
+## Why this may matter for hallucination
+
+Grammar constraints are often discussed as a way to reduce invalid model output.
+
+GrammarAI should make a narrower claim.
+
+It provides an abstract structural representation that a host can use to validate or translate model-facing structure.
+
+Therefore:
+
+```text
+model proposes
+      |
+      v
+candidate structure
+      |
+      v
+grammar validation
+      |
+   +--+--+
+   |     |
+ valid invalid
+   |     |
+   v     v
+continue reject
+```
+
+This can reduce the number of structurally invalid responses that reach later stages **if a host actually enforces the grammar**.
+
+It does not guarantee semantic correctness.
+
+A perfectly valid grammar can still contain a perfectly valid reference to the wrong object.
+
+That is why GrammarAI and ProtocolAI remain separate.
+
+---
+
+## Context-free grammar as a reference point
+
+GrammarAI intentionally resembles a conventional context-free grammar:
 
 ```text
 nonterminal
@@ -135,41 +215,55 @@ nonterminal
     +--> sequence
 ```
 
-But the current package should not be confused with a complete parser generator or compiler grammar system.
+That provides a familiar theoretical foundation.
 
-The current alpha is a **structural representation**.
+But the current package is not a parser generator, compiler, constrained decoder, or provider grammar exporter.
 
-Parsing, compilation, execution semantics, and provider-specific translation remain separate questions.
+It is a structural representation.
+
+Keeping that boundary small makes the artifact easier to reuse.
 
 ---
 
-## Why this matters for AI
+## External ownership is deliberate
 
-Modern AI interfaces increasingly use structured generation.
+GrammarAI references external protocol symbols as:
 
-A model may be asked to produce:
+```text
+[protocolId:symbolId]
+```
 
-- JSON;
-- a function call;
-- a tool invocation;
-- a schema-constrained response;
-- grammar-constrained text.
+For example:
 
-OpenAI's current documentation explicitly describes grammar-constrained tool output and structured outputs. [OpenAI Function Calling](https://developers.openai.com/api/docs/guides/function-calling) and [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+```text
+[1001:2001]
+```
 
-GrammarAI asks a complementary architectural question:
+GrammarAI can therefore express a relationship without copying the vocabulary into the grammar.
 
-> **Can the application own an abstract grammar independently of the model provider?**
+```text
+ProtocolAI
+    |
+    +-- owns [1001:2001]
+    +-- owns [1001:2002]
 
-If yes, then the grammar becomes a reusable artifact.
+GrammarAI
+    |
+    +-- owns [4001]
+    +-- owns rule [5001]
+    +-- references [1001:2001]
+    +-- references [1001:2002]
+```
 
-A provider adapter can translate it later.
+This is the same ownership discipline used throughout The Singularity Workshop:
+
+> **Reference a capability you do not own; own only the structure that is yours.**
 
 ---
 
 ## Provider neutrality
 
-A grammar should not contain:
+A grammar should not contain provider-specific branches:
 
 ```text
 if OpenAI ...
@@ -177,150 +271,198 @@ if Anthropic ...
 if Gemini ...
 ```
 
-That would turn the grammar into a provider integration layer.
-
 Instead:
 
 ```text
-GrammarAI
-    |
-    v
-abstract grammar
-    |
-    +---- provider adapter A
-    +---- provider adapter B
-    +---- provider adapter C
+                  GrammarAI
+                      |
+                abstract grammar
+                      |
+          +-----------+-----------+
+          |           |           |
+          v           v           v
+      adapter A   adapter B   validator
+          |           |           |
+          +-----------+-----------+
+                      |
+                      v
+                     host
 ```
 
-The provider-specific representation belongs downstream.
+The adapter translates the abstract artifact into the concrete representation expected by its environment.
 
-This is the same composition principle used throughout the Workshop ecosystem.
+That keeps the core reusable.
 
 ---
 
 ## Grammar is not execution
 
-A rule can describe:
+A rule such as:
 
 ```text
 [4001] -> [1001:2001]
 ```
 
-It does not mean:
+does not mean:
 
 > Execute Bob.
 
 It means:
 
-> This structural position may resolve to the symbol owned by protocol 1001.
+> This structural position may resolve to the symbol owned by protocol 1001 with symbol identity 2001.
 
 Execution semantics belong to the host.
 
-This distinction prevents a grammar from becoming a hidden workflow engine.
+This prevents a grammar from quietly becoming a workflow engine.
 
 ---
 
-## Grammar and protocol composition
+## Independent protocols can meet at the grammar
 
-The conceptual stack is:
+Imagine:
 
 ```text
 Protocol A
-   |
-   +-- symbols
+[7100] Commands
+[7101] move
 
 Protocol B
-   |
-   +-- symbols
-
-       \\
-        \\
-         v
-
-      Grammar
-         |
-         +-- nonterminals
-         +-- productions
-         +-- references
-         |
-         v
-    structured protocol
+[7200] Objects
+[7201] forge
 ```
 
-The grammar is therefore a composition surface.
-
-It connects things without becoming the owner of the things it connects.
-
----
-
-## What a future lifecycle might look like
+A grammar can reference both.
 
 ```text
-DEFINE PROTOCOLS
-       |
-       v
-DEFINE GRAMMAR
-       |
-       v
-DESCRIBE STRUCTURE
-       |
-       v
-ADAPT TO HOST
-       |
-       v
-CONSTRAIN / GENERATE
-       |
-       v
-DECODE REFERENCES
-       |
-       v
-EXECUTE
+Protocol A ----+
+               |
+               +--> Grammar --> structured artifact
+               |
+Protocol B ----+
 ```
 
-Only the first three stages belong to the current alpha.
+The grammar becomes the structural meeting point while neither protocol loses ownership of its vocabulary.
 
-That is deliberate.
+That is a small but powerful composition primitive.
 
 ---
 
-## Questions the alpha leaves open
+## The future exchange
 
-### Grammar identity
-How should grammar IDs be allocated?
+The conceptual AI exchange becomes:
 
-### Versioning
-Can a grammar evolve while preserving compatibility?
+```text
+ProtocolAI
+    WHAT exists
+       |
+       v
+GrammarAI
+    HOW it may be arranged
+       |
+       v
+context + request
+       |
+       v
+provider / human interaction
+       |
+       v
+candidate response
+       |
+       v
+validation
+       |
+       v
+host policy
+       |
+       v
+execution
+```
 
-### Validation
-How much structural validation belongs in the definition layer?
+This is deliberately not an AI framework.
 
-### Cycles
-Should recursive productions be supported explicitly?
+It is a set of explicit boundaries around one.
 
-### Composition
-How should two independently authored grammars be combined?
+---
 
-### Translation
-How should GrammarAI map to Lark, regex, JSON Schema, or another provider representation?
+## What GrammarAI can make deterministic
 
-### Runtime
-Should grammar evaluation ever become an execution concern?
+GrammarAI can make the following deterministic when the host uses it:
 
-### Model behavior
-How should generated output be validated against the abstract grammar?
+- grammar identity;
+- symbol relationships;
+- production ordering;
+- referenced protocol identities;
+- structural validation;
+- self-description.
 
-These questions should be answered by the architecture rather than smuggled into convenience APIs.
+It cannot make deterministic:
+
+- model intent;
+- model reasoning;
+- provider inference;
+- human interpretation;
+- application policy;
+- execution side effects.
+
+That distinction should remain visible in every future integration.
+
+---
+
+## The likely adapter boundary
+
+The most interesting future layer is translation:
+
+```text
+             GrammarAI
+                 |
+          abstract grammar
+                 |
+       +---------+---------+
+       |         |         |
+       v         v         v
+    provider   validator  serializer
+     adapter     adapter    adapter
+       |         |         |
+       +---------+---------+
+                 |
+                 v
+               Host
+```
+
+The adapter can evolve without forcing GrammarAI to know every provider's grammar format.
+
+This is exactly the kind of boundary that allows a tiny primitive to remain useful as the surrounding system grows.
+
+---
+
+## Questions the alpha intentionally leaves open
+
+- How are grammar IDs allocated?
+- How are grammar versions negotiated?
+- Should recursive productions be explicitly supported?
+- How are independently authored grammars composed?
+- How should abstract grammar map to provider-specific constraints?
+- How should generated output be validated?
+- Which structural guarantees should be enforced before a host sees a response?
+- Can grammar-constrained generation measurably reduce structural hallucination classes?
+- What are the token and latency tradeoffs?
+
+These questions belong to future layers and experiments rather than hidden assumptions in the current core.
 
 ---
 
 ## Architectural invariant
 
-> **GrammarAI describes how protocol symbols may be connected without owning the symbols' meaning or the model that consumes the structure.**
+> **GrammarAI describes how protocol identities may be connected without owning their meaning, the model that generated them, or the execution that follows.**
 
-ProtocolAI provides the lexicon.
+In one line:
 
-GrammarAI provides the structure.
+```text
+ProtocolAI = WHAT
+GrammarAI  = HOW
+Host       = POLICY + EXECUTION
+```
 
-The host provides execution.
+The smallness is intentional.
 
-That separation is the point.
+The interesting part is the boundary.
