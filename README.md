@@ -46,6 +46,18 @@ owned symbols                      relationships
                  host / adapter
 ```
 
+### Try it in Visual Studio
+
+1. Choose **Create a new project → Console App** in Visual Studio and target **.NET 8**.
+2. Choose **View → Terminal** and ensure the terminal is in the directory containing the new project's `.csproj` file.
+3. Install the published alpha package:
+
+   ```powershell
+   dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.2
+   ```
+
+4. Paste the complete example below into `Program.cs` and run it with Visual Studio's Run button.
+
 The smallest useful GrammarAI program is:
 
 ```csharp
@@ -696,40 +708,25 @@ The final step deliberately belongs outside the core.
 
 ---
 
-# 18. Install and use
+# 18. Add GrammarAI to an existing project
 
-```bash
+Already have a .NET application? You do not need to replace it with a new architecture.
+
+Install the package in the project that owns or assembles your grammar definitions:
+
+```powershell
 dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.2
 ```
 
-Or:
+Use `GrammarBuilder` where your application defines its structural rules. GrammarAI references ProtocolAI-owned symbol identities; it does not redefine their meaning, select an AI provider, or execute the resulting structure.
 
-```xml
-<PackageReference Include="TheSingularityWorkshop.GrammarAi" Version="0.1.0-alpha.2" />
-```
+Keep these responsibilities separate:
 
-Then:
+- **ProtocolAI:** identity and vocabulary.
+- **GrammarAI:** production rules and structure.
+- **Your host/application:** validation policy, interpretation, model/provider choice, and execution.
 
-```csharp
-using TheSingularityWorkshop.GrammarAi;
-
-var grammar = new GrammarBuilder(
-        3001,
-        "Greeting",
-        4001)
-    .Rule(
-        5001,
-        4001,
-        GrammarSymbol.Terminal(
-            new GrammarProtocolReference(1001, 2001)))
-    .Build();
-
-Console.WriteLine(grammar.Describe());
-```
-
-For the complete practical guide: [Consuming GrammarAI](docs/CONSUMING.md).
-
-For runnable patterns: [Examples](docs/EXAMPLES.md).
+For the complete consuming guide, see [Consuming GrammarAI](docs/CONSUMING.md). For additional patterns, see [Examples](docs/EXAMPLES.md).
 
 ---
 
