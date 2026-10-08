@@ -18,7 +18,46 @@
 
 ---
 
-## If you only have a minute
+## What and Why
+
+GrammarAI is a deliberately small structural layer.
+
+It gives an application a way to describe:
+
+- a grammar identity;
+- a start symbol;
+- integer-backed nonterminals;
+- ordered production rules;
+- references to externally owned protocol symbols;
+- deterministic structural validation;
+- deterministic self-description.
+
+```text
+application meaning
+        |
+        v
+   ProtocolAI
+      WHAT
+        |
+        v
+   GrammarAI
+       HOW
+        |
+        v
+ host / adapter
+        |
+        v
+ model / system
+```
+
+**GrammarAI stops at the structural boundary.**
+
+Deeper: [Theory — The deterministic boundary](docs/THEORY.md#the-deterministic-boundary-after-the-model).
+
+---
+
+
+## 60-Second Quick Start
 
 GrammarAI answers:
 
@@ -103,45 +142,7 @@ It produces a self-description such as:
 
 ---
 
-# 1. What GrammarAI actually does
-
-GrammarAI is a deliberately small structural layer.
-
-It gives an application a way to describe:
-
-- a grammar identity;
-- a start symbol;
-- integer-backed nonterminals;
-- ordered production rules;
-- references to externally owned protocol symbols;
-- deterministic structural validation;
-- deterministic self-description.
-
-```text
-application meaning
-        |
-        v
-   ProtocolAI
-      WHAT
-        |
-        v
-   GrammarAI
-       HOW
-        |
-        v
- host / adapter
-        |
-        v
- model / system
-```
-
-**GrammarAI stops at the structural boundary.**
-
-Deeper: [Theory — The deterministic boundary](docs/THEORY.md#the-deterministic-boundary-after-the-model).
-
----
-
-# 2. What GrammarAI does not do
+## 2. What GrammarAI does not do
 
 This boundary is just as important.
 
@@ -185,7 +186,7 @@ Deeper: [Reflection — What is deliberately not decided](docs/REFLECTION.md#wha
 
 ---
 
-# 3. WHAT → HOW
+## 3. WHAT → HOW
 
 A vocabulary and a grammar solve different problems.
 
@@ -233,7 +234,7 @@ Deeper: [Theory — From vocabulary to language](docs/THEORY.md#from-vocabulary-
 
 ---
 
-# 4. Ownership: reference, don't copy
+## 4. Ownership: reference, don't copy
 
 GrammarAI represents an external terminal as:
 
@@ -282,9 +283,9 @@ Deeper: [Consuming GrammarAI — Protocol identities](docs/CONSUMING.md#2-start-
 
 ---
 
-# 5. The two fundamental symbol types
+## 5. The two fundamental symbol types
 
-## Nonterminal
+### Nonterminal
 
 A nonterminal belongs to the grammar:
 
@@ -294,7 +295,7 @@ var greeting = GrammarSymbol.NonTerminal(4001);
 
 A referenced nonterminal must have a production rule.
 
-## Protocol terminal
+### Protocol terminal
 
 A protocol terminal belongs to an external vocabulary:
 
@@ -317,7 +318,7 @@ Deeper: [Examples — One protocol symbol](docs/EXAMPLES.md#example-1--one-proto
 
 ---
 
-# 6. Build a grammar
+## 6. Build a grammar
 
 A grammar currently has three central pieces:
 
@@ -362,7 +363,7 @@ Deeper: [Consuming GrammarAI — Define a grammar](docs/CONSUMING.md#3-define-a-
 
 ---
 
-# 7. Grammars can be nested
+## 7. Grammars can be nested
 
 A grammar can reference another nonterminal:
 
@@ -401,7 +402,7 @@ Deeper: [Examples — Nested structure](docs/EXAMPLES.md#example-3--nested-struc
 
 ---
 
-# 8. A grammar describes itself
+## 8. A grammar describes itself
 
 The grammar exposes a deterministic description:
 
@@ -437,7 +438,7 @@ Deeper: [Theory — The grammar as a self-describing artifact](docs/THEORY.md#th
 
 ---
 
-# 9. Why integer-backed?
+## 9. Why integer-backed?
 
 The integer is an address, not the meaning.
 
@@ -466,7 +467,7 @@ GrammarAI supplies the structural address and relationship.
 
 ---
 
-# 10. Why this matters for AI
+## 10. Why this matters for AI
 
 An AI-facing structure eventually crosses a boundary.
 
@@ -505,7 +506,7 @@ Deeper: [Theory — Provider neutrality](docs/THEORY.md#provider-neutrality).
 
 ---
 
-# 11. Provider neutrality
+## 11. Provider neutrality
 
 The grammar should not contain:
 
@@ -542,7 +543,7 @@ Deeper: [Reflection — The likely next architectural pressure](docs/REFLECTION.
 
 ---
 
-# 12. Grammar is not execution
+## 12. Grammar is not execution
 
 This distinction is fundamental.
 
@@ -570,7 +571,7 @@ Deeper: [Theory — Grammar is not execution](docs/THEORY.md#grammar-is-not-exec
 
 ---
 
-# 13. Independent protocols can meet at the grammar
+## 13. Independent protocols can meet at the grammar
 
 Imagine:
 
@@ -594,7 +595,7 @@ Deeper: [Examples — Combining independent protocols](docs/EXAMPLES.md#example-
 
 ---
 
-# 14. The Workshop stack
+## 14. The Workshop stack
 
 Within The Singularity Workshop:
 
@@ -634,7 +635,7 @@ A future composition layer can assemble those capabilities.
 
 ---
 
-# 15. Deprobabilization in one sentence
+## 15. Deprobabilization in one sentence
 
 **ProtocolAI reduces semantic ambiguity; GrammarAI reduces structural ambiguity.**
 
@@ -644,7 +645,7 @@ See **[GrammarAI Theory](docs/THEORY.md)** for the deeper argument and its limit
 
 ---
 
-# 16. Current alpha boundary
+## 16. Current alpha boundary
 
 **Current source version: `0.1.0-alpha.2`.**
 
@@ -676,7 +677,7 @@ Deeper: [Reflection](docs/REFLECTION.md).
 
 ---
 
-# 17. What happens when you consume it?
+## 17. What happens when you consume it?
 
 The intended flow is:
 
@@ -708,7 +709,7 @@ The final step deliberately belongs outside the core.
 
 ---
 
-# 18. Add GrammarAI to an existing project
+## 18. Add GrammarAI to an existing project
 
 Already have a .NET application? You do not need to replace it with a new architecture.
 
@@ -730,7 +731,7 @@ For the complete consuming guide, see [Consuming GrammarAI](docs/CONSUMING.md). 
 
 ---
 
-# 19. Try the repository example
+## 19. Try the repository example
 
 The repository contains an executable quickstart:
 
@@ -744,7 +745,7 @@ The goal is to make the structural boundary obvious before adding infrastructure
 
 ---
 
-# 20. Development
+## 20. Development
 
 ```bash
 dotnet restore TheSingularityWorkshop.GrammarAi.slnx
@@ -757,7 +758,7 @@ The public workflow restores, builds, tests with coverage, packs the NuGet artif
 
 ---
 
-# 21. Documentation map
+## 21. Documentation map
 
 The README is the **map**.
 
@@ -782,7 +783,7 @@ That gives a reader a high-level path without throwing away the detail needed by
 
 ---
 
-# 22. Architectural invariant
+## 22. Architectural invariant
 
 > **GrammarAI describes how protocol symbols may be connected without owning the symbols' meaning or the model that consumes the structure.**
 
