@@ -1,19 +1,12 @@
-name: Package GrammarAI
+name: Build, test, and package grammar-ai
 
 on:
   push:
     branches:
-      - "**"
-  pull_request:
-    branches:
       - master
+      - development
+  pull_request:
   workflow_dispatch:
-    inputs:
-      publish:
-        description: "Publish the verified package to NuGet.org"
-        required: true
-        default: false
-        type: boolean
 
 permissions:
   contents: read
@@ -71,11 +64,10 @@ jobs:
         with:
           name: grammar-ai-test-results
           path: ./TestResults/*
-
   publish_nuget:
     needs: build-and-test
     runs-on: ubuntu-24.04
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish == true && false }}
+    if: ${{ github.event_name == 'workflow_dispatch' && false }}
     permissions:
       contents: read
       id-token: write
