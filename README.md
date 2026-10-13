@@ -1,3 +1,5 @@
+![The Singularity Workshop animated moniker](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.Renderer/development/docs/assets/moniker.svg)
+
 # TheSingularityWorkshop.GrammarAi
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -5,6 +7,43 @@
 [![NuGet downloads](https://img.shields.io/nuget/dt/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
 [![Build](https://img.shields.io/github/actions/workflow/status/TrentBest/TheSingularityWorkshop.GrammarAi/build.yml?branch=master&style=flat-square&logo=github)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/build.yml)
 [![Code Coverage](https://img.shields.io/codecov/c/github/TrentBest/TheSingularityWorkshop.GrammarAi?style=flat-square)](https://codecov.io/gh/TrentBest/TheSingularityWorkshop.GrammarAi)
+
+
+> **The structure layer for self-defining, integer-backed AI protocols.**
+
+ProtocolAI gives application-owned identities an address; GrammarAI defines how those addresses can be connected through a grammar.
+
+```mermaid
+flowchart TD
+  P[ProtocolAI identities] --> T[Grammar terminals]
+  T --> G[Grammar rules]
+  G --> V[Structured language]
+  V --> H[Host-owned interpretation]
+```
+
+## 🟦 01 What
+
+ProtocolAI gives application-owned identities an address; GrammarAI defines how those addresses can be connected through a grammar.
+
+## 🟣 02 Why
+
+This boundary lets the Workshop compose the capability without confusing it with the host, user interface, external provider, or application authority. The implementation status and limits described in the detailed guide remain authoritative.
+
+## 🔺 03 How
+
+Define terminals and nonterminals, compose grammar rules, and validate structure without letting the grammar own identity, the model, or execution.
+
+## 🟢 04 See it in a minute
+
+Follow the quick-start section below, then build a small grammar and inspect its validation behavior. Grammar describes structure; it does not execute commands.
+
+## 🟪 05 Documentation and theory
+
+[If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Provider neutrality](#11-provider-neutrality)
+
+---
+
+## Detailed guide
 
 **The structure layer for self-defining, integer-backed AI protocols.**
 
