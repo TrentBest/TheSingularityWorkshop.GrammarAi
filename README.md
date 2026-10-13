@@ -27,7 +27,7 @@ ProtocolAI gives application-owned identities an address; GrammarAI defines how 
 
 ## 🟣 02 Why
 
-This boundary lets the Workshop compose the capability without confusing it with the host, user interface, external provider, or application authority. The implementation status and limits described in the detailed guide remain authoritative.
+Identity and structure are different concerns. GrammarAI lets independent protocols express valid relationships between symbols without copying their identities, choosing a model provider, or deciding what a host should execute.
 
 ## 🔺 03 How
 
