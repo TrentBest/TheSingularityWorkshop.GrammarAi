@@ -851,6 +851,9 @@ Everything else composes around it rather than blurring it.
 - **Consuming:** [docs/CONSUMING.md](docs/CONSUMING.md)
 - **Reflection:** [docs/REFLECTION.md](docs/REFLECTION.md)
 - **ProtocolAI:** https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi
+- **Verified host example:** [AnyApp WorkshopSemanticExchange.cs](https://github.com/TrentBest/AnyApp/blob/master/WorkshopSemanticExchange.cs)
+- **Host tests:** [AnyAppRuntimeTests.cs](https://github.com/TrentBest/AnyApp/blob/master/tests/TheSingularityWorkshop.AnyApp.Tests/AnyAppRuntimeTests.cs)
+- **Cross-repository usage map:** [ProtocolAi Across the Workshop](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi/blob/development/docs/ECOSYSTEM_USAGE_MAP.md)
 - **FSM_API:** https://www.nuget.org/packages/TheSingularityWorkshop.FSM_API
 - **MicroBundleDomain:** https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleDomain
 
