@@ -5,7 +5,7 @@
   </a>
 </p>
 
-# TheSingularityWorkshop.GrammarAi
+# ✳️ 00 TheSingularityWorkshop.GrammarAi
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![NuGet version](https://img.shields.io/nuget/v/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
