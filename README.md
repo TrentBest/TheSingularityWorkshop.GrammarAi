@@ -825,3 +825,15 @@ Everything else composes around it rather than blurring it.
   <em>The Singularity Workshop — Tools for the curious, the bold, and the systemically inclined.</em><br>
   <strong>Because state shouldn't be a mess.</strong>
 </p>
+
+
+## ProtocolAi integration in the Workshop
+
+GrammarAi references externally owned identities with `GrammarProtocolReference(protocolId, symbolId)`; ProtocolAi remains the owner of the vocabulary and GrammarAi remains the owner of structure.
+
+~~~csharp
+GrammarSymbol.Terminal(
+    new GrammarProtocolReference(IntentProtocolId, OpenForgeSymbolId))
+~~~
+
+See the [ProtocolAi ecosystem usage map](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi/blob/development/docs/ECOSYSTEM_USAGE_MAP.md#2-grammarai--implemented-protocol-reference-integration) and [AnyApp's concrete host vocabulary](https://github.com/TrentBest/AnyApp/blob/master/WorkshopSemanticExchange.cs). The reference seam does not, by itself, require GrammarAi to depend on the ProtocolAi implementation.
