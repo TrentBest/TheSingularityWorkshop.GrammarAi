@@ -26,7 +26,7 @@
     <None Remove="examples\**" />
     <None Include="README.md" Pack="true" PackagePath="" />
     <None Include="LICENSE.txt" Pack="true" PackagePath="" />
-    <None Update="docs\**\*.md" Pack="true" PackagePath="docs/%(RecursiveDir)%(Filename)%(Extension)" />
-    <None Update="docs\images\**\*" Pack="true" PackagePath="docs/images/%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Update="docs\**\*.md" Pack="true" PackagePath="%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Update="docs\images\**\*" Pack="true" PackagePath="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>
