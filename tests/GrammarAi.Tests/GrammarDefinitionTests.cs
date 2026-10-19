@@ -84,6 +84,6 @@ public sealed class GrammarDefinitionTests
             .Build();
 
         Assert.Empty(grammar.Rules[0].RightHandSide);
-        Assert.Equal("[3001] Optional start=[4001]\\n  rule [5001] [4001] -> ε", grammar.Describe());
+        Assert.Equal("[3001] Optional start=[4001]\n  rule [5001] [4001] -> ε", grammar.Describe());
     }
 }
