@@ -17,7 +17,6 @@
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Alpha 2: expanded progressive documentation and clarified the GrammarAI structural boundary.</PackageReleaseNotes>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="tests\**" />
