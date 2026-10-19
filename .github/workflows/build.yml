@@ -83,6 +83,22 @@ jobs:
             printf '%s\n' "$entries"
             exit 1
           fi
+      - name: Verify package in a clean consumer project
+        shell: bash
+        run: |
+          set -euo pipefail
+          package="$(find ./artifacts -maxdepth 1 -type f -name '*.nupkg' -print -quit)"
+          package_id="$(unzip -p "$package" '*.nuspec' | sed -n 's/.*<id>\([^<]*\)<\/id>.*/\1/p' | head -n 1)"
+          package_version="$(unzip -p "$package" '*.nuspec' | sed -n 's/.*<version>\([^<]*\)<\/version>.*/\1/p' | head -n 1)"
+          if [[ -z "$package_id" || -z "$package_version" ]]; then
+            echo "Could not read package ID/version from the generated NuGet package."
+            exit 1
+          fi
+          consumer_dir="$(mktemp -d)"
+          trap 'rm -rf "$consumer_dir"' EXIT
+          dotnet new console --framework net8.0 --output "$consumer_dir" --no-restore
+          dotnet add "$consumer_dir" package "$package_id" --version "$package_version" --source "$PWD/artifacts"
+          dotnet build "$consumer_dir" --configuration Release
       - name: Upload NuGet package artifact
         uses: actions/upload-artifact@v7
         with:
