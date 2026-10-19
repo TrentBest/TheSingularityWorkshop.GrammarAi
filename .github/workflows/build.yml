@@ -3,10 +3,12 @@ name: Package GrammarAI
 on:
   push:
     branches:
-      - "**"
+      - master
+      - development
   pull_request:
     branches:
       - master
+      - development
   workflow_dispatch:
     inputs:
       publish:
