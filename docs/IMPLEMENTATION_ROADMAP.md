@@ -62,6 +62,7 @@ Status discipline: checked means verified in source/tests or by reproducible com
 - [ ] Keep ownership clear when combining independent protocols.
 - [ ] Verify AnyApp/ecosystem examples against actual source and branch paths.
 - [ ] Maintain the [cross-repository usage map](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi/blob/development/docs/ECOSYSTEM_USAGE_MAP.md): distinguish direct consumers, composition examples, carrier boundaries, legacy copies, and candidates.
+- [ ] Keep the [FSM_UserIO domain definition and implementation roadmap](https://github.com/TrentBest/FSM_UserIO/blob/development/docs/IMPLEMENTATION_ROADMAP.md) aligned with GrammarAi's external-reference and host-boundary guarantees.
 - [ ] Avoid upward dependencies on FSM_COS, AnyApp, providers, or UI projects.
 
 ## 05 — Structural validation
