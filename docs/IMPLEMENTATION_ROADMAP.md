@@ -154,3 +154,4 @@ Status discipline: checked means verified in source/tests or by reproducible com
 | Date | Change | Evidence | Readiness |
 |---|---|---|---|
 | 2026-10-18 | Initial roadmap created after reviewing README, theory, and shared documentation standard. Full source/test/CI audit remains outstanding. | [README](../README.md) · [Theory](THEORY.md) · [Documentation Standard](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/master/DOCUMENTATION_STANDARD.md) | 35% |
+| 2026-10-19 | Audited grammar construction, immutable rule snapshots, protocol-qualified terminals, recursion behavior, theory claims, tests, project metadata, and CI. Fixed push/PR workflow triggers to target only `master` and `development`; build/test execution and package inspection remain outstanding. | [GrammarDefinition.cs](../GrammarDefinition.cs) · [Grammar tests](../tests/GrammarAi.Tests/GrammarDefinitionTests.cs) · [CI workflow](../.github/workflows/build.yml) | 38% |
