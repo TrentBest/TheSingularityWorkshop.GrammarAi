@@ -25,9 +25,9 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Setup .NET
-        uses: actions/setup-dotnet@v6
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6
         with:
           dotnet-version: 8.0.x
       - name: Restore
@@ -55,7 +55,7 @@ jobs:
           fi
           cp "$coverage_file" ./TestResults/coverage.cobertura.xml
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: TrentBest/TheSingularityWorkshop.GrammarAi
@@ -100,12 +100,12 @@ jobs:
           dotnet add "$consumer_dir" package "$package_id" --version "$package_version" --source "$PWD/artifacts"
           dotnet build "$consumer_dir" --configuration Release
       - name: Upload NuGet package artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: grammar-ai-nuget-package
           path: ./artifacts/*.nupkg
       - name: Upload test and coverage artifacts
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: grammar-ai-test-results
           path: ./TestResults/*
@@ -119,12 +119,12 @@ jobs:
       id-token: write
     steps:
       - name: Download NuGet package
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         with:
           name: grammar-ai-nuget-package
           path: ./artifacts
       - name: Authenticate with NuGet Trusted Publishing
-        uses: NuGet/login@v1
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
         id: login
         with:
           user: TheSingularityWorkshop
