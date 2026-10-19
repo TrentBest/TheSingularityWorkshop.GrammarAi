@@ -20,10 +20,10 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="tests\\**" />
-    <None Remove="tests\\**" />
-    <Compile Remove="examples\\**" />
-    <None Remove="examples\\**" />
+    <Compile Remove="tests\**" />
+    <None Remove="tests\**" />
+    <Compile Remove="examples\**" />
+    <None Remove="examples\**" />
     <None Include="README.md" Pack="true" PackagePath="" />
     <None Include="LICENSE.txt" Pack="true" PackagePath="" />
     <None Update="docs\**\*.md" Pack="true" PackagePath="docs/%(RecursiveDir)%(Filename)%(Extension)" />
