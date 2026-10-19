@@ -5,7 +5,7 @@ Purpose: living, evidence-based checklist for bringing implementation, tests, ex
 Status discipline: checked means verified in source/tests or by reproducible command. Design intention is not implementation evidence. Do not publish merely because a checklist section is complete.
 
 ## Release readiness
-- **Current readiness:** 38% — source-level audit has confirmed grammar construction and external-reference boundaries, consumer touchpoints, and CI behavior. Fixed platform-dependent newline output in deterministic grammar descriptions; workflow run 58 passed. Full public-contract coverage, package inspection, and clean-consumer verification remain outstanding.
+- **Current readiness:** 65% — CI passed build, tests, coverage, pack, documentation-path verification, clean-consumer installation, and artifact upload. The packed alpha package was inspected: five Markdown guides and the grammar money-shot SVG are included under `docs/` without duplicated path prefixes, alongside README, license, assembly, and XML documentation. Deterministic grammar descriptions use explicit newline characters. Remaining work includes full public-contract coverage, validation-policy decisions, and final documentation/version consistency review.
 - **Release-ready means:** coherent structural contract, tested validation, buildable examples, source-aligned docs, verified CI/package metadata, and explicit limitations.
 - Publication authorization is separate from readiness.
 
