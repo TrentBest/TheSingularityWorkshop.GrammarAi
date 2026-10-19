@@ -52,7 +52,7 @@ public sealed class GrammarDefinition
 
         foreach (var rule in _rules)
         {
-            builder.AppendLine();
+            builder.Append('\n');
             builder.Append("  rule [").Append(rule.Id).Append("] [")
                 .Append(rule.LeftHandSide).Append("] -> ");
 
