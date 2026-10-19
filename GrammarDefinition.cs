@@ -36,14 +36,22 @@ public sealed class GrammarDefinition
         _rules = Array.AsReadOnly(values);
     }
 
+    /// <summary>Gets the grammar's nonzero identity.</summary>
     public ulong Id { get; }
+
+    /// <summary>Gets the grammar's human-readable name.</summary>
     public string Name { get; }
+
+    /// <summary>Gets the nonzero identity of the start nonterminal.</summary>
     public ulong StartSymbol { get; }
+
+    /// <summary>Gets the immutable ordered production rules in declaration order.</summary>
     public IReadOnlyList<GrammarRule> Rules => _rules;
 
     /// <summary>
     /// Emits a deterministic representation suitable for inclusion in an AI-facing protocol description.
     /// </summary>
+    /// <returns>A stable text representation of this grammar.</returns>
     public string Describe()
     {
         var builder = new StringBuilder();
@@ -81,5 +89,7 @@ public sealed class GrammarDefinition
         return builder.ToString();
     }
 
+    /// <summary>Returns the deterministic representation produced by <see cref="Describe"/>.</summary>
+    /// <returns>The grammar description.</returns>
     public override string ToString() => Describe();
 }
