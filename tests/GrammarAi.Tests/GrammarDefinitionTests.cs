@@ -68,4 +68,22 @@ public sealed class GrammarDefinitionTests
 
         Assert.Equal("[3001] Greeting start=[4001]\n  rule [5001] [4001] -> [1001:2001]", grammar.Describe());
     }
+    [Fact]
+    public void Default_uninitialized_symbol_is_rejected_in_a_production()
+    {
+        Assert.Throws<ArgumentException>(() => new GrammarBuilder(3001, "Broken", 4001)
+            .Rule(5001, 4001, default(GrammarSymbol))
+            .Build());
+    }
+
+    [Fact]
+    public void Empty_production_is_explicit_epsilon()
+    {
+        var grammar = new GrammarBuilder(3001, "Optional", 4001)
+            .Rule(5001, 4001)
+            .Build();
+
+        Assert.Empty(grammar.Rules[0].RightHandSide);
+        Assert.Equal("[3001] Optional start=[4001]\\n  rule [5001] [4001] -> ε", grammar.Describe());
+    }
 }
