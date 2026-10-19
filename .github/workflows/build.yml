@@ -63,6 +63,57 @@ jobs:
           fail_ci_if_error: true
       - name: Pack
         run: dotnet pack TheSingularityWorkshop.GrammarAi.csproj --configuration Release --no-build --output ./artifacts
+      - name: Verify packaged documentation paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          package="$(find ./artifacts -maxdepth 1 -type f -name '*.nupkg' -print -quit)"
+          if [[ -z "$package" ]]; then
+            echo "No NuGet package was produced."
+            exit 1
+          fi
+          entries="$(unzip -Z1 "$package")"
+          if ! grep -Eq '^docs/.+\\.md        uses: actions/upload-artifact@v7
+        with:
+          name: grammar-ai-nuget-package
+          path: ./artifacts/*.nupkg
+      - name: Upload test and coverage artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: grammar-ai-test-results
+          path: ./TestResults/*
+
+  publish_nuget:
+    needs: build-and-test
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish == true && github.ref == 'refs/heads/development' }}
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download NuGet package
+        uses: actions/download-artifact@v8
+        with:
+          name: grammar-ai-nuget-package
+          path: ./artifacts
+      - name: Authenticate with NuGet Trusted Publishing
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: TheSingularityWorkshop
+      - name: Publish package to NuGet.org
+        run: dotnet nuget push "./artifacts/*.nupkg" --source "https://api.nuget.org/v3/index.json" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --skip-duplicate
+ <<< "$entries"; then
+            echo "Expected Markdown guides under docs/ in the NuGet package."
+            printf '%s\\n' "$entries"
+            exit 1
+          fi
+          if grep -q '^docs/images/docs/images/' <<< "$entries"; then
+            echo "Documentation images have a duplicated docs/images path."
+            printf '%s\\n' "$entries"
+            exit 1
+          fi
+
       - name: Upload NuGet package artifact
         uses: actions/upload-artifact@v7
         with:
