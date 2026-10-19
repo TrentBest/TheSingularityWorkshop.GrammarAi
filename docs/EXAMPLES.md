@@ -6,17 +6,17 @@ These examples demonstrate the intended consumption pattern: **reference an exte
 
 Assume another system owns:
 
-`text
+```text
 [1001] People
 [2001] Bob
-`
+```
 
 GrammarAI can reference Bob:
 
-`csharp
+```csharp
 var bob = GrammarSymbol.Terminal(
     new GrammarProtocolReference(1001, 2001));
-`
+```
 
 The grammar now has a terminal whose meaning belongs to protocol 1001.
 
@@ -24,7 +24,7 @@ The grammar now has a terminal whose meaning belongs to protocol 1001.
 
 A grammar can allow different protocol symbols in the same structural position:
 
-`csharp
+```csharp
 var grammar = new GrammarBuilder(
         3001,
         "Greeting",
@@ -40,17 +40,17 @@ var grammar = new GrammarBuilder(
         GrammarSymbol.Terminal(
             new GrammarProtocolReference(1001, 2002)))
     .Build();
-`
+```
 
 The structure is:
 
-`text
+```text
 [4001]
   |
   +--> [1001:2001]
   |
   +--> [1001:2002]
-`
+```
 
 The grammar owns the alternatives.
 
@@ -60,7 +60,7 @@ ProtocolAI owns the meaning of each terminal.
 
 Nonterminals let the grammar build relationships:
 
-`csharp
+```csharp
 var grammar = new GrammarBuilder(
         3001,
         "WorkshopAction",
@@ -75,11 +75,11 @@ var grammar = new GrammarBuilder(
         GrammarSymbol.Terminal(
             new GrammarProtocolReference(7100, 7101)))
     .Build();
-`
+```
 
 Conceptually:
 
-`text
+```text
 [4001] WorkshopAction
    |
    v
@@ -87,7 +87,7 @@ Conceptually:
    |
    v
 [7100:7101]
-`
+```
 
 This is a structural relationship, not an execution instruction.
 
@@ -95,7 +95,7 @@ This is a structural relationship, not an execution instruction.
 
 Imagine:
 
-`text
+```text
 Protocol A
 [7100] Commands
 [7101] move
@@ -103,11 +103,11 @@ Protocol A
 Protocol B
 [7200] Objects
 [7201] forge
-`
+```
 
 A grammar can reference both:
 
-`csharp
+```csharp
 var grammar = new GrammarBuilder(
         7300,
         "MoveCommand",
@@ -123,7 +123,7 @@ var grammar = new GrammarBuilder(
         GrammarSymbol.Terminal(
             new GrammarProtocolReference(7200, 7201)))
     .Build();
-`
+```
 
 The resulting artifact can describe relationships between independently owned vocabularies.
 
@@ -131,17 +131,17 @@ The current alpha does not define the semantics of combining those rules into an
 
 ## Example 5 — Self-description
 
-`csharp
+```csharp
 Console.WriteLine(grammar.Describe());
-`
+```
 
 Example:
 
-`text
+```text
 [7300] MoveCommand start=[7400]
   rule [7501] [7400] -> [7100:7101]
   rule [7502] [7400] -> [7200:7201]
-`
+```
 
 The grammar is therefore inspectable as data.
 
@@ -149,7 +149,7 @@ The grammar is therefore inspectable as data.
 
 The two packages can be understood together:
 
-`text
+```text
                  DOMAIN
                    |
                    v
@@ -173,7 +173,7 @@ The two packages can be understood together:
                   |
                   v
                 model
-`
+```
 
 This is the central consumption story.
 
@@ -181,19 +181,19 @@ This is the central consumption story.
 
 The grammar should remain independent of whichever model host eventually consumes it:
 
-`text
+```text
                     GrammarAI
                         |
                         v
                  abstract grammar
-                  /      |      \
-                 /       |       \
+                  /      |      \\
+                 /       |       \\
                 v        v        v
            provider A  provider B  validator
-                \       |       /
-                 \      |      /
+                \\       |       /
+                 \\      |      /
                     host
-`
+```
 
 A future adapter can translate the abstract grammar into a concrete provider representation.
 
