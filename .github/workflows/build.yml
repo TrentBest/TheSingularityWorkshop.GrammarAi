@@ -73,16 +73,6 @@ jobs:
             exit 1
           fi
           entries="$(unzip -Z1 "$package")"
-      - name: Verify packaged documentation paths
-        shell: bash
-        run: |
-          set -euo pipefail
-          package="$(find ./artifacts -maxdepth 1 -type f -name '*.nupkg' -print -quit)"
-          if [[ -z "$package" ]]; then
-            echo "No NuGet package was produced."
-            exit 1
-          fi
-          entries="$(unzip -Z1 "$package")"
           if ! grep -Eq '^docs/.+\.md$' <<< "$entries"; then
             echo "Expected Markdown guides under docs/ in the NuGet package."
             printf '%s\n' "$entries"
