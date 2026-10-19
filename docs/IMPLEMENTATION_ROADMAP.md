@@ -61,6 +61,7 @@ Status discipline: checked means verified in source/tests or by reproducible com
 - [ ] Test malformed, duplicate, and cross-protocol references.
 - [ ] Keep ownership clear when combining independent protocols.
 - [ ] Verify AnyApp/ecosystem examples against actual source and branch paths.
+- [ ] Maintain the [cross-repository usage map](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi/blob/development/docs/ECOSYSTEM_USAGE_MAP.md): distinguish direct consumers, composition examples, carrier boundaries, legacy copies, and candidates.
 - [ ] Avoid upward dependencies on FSM_COS, AnyApp, providers, or UI projects.
 
 ## 05 — Structural validation
@@ -155,3 +156,4 @@ Status discipline: checked means verified in source/tests or by reproducible com
 |---|---|---|---|
 | 2026-10-18 | Initial roadmap created after reviewing README, theory, and shared documentation standard. Full source/test/CI audit remains outstanding. | [README](../README.md) · [Theory](THEORY.md) · [Documentation Standard](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/master/DOCUMENTATION_STANDARD.md) | 35% |
 | 2026-10-19 | Audited grammar construction, immutable rule snapshots, protocol-qualified terminals, recursion behavior, theory claims, tests, project metadata, and CI. Fixed push/PR workflow triggers to target only `master` and `development`; build/test execution and package inspection remain outstanding. | [GrammarDefinition.cs](../GrammarDefinition.cs) · [Grammar tests](../tests/GrammarAi.Tests/GrammarDefinitionTests.cs) · [CI workflow](../.github/workflows/build.yml) | 38% |
+| 2026-10-19 | Cross-repository search confirmed AnyApp direct use, WebPage composition-level use, FSM_UserIO/FSM_COS carrier boundaries, and a separate legacy implementation in The. Added a prioritized candidate map without treating candidates as existing dependencies. | [ProtocolAi ecosystem usage map](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi/blob/development/docs/ECOSYSTEM_USAGE_MAP.md) | 38% |
