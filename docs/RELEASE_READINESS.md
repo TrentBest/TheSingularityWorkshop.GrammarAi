@@ -12,7 +12,7 @@ GrammarAI is the structural layer: it composes integer-backed grammar rules and 
 
 ## Latest verified candidate — 2026-10-22 UTC
 
-Candidate `development` commit: `91de4d93825c9323edc9085cfcaee967ddb75381`. [Workflow run #39716994290](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39716994290) passed for this exact commit, including restore, Release build, tests/coverage, package creation, documentation-path verification, and clean consumer smoke test. NuGet publication was skipped and remains hard-disabled. The AI Exchange document and SVG are explicitly labelled as design direction, separate from the implemented grammar-definition API. This status update is documentation-only and its resulting commit must also pass CI.
+Candidate `development` commit: `7d7a4d23f3eaa3e8d1e4f9ad77e5de5365a9d3d5`. [Workflow run #39717324750](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39717324750) passed for this exact commit, including restore, Release build, tests/coverage, package creation, packaged documentation-path verification, and a clean consumer smoke test. NuGet publication was skipped and remains hard-disabled. The AI Exchange document and SVG are explicitly labelled as design direction, separate from the implemented grammar-definition API. This readiness-document correction must itself pass CI before its new head is treated as verified.
 
 ## Verified foundation
 
