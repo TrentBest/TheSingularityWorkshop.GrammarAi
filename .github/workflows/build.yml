@@ -113,7 +113,8 @@ jobs:
   publish_nuget:
     needs: build-and-test
     runs-on: ubuntu-24.04
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish == true && github.ref == 'refs/heads/development' }}
+    # Publication remains deliberately disabled until Trent explicitly authorizes a release.
+    if: ${{ false }}
     permissions:
       contents: read
       id-token: write
