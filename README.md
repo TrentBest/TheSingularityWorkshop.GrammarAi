@@ -39,7 +39,7 @@ Follow the quick-start section below, then build a small grammar and inspect its
 
 ## 🟪 05 Documentation and theory
 
-[If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Provider neutrality](#11-provider-neutrality)
+[Gallery](docs/GALLERY.md) · [AI Exchange boundary](docs/AI_EXCHANGE.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Provider neutrality](#11-provider-neutrality)
 
 ---
 
@@ -809,6 +809,7 @@ The linked documents are the **rooms**.
 |---|---|
 | Install and consume | [CONSUMING.md](docs/CONSUMING.md) |
 | Visual tour and evidence links | [GALLERY.md](docs/GALLERY.md) |
+| AI exchange architecture and current implementation limits | [AI_EXCHANGE.md](docs/AI_EXCHANGE.md) |
 | Concrete patterns | [EXAMPLES.md](docs/EXAMPLES.md) |
 | Architectural reasoning | [THEORY.md](docs/THEORY.md) |
 | Current limits and open questions | [REFLECTION.md](docs/REFLECTION.md) |
