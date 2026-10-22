@@ -17,12 +17,6 @@ GrammarAi's visual explains the boundary between protocol-owned vocabulary and g
 
 The diagram shows protocol terminals, grammar rules, and the host-side consumer. GrammarAi owns production structure; it does not own external vocabularies, call a model, or execute the resulting content.
 
-### Exchange composition (design direction)
-
-![GrammarAi AI Exchange boundary — design illustration, not a shipped exchange API](images/ai-exchange-stack.svg)
-
-This is a conceptual view preserved from the exchange-foundation work. Provider adapters, response parsing, and the exchange orchestration are not implemented by GrammarAi itself.
-
 ## See actual behavior
 
 From the repository root:
