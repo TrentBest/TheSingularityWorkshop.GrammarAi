@@ -45,7 +45,7 @@ Follow the quick-start section below, then build a small grammar and inspect its
 
 ## 🟪 05 Documentation and theory
 
-[Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [AI Exchange boundary](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/AI_EXCHANGE.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Provider neutrality](#11-provider-neutrality)
+[Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
 
 ---
 
@@ -132,7 +132,7 @@ It produces a self-description such as:
 | Install and use GrammarAI | [Consuming GrammarAI](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | See concrete patterns | [Examples](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
 | Understand why the boundary exists | [Theory](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
-| Understand what is intentionally unresolved | [Reflection](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md) |
+| See the concepts visually | [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
 
 ---
 
@@ -214,7 +214,7 @@ GrammarAI
 
 Those concerns belong downstream.
 
-Deeper: [Reflection — What is deliberately not decided](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md#what-is-deliberately-not-decided).
+For consumer boundaries, see [Consuming GrammarAI](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md).
 
 ---
 
@@ -571,7 +571,7 @@ Instead:
 
 The provider-specific representation belongs downstream.
 
-Deeper: [Reflection — The likely next architectural pressure](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md#the-likely-next-architectural-pressure).
+
 
 ---
 
@@ -705,7 +705,7 @@ It does **not** establish:
 
 Those are future composition questions.
 
-Deeper: [Reflection](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md).
+
 
 ---
 
@@ -807,7 +807,7 @@ The public workflow restores, builds, tests with coverage, packs the NuGet artif
 
 # 21. Documentation map
 
-- **Want a concise release review?** Start with the [Release Review Brief](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/RELEASE_REVIEW_BRIEF.md) for the WHAT/HOW/host boundary, implementation limits, and remaining release gates.
+- **Want to use GrammarAi?** Start with the [Consuming Guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) for installation, grammar definition, validation, and inspection.
 
 The README is the **map**.
 
@@ -817,10 +817,10 @@ The linked documents are the **rooms**.
 |---|---|
 | Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Visual tour and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
-| AI exchange architecture and current implementation limits | [AI_EXCHANGE.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/AI_EXCHANGE.md) |
+| Visual overview | [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
 | Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
 | Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
-| Current limits and open questions | [REFLECTION.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md) |
+| Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Package | [NuGet](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi) |
 | Source | [GitHub](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi) |
 
@@ -859,7 +859,7 @@ Everything else composes around it rather than blurring it.
 - **Theory:** [docs/THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md)
 - **Examples:** [docs/EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md)
 - **Consuming:** [docs/CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
-- **Reflection:** [docs/REFLECTION.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md)
+
 - **ProtocolAI:** https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi
 - **Verified host example:** [AnyApp WorkshopSemanticExchange.cs](https://github.com/TrentBest/AnyApp/blob/master/WorkshopSemanticExchange.cs)
 - **Host tests:** [AnyAppRuntimeTests.cs](https://github.com/TrentBest/AnyApp/blob/master/tests/TheSingularityWorkshop.AnyApp.Tests/AnyAppRuntimeTests.cs)
