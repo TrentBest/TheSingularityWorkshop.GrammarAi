@@ -391,6 +391,54 @@ It is a set of explicit boundaries around one.
 
 ---
 
+## Reading a production: alternatives are not sequences
+
+A production has a left-hand nonterminal and an ordered right-hand sequence:
+
+```text
+[4001] -> [1001:2001] [1002:3001]
+```
+
+Read this as: when the grammar expands nonterminal `[4001]` using this rule, the resulting structure contains the terminal from protocol `1001` with symbol ID `2001`, followed by the terminal from protocol `1002` with symbol ID `3001`.
+
+The order is part of the structure. Reversing those two symbols describes a different sequence.
+
+Two productions with the same left-hand side describe alternatives:
+
+```text
+[4001] -> [1001:2001]
+[4001] -> [1001:2002]
+```
+
+This means the grammar offers two ways to expand `[4001]`; it does not mean both right-hand sides are concatenated. That distinction matters when a person is reading a grammar, when a host builds a validator, or when an adapter translates the definition for another system.
+
+An empty right-hand side represents **epsilon**: the rule produces an empty sequence. It is not the same as a missing rule. A missing production leaves a nonterminal undefined in the grammar; epsilon is an explicit production whose result is empty.
+
+## The exact boundary of structural validation
+
+Building a GrammarAI definition checks a finite set of internal invariants:
+
+- the grammar, start symbol, rule IDs, left-hand nonterminals, and symbol IDs use nonzero identities;
+- rule IDs are unique within the definition;
+- the start symbol appears as the left-hand side of a production;
+- every nonterminal referenced on a rule's right-hand side has at least one production;
+- the built definition exposes an immutable snapshot of its ordered rules.
+
+The boundary is just as important as the checks. GrammarAI does **not** load external protocol definitions while building a grammar. A terminal reference records the owning protocol ID and symbol ID; it does not prove that the referenced protocol or symbol exists, that the symbol is suitable for the current task, or that two separately authored artifacts agree about its meaning. A host must resolve and link those references against the vocabulary it intends to use.
+
+Structural validation also does not parse arbitrary text or prove that a model response conforms to the grammar. A grammar definition is the structure to inspect, translate, or use as input to a separate validator or provider adapter. Those downstream mechanisms are not supplied by the current GrammarAI core.
+
+Keep these four questions distinct:
+
+| Question | Responsible boundary |
+|---|---|
+| Is the grammar internally well-formed? | GrammarAI's structural construction checks |
+| Do its terminal references resolve in the intended protocol definitions? | Host-side linking/resolution |
+| Does a candidate response conform to the grammar? | A parser or validator that actually checks the response |
+| Is the resulting meaning authorized and safe to act on? | Host policy and application logic |
+
+Passing one question does not imply passing the next. In particular, structural validity is not semantic truth, and semantic resolution is not authorization.
+
 ## What GrammarAI can make deterministic
 
 GrammarAI can make the following deterministic when the host uses it:
