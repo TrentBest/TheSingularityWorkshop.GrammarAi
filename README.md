@@ -27,15 +27,13 @@ flowchart TD
   V --> H[Host-owned interpretation]
 ```
 
-## 🟣 01 Why
-
+## 🟣 01 — Why
 
 Identity and structure are different concerns. GrammarAI lets independent protocols express valid relationships between symbols without copying their identities, choosing a model provider, or deciding what a host should execute.
 
 **Explore the Workshop:** [Find packages on NuGet](https://www.nuget.org/packages?q=TheSingularityWorkshop) · [Browse the repository guide](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/development/docs/WORKSHOP_REPOSITORIES.md)
 
-## 🟦 02 What
-
+## 🟦 02 — What
 
 ProtocolAI gives application-owned identities an address; GrammarAI defines how those addresses can be connected through a grammar.
 
