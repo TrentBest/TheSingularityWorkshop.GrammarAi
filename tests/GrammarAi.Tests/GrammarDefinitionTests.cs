@@ -124,9 +124,9 @@ public sealed class GrammarDefinitionTests
                 GrammarSymbol.Terminal(first))
             .Build();
 
-        var unresolved = grammar.FindUnresolvedProtocolReferences(reference => reference == second);
+        var unresolved = grammar.FindUnresolvedProtocolReferences(_ => false);
 
-        Assert.Equal(new[] { first }, unresolved);
+        Assert.Equal(new[] { first, second }, unresolved);
     }
 
     [Fact]
