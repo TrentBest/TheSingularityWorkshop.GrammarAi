@@ -112,4 +112,42 @@ public sealed class GrammarDefinitionTests
         Assert.Throws<ArgumentException>(() => builder.Build());
     }
 
+    [Fact]
+    public void Unresolved_protocol_references_are_distinct_and_keep_first_use_order()
+    {
+        var first = new GrammarProtocolReference(1001, 2001);
+        var second = new GrammarProtocolReference(1002, 3001);
+        var grammar = new GrammarBuilder(3001, "Linked", 4001)
+            .Rule(5001, 4001,
+                GrammarSymbol.Terminal(first),
+                GrammarSymbol.Terminal(second),
+                GrammarSymbol.Terminal(first))
+            .Build();
+
+        var unresolved = grammar.FindUnresolvedProtocolReferences(reference => reference == second);
+
+        Assert.Equal(new[] { first }, unresolved);
+    }
+
+    [Fact]
+    public void All_resolved_protocol_references_produce_no_unresolved_items()
+    {
+        var grammar = new GrammarBuilder(3001, "Linked", 4001)
+            .Rule(5001, 4001,
+                GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2001)))
+            .Build();
+
+        Assert.Empty(grammar.FindUnresolvedProtocolReferences(_ => true));
+    }
+
+    [Fact]
+    public void Protocol_link_check_requires_a_resolver()
+    {
+        var grammar = new GrammarBuilder(3001, "Linked", 4001)
+            .Rule(5001, 4001,
+                GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2001)))
+            .Build();
+
+        Assert.Throws<ArgumentNullException>(() => grammar.FindUnresolvedProtocolReferences(null!));
+    }
 }
