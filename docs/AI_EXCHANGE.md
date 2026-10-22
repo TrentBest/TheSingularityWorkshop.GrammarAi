@@ -25,7 +25,9 @@ AI Exchange
 LLM / human interaction
 ```
 
-GrammarAI can participate in a host-managed exchange without becoming an LLM client; this repository does not currently implement that exchange orchestration.
+![GrammarAI AI Exchange boundary — design illustration, not a shipped exchange API](images/ai-exchange-stack.svg)
+
+The image is retained from the exchange-foundation work and now explicitly labels the provider/host exchange as design direction. GrammarAI can participate in a host-managed exchange without becoming an LLM client; this repository does not currently implement that exchange orchestration.
 
 ---
 
