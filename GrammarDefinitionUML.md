@@ -16,9 +16,9 @@ classDiagram
     direction TB
     class GrammarConsumer {
       <<host or adapter>>
-      inspect definition
-      link external references
-      validate candidate separately
+      +Inspect(definition)
+      +LinkReferences(definition)
+      +ValidateCandidate(candidate, definition)
     }
     class GrammarBuilder {
       +Build() GrammarDefinition
