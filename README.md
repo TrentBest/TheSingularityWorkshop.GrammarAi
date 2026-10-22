@@ -808,6 +808,7 @@ The linked documents are the **rooms**.
 | Need | Go here |
 |---|---|
 | Install and consume | [CONSUMING.md](docs/CONSUMING.md) |
+| Visual tour and evidence links | [GALLERY.md](docs/GALLERY.md) |
 | Concrete patterns | [EXAMPLES.md](docs/EXAMPLES.md) |
 | Architectural reasoning | [THEORY.md](docs/THEORY.md) |
 | Current limits and open questions | [REFLECTION.md](docs/REFLECTION.md) |
