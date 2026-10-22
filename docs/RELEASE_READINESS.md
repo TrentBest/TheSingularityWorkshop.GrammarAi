@@ -1,5 +1,9 @@
 # GrammarAI Release Readiness
 
+## Branch reconciliation
+
+See [BRANCH_RECONCILIATION.md](BRANCH_RECONCILIATION.md) for the evidence-backed `master`/`development` and feature-branch preservation checklist. It is an audit record, not permission to merge, close PRs, or delete branches.
+
 ## Current package status
 
 The project on `development` declares **`0.1.0-alpha.2`** and targets **.NET 8 (`net8.0`)**. This checklist tracks evidence for a future package release; it does not authorize publication or change the package version.
