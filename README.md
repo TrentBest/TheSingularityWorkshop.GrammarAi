@@ -807,6 +807,8 @@ The public workflow restores, builds, tests with coverage, packs the NuGet artif
 
 # 21. Documentation map
 
+- **Want a concise release review?** Start with the [Release Review Brief](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/RELEASE_REVIEW_BRIEF.md) for the WHAT/HOW/host boundary, implementation limits, and remaining release gates.
+
 The README is the **map**.
 
 The linked documents are the **rooms**.
