@@ -58,3 +58,7 @@ Read [Examples](EXAMPLES.md), [Consuming GrammarAi](CONSUMING.md), [Theory](THEO
 </p>
 
 <p align="center"><em>The Singularity Workshop — Tools for the curious, the bold, and the systemically inclined.</em><br><strong>Because state shouldn't be a mess.</strong><br><em>And because static boundaries are invitations to cause trouble.</em></p>
+
+## Phone-first release review
+
+For a concise, evidence-oriented walkthrough, start with the [Release Review Brief](RELEASE_REVIEW_BRIEF.md). It summarizes the implemented contract, the boundary this package owns, the highest-value remaining review items, and the release decision path. Then use the detailed guides to inspect behavior and evidence.
