@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+<title id="title">GrammarAi: give meaning a language</title>
+<desc id="desc">An explanatory architecture diagram showing ProtocolAi vocabulary identities connected by GrammarAi production rules, with the host retaining interpretation and execution authority.</desc>
 <defs>
 <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#080d1a"/><stop offset="1" stop-color="#17112b"/></linearGradient>
 <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#67e8f9"/></linearGradient>
