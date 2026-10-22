@@ -17,6 +17,29 @@ GrammarAi's visual explains the boundary between protocol-owned vocabulary and g
 
 The diagram shows protocol terminals, grammar rules, and the host-side consumer. GrammarAi owns production structure; it does not own external vocabularies, call a model, or execute the resulting content.
 
+## Learn the grammar step by step
+
+![Animated explanation of start symbols, alternative productions, ordered symbol sequences, and the boundary between structural validation and host responsibility](images/grammar-derivation.svg)
+
+This animation separates three ideas that are easy to confuse:
+
+1. **Start symbol:** the grammar's entry point is a nonterminal owned by the grammar.
+2. **Alternative rules vs. sequence:** multiple productions for the same left-hand side offer alternatives; the symbols on one rule's right-hand side form an ordered sequence.
+3. **Structural validity vs. linked meaning:** building a grammar checks its internal shape. It does not load the referenced ProtocolAI definitions, prove that a chosen symbol is meaningful in the current application, parse arbitrary model output, or authorize an action.
+
+The visual is an authored teaching aid. Its motion explains the concepts; it is not a live trace of the library executing. The executable example and tests remain the way to inspect real behavior.
+
+### The contract in one glance
+
+| GrammarAI checks when building | The host or another layer must still decide |
+|---|---|
+| Grammar, start-symbol, rule, and symbol identifiers are nonzero | Whether referenced protocol and symbol identities exist in the intended vocabulary |
+| Rule IDs are unique within the grammar | Whether the grammar expresses the application's intended meaning |
+| The start symbol has a production | Whether a model response conforms to the grammar |
+| Every referenced nonterminal has a production | Whether a result is authorized, safe, or appropriate to execute |
+
+A structurally valid grammar is a useful artifact, not a certificate of semantic truth or permission to act.
+
 ## See actual behavior
 
 From the repository root:
