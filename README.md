@@ -35,7 +35,7 @@ Identity and structure are different concerns. GrammarAI lets independent protoc
 
 ## 🟦 02 — What
 
-ProtocolAI gives application-owned identities an address; GrammarAI defines how those addresses can be connected through a grammar.
+GrammarAI is a small structural .NET library for integer-backed grammar definitions. It owns grammar identity, the start symbol, nonterminals, and ordered productions. Terminal symbols reference protocol-owned identities; GrammarAI validates its own structure without loading external protocol definitions or executing the resulting content.
 
 ## 🔺 03 How
 
