@@ -150,4 +150,28 @@ public sealed class GrammarDefinitionTests
 
         Assert.Throws<ArgumentNullException>(() => grammar.FindUnresolvedProtocolReferences(null!));
     }
+    [Fact]
+    public void Protocol_link_resolver_is_called_once_per_distinct_reference_in_first_use_order()
+    {
+        var first = new GrammarProtocolReference(1001, 2001);
+        var second = new GrammarProtocolReference(1002, 3001);
+        var grammar = new GrammarBuilder(3001, "Linked", 4001)
+            .Rule(5001, 4001,
+                GrammarSymbol.Terminal(first),
+                GrammarSymbol.Terminal(second),
+                GrammarSymbol.Terminal(first))
+            .Build();
+        var calls = new List<GrammarProtocolReference>();
+
+        var unresolved = grammar.FindUnresolvedProtocolReferences(reference =>
+        {
+            calls.Add(reference);
+            return false;
+        });
+
+        Assert.Equal(new[] { first, second }, calls);
+        Assert.Equal(new[] { first, second }, unresolved);
+    }
+
+
 }
