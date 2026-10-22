@@ -54,6 +54,39 @@ public sealed class GrammarDefinition
     public IReadOnlyList<GrammarRule> Rules => _rules;
 
     /// <summary>
+    /// Finds distinct protocol-terminal references the host's resolver cannot resolve.
+    /// </summary>
+    /// <param name="isResolved">
+    /// Host-supplied lookup that returns true when a protocol and symbol identity are known.
+    /// </param>
+    /// <returns>Unresolved references in first-use order, without duplicates.</returns>
+    /// <remarks>
+    /// GrammarAI does not load protocol definitions or depend on ProtocolAI. The host supplies
+    /// the lookup so it can use its own registry or protocol implementation. This checks identity
+    /// existence only; it does not establish semantic compatibility between grammar and protocol versions.
+    /// </remarks>
+    /// <exception cref="ArgumentNullException"><paramref name="isResolved"/> is null.</exception>
+    public IReadOnlyList<GrammarProtocolReference> FindUnresolvedProtocolReferences(
+        Func<GrammarProtocolReference, bool> isResolved)
+    {
+        ArgumentNullException.ThrowIfNull(isResolved);
+
+        var unresolved = new List<GrammarProtocolReference>();
+        var seen = new HashSet<GrammarProtocolReference>();
+
+        foreach (var symbol in _rules.SelectMany(rule => rule.RightHandSide))
+        {
+            if (symbol.ProtocolReference is not { } reference || !seen.Add(reference))
+                continue;
+
+            if (!isResolved(reference))
+                unresolved.Add(reference);
+        }
+
+        return unresolved.AsReadOnly();
+    }
+
+    /// <summary>
     /// Emits a deterministic representation suitable for inclusion in an AI-facing protocol description.
     /// </summary>
     /// <returns>A stable text representation of this grammar.</returns>

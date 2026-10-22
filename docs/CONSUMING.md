@@ -103,7 +103,27 @@ var bob = GrammarSymbol.Terminal(
 
 The grammar references Bob; it does not redefine Bob.
 
-## 5. Inspect the grammar
+## 5. Check external protocol links
+
+Building a grammar validates its internal structure, but it cannot tell whether an external protocol registry actually contains every referenced terminal. The host owns that registry, so pass a lookup into `FindUnresolvedProtocolReferences`:
+
+```csharp
+var unresolved = grammar.FindUnresolvedProtocolReferences(reference =>
+    protocolRegistry.ContainsSymbol(reference.ProtocolId, reference.SymbolId));
+
+if (unresolved.Count > 0)
+{
+    // Report missing protocol/symbol identities before using the grammar.
+}
+```
+
+Here, `protocolRegistry.ContainsSymbol` represents your own lookup API; it is not a GrammarAI method.
+
+The result contains each unresolved `GrammarProtocolReference` once, in first-use order. If the host can resolve every reference, the result is empty. A resolver exception is allowed to propagate so the host can handle registry failures according to its own policy.
+
+This is an identity-link check, not a protocol-version compatibility check, semantic validation, grammar compiler, or generated-output validator. GrammarAI stays independent of ProtocolAI and does not load protocol definitions itself.
+
+## 6. Inspect the grammar
 
 Grammar definitions are self-describing:
 
@@ -121,7 +141,7 @@ Example output:
 
 This is useful for diagnostics, documentation, tests, and future translation layers.
 
-## 6. Build a nested structure
+## 7. Build a nested structure
 
 A grammar can connect nonterminals as well as protocol terminals:
 
@@ -151,7 +171,7 @@ Conceptually:
 
 The grammar defines the relationship. The protocol still owns the terminal.
 
-## 7. Where GrammarAI fits
+## 8. Where GrammarAI fits
 
 ```text
 domain meaning
@@ -172,9 +192,9 @@ model and host validation
 execution
 ```
 
-The current alpha provides the vocabulary-reference and grammar representations. The adapter, model integration, validation policy, and execution layers remain outside this package.
+The current alpha provides the vocabulary-reference and grammar representations, including an optional host-driven check that external references exist. The adapter, model integration, compatibility policy, and execution layers remain outside this package.
 
-## 8. Complete small example
+## 9. Complete small example
 
 ```csharp
 using TheSingularityWorkshop.GrammarAi;
@@ -207,12 +227,13 @@ Output:
 - Integer nonterminals and ordered production rules.
 - References to externally owned protocol symbols.
 - Structural validation and deterministic self-description.
+- Host-driven discovery of missing external protocol/symbol identities.
 
 ## What you still provide
 
-- Protocol definitions.
+- Protocol definitions and the resolver used to look up their identities.
 - Model integration and grammar compilation or provider translation.
-- Generated-output parsing and validation policy beyond the current definition checks.
+- Protocol-version compatibility and generated-output validation policy.
 - Execution semantics, persistence, and version negotiation.
 
 GrammarAI stays a reusable structural artifact: **ProtocolAI defines WHAT; GrammarAI defines HOW; the host owns execution.**
