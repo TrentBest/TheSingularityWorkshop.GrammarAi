@@ -43,6 +43,12 @@ Define terminals and nonterminals, compose grammar rules, and validate structure
 
 ## 🟢 04 See it in a minute
 
+![Animated walkthrough of a GrammarAI definition: start symbol, alternative productions, ordered sequences, and the structural-validation boundary](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/development/docs/images/grammar-derivation.svg)
+
+The picture teaches the core distinction: **different rules offer alternatives; symbols inside one rule are an ordered sequence.** Building the grammar checks its internal structure, but external protocol references still need to be resolved by the host, and no grammar check authorizes an action.
+
+Start with the [visual tour](docs/GALLERY.md), then build the small grammar below and inspect its description.
+
 Follow the quick-start section below, then build a small grammar and inspect its validation behavior. Grammar describes structure; it does not execute commands.
 
 ## 🟪 05 Documentation and theory
