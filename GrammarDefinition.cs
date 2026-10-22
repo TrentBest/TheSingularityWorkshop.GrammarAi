@@ -5,6 +5,11 @@ namespace TheSingularityWorkshop.GrammarAi;
 /// <summary>
 /// Immutable, self-describing grammar that connects protocol symbols through integer-backed production rules.
 /// </summary>
+/// <remarks>
+/// Grammar construction validates the grammar's internal structure, but does not load external protocol
+/// definitions. Protocol-terminal references are identity links only; the consumer must resolve them
+/// against the corresponding protocol definition before treating a grammar as fully linked.
+/// </remarks>
 public sealed class GrammarDefinition
 {
     private readonly IReadOnlyList<GrammarRule> _rules;
