@@ -20,6 +20,18 @@ GrammarAi defines how symbols can be arranged into grammar productions. The gram
 | Understand terminal references and nonterminal rules | [Consuming guide: protocol identities](docs/CONSUMING.md#2-start-with-protocol-identities) |
 | Understand the role of recursive productions and epsilon | [Examples](docs/EXAMPLES.md) |
 
+## Source-level class guides
+
+These companion pages describe the current public types and link to focused relationship diagrams and use cases:
+
+| Type | Contract and purpose | UML and use cases |
+|---|---|---|
+| `GrammarBuilder` | [Class guide](GrammarBuilder.md) | [UML](GrammarBuilderUML.md) |
+| `GrammarDefinition` | [Class guide](GrammarDefinition.md) | [UML](GrammarDefinitionUML.md) |
+| `GrammarRule` | [Class guide](GrammarRule.md) | [UML](GrammarRuleUML.md) |
+| `GrammarSymbol` | [Class guide](GrammarSymbol.md) | [UML](GrammarSymbolUML.md) |
+| `GrammarProtocolReference` | [Class guide](GrammarProtocolReference.md) | [UML](GrammarProtocolReferenceUML.md) |
+
 ## Where it fits
 
 - [ProtocolAi](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi) owns the vocabulary and identities referenced by grammar terminals.
