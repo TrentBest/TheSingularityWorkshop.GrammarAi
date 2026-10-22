@@ -46,7 +46,7 @@ Follow the quick-start section below, then build a small grammar and inspect its
 
 ## 🟪 05 Documentation and theory
 
-[Gallery](docs/GALLERY.md) · [AI Exchange boundary](docs/AI_EXCHANGE.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Provider neutrality](#11-provider-neutrality)
+[Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [AI Exchange boundary](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/AI_EXCHANGE.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Provider neutrality](#11-provider-neutrality)
 
 ---
 
@@ -130,10 +130,10 @@ It produces a self-description such as:
 
 | I want to... | Read |
 |---|---|
-| Install and use GrammarAI | [Consuming GrammarAI](docs/CONSUMING.md) |
-| See concrete patterns | [Examples](docs/EXAMPLES.md) |
-| Understand why the boundary exists | [Theory](docs/THEORY.md) |
-| Understand what is intentionally unresolved | [Reflection](docs/REFLECTION.md) |
+| Install and use GrammarAI | [Consuming GrammarAI](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
+| See concrete patterns | [Examples](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
+| Understand why the boundary exists | [Theory](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
+| Understand what is intentionally unresolved | [Reflection](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md) |
 
 ---
 
@@ -171,7 +171,7 @@ application meaning
 
 **GrammarAI stops at the structural boundary.**
 
-Deeper: [Theory — The deterministic boundary](docs/THEORY.md#the-deterministic-boundary-after-the-model).
+Deeper: [Theory — The deterministic boundary](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md#the-deterministic-boundary-after-the-model).
 
 ---
 
@@ -215,7 +215,7 @@ GrammarAI
 
 Those concerns belong downstream.
 
-Deeper: [Reflection — What is deliberately not decided](docs/REFLECTION.md#what-is-deliberately-not-decided).
+Deeper: [Reflection — What is deliberately not decided](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md#what-is-deliberately-not-decided).
 
 ---
 
@@ -263,7 +263,7 @@ GrammarAI
 structured representation
 ```
 
-Deeper: [Theory — From vocabulary to language](docs/THEORY.md#from-vocabulary-to-language).
+Deeper: [Theory — From vocabulary to language](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md#from-vocabulary-to-language).
 
 ---
 
@@ -312,7 +312,7 @@ GrammarAI
     +-- references [1001:2002]
 ```
 
-Deeper: [Consuming GrammarAI — Protocol identities](docs/CONSUMING.md#2-start-with-protocol-identities).
+Deeper: [Consuming GrammarAI — Protocol identities](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md#2-start-with-protocol-identities).
 
 ---
 
@@ -347,7 +347,7 @@ So:
 
 means the grammar references an external protocol identity; it does not redefine it.
 
-Deeper: [Examples — One protocol symbol](docs/EXAMPLES.md#example-1--one-protocol-symbol).
+Deeper: [Examples — One protocol symbol](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md#example-1--one-protocol-symbol).
 
 ---
 
@@ -392,7 +392,7 @@ The builder creates the structural artifact.
 
 It does not turn that artifact into an execution engine.
 
-Deeper: [Consuming GrammarAI — Define a grammar](docs/CONSUMING.md#3-define-a-grammar).
+Deeper: [Consuming GrammarAI — Define a grammar](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md#3-define-a-grammar).
 
 ---
 
@@ -431,7 +431,7 @@ That produces:
 
 This is structural composition, not an execution instruction.
 
-Deeper: [Examples — Nested structure](docs/EXAMPLES.md#example-3--nested-structure).
+Deeper: [Examples — Nested structure](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md#example-3--nested-structure).
 
 ---
 
@@ -467,7 +467,7 @@ A self-describing structure can eventually be:
 
 Those capabilities do not need to be forced into the current core.
 
-Deeper: [Theory — The grammar as a self-describing artifact](docs/THEORY.md#the-grammar-as-a-self-describing-artifact).
+Deeper: [Theory — The grammar as a self-describing artifact](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md#the-grammar-as-a-self-describing-artifact).
 
 ---
 
@@ -535,7 +535,7 @@ GrammarAI is not claiming to solve every step.
 
 It provides the structural artifact that later steps can consume.
 
-Deeper: [Theory — Provider neutrality](docs/THEORY.md#provider-neutrality).
+Deeper: [Theory — Provider neutrality](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md#provider-neutrality).
 
 ---
 
@@ -572,7 +572,7 @@ Instead:
 
 The provider-specific representation belongs downstream.
 
-Deeper: [Reflection — The likely next architectural pressure](docs/REFLECTION.md#the-likely-next-architectural-pressure).
+Deeper: [Reflection — The likely next architectural pressure](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md#the-likely-next-architectural-pressure).
 
 ---
 
@@ -600,7 +600,7 @@ A host decides what that relationship means operationally.
 
 That prevents GrammarAI from quietly becoming a workflow engine.
 
-Deeper: [Theory — Grammar is not execution](docs/THEORY.md#grammar-is-not-execution).
+Deeper: [Theory — Grammar is not execution](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md#grammar-is-not-execution).
 
 ---
 
@@ -624,7 +624,7 @@ The grammar becomes the structural meeting point while neither protocol loses ow
 
 The current alpha deliberately stops before assigning execution semantics to that combination.
 
-Deeper: [Examples — Combining independent protocols](docs/EXAMPLES.md#example-4--combining-independent-protocols).
+Deeper: [Examples — Combining independent protocols](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md#example-4--combining-independent-protocols).
 
 ---
 
@@ -674,7 +674,7 @@ A future composition layer can assemble those capabilities.
 
 Neither package makes an LLM deterministic. Together they give a host explicit artifacts against which model output can be resolved and validated before execution.
 
-See **[GrammarAI Theory](docs/THEORY.md)** for the deeper argument and its limits.
+See **[GrammarAI Theory](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md)** for the deeper argument and its limits.
 
 ---
 
@@ -706,7 +706,7 @@ It does **not** establish:
 
 Those are future composition questions.
 
-Deeper: [Reflection](docs/REFLECTION.md).
+Deeper: [Reflection](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md).
 
 ---
 
@@ -773,9 +773,9 @@ var grammar = new GrammarBuilder(
 Console.WriteLine(grammar.Describe());
 ```
 
-For the complete practical guide: [Consuming GrammarAI](docs/CONSUMING.md).
+For the complete practical guide: [Consuming GrammarAI](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md).
 
-For runnable patterns: [Examples](docs/EXAMPLES.md).
+For runnable patterns: [Examples](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md).
 
 ---
 
@@ -814,12 +814,12 @@ The linked documents are the **rooms**.
 
 | Need | Go here |
 |---|---|
-| Install and consume | [CONSUMING.md](docs/CONSUMING.md) |
-| Visual tour and evidence links | [GALLERY.md](docs/GALLERY.md) |
-| AI exchange architecture and current implementation limits | [AI_EXCHANGE.md](docs/AI_EXCHANGE.md) |
-| Concrete patterns | [EXAMPLES.md](docs/EXAMPLES.md) |
-| Architectural reasoning | [THEORY.md](docs/THEORY.md) |
-| Current limits and open questions | [REFLECTION.md](docs/REFLECTION.md) |
+| Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
+| Visual tour and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
+| AI exchange architecture and current implementation limits | [AI_EXCHANGE.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/AI_EXCHANGE.md) |
+| Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
+| Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
+| Current limits and open questions | [REFLECTION.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md) |
 | Package | [NuGet](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi) |
 | Source | [GitHub](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi) |
 
@@ -855,10 +855,10 @@ Everything else composes around it rather than blurring it.
 
 - **NuGet:** https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi
 - **Source:** https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi
-- **Theory:** [docs/THEORY.md](docs/THEORY.md)
-- **Examples:** [docs/EXAMPLES.md](docs/EXAMPLES.md)
-- **Consuming:** [docs/CONSUMING.md](docs/CONSUMING.md)
-- **Reflection:** [docs/REFLECTION.md](docs/REFLECTION.md)
+- **Theory:** [docs/THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md)
+- **Examples:** [docs/EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md)
+- **Consuming:** [docs/CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
+- **Reflection:** [docs/REFLECTION.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/REFLECTION.md)
 - **ProtocolAI:** https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi
 - **Verified host example:** [AnyApp WorkshopSemanticExchange.cs](https://github.com/TrentBest/AnyApp/blob/master/WorkshopSemanticExchange.cs)
 - **Host tests:** [AnyAppRuntimeTests.cs](https://github.com/TrentBest/AnyApp/blob/master/tests/TheSingularityWorkshop.AnyApp.Tests/AnyAppRuntimeTests.cs)
