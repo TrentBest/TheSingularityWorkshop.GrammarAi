@@ -40,6 +40,18 @@ The visual is an authored teaching aid. Its motion explains the concepts; it is 
 
 A structurally valid grammar is a useful artifact, not a certificate of semantic truth or permission to act.
 
+## Source-level reference
+
+For the exact public-type contracts and relationships, use the companion guides:
+
+- [GrammarBuilder — authoring and snapshots](../GrammarBuilder.md) · [UML](../GrammarBuilderUML.md)
+- [GrammarDefinition — structural validation](../GrammarDefinition.md) · [UML](../GrammarDefinitionUML.md)
+- [GrammarRule — alternatives and ordered sequences](../GrammarRule.md) · [UML](../GrammarRuleUML.md)
+- [GrammarSymbol — terminal versus nonterminal](../GrammarSymbol.md) · [UML](../GrammarSymbolUML.md)
+- [GrammarProtocolReference — external identity pairs](../GrammarProtocolReference.md) · [UML](../GrammarProtocolReferenceUML.md)
+
+These diagrams document source-level relationships; the animated SVG above remains an authored conceptual explanation rather than generated UML or a live execution trace.
+
 ## See actual behavior
 
 From the repository root:
