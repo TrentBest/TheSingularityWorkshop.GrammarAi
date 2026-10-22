@@ -17,9 +17,11 @@ The project on `development` declares **`0.1.0-alpha.2`** and targets **.NET 8 (
 
 GrammarAI is the structural layer: it composes integer-backed grammar rules and references protocol-owned terminal identities. It does not own the vocabulary, call a model, interpret application meaning, or execute commands.
 
-## Latest verified candidate — 2026-10-22 UTC
+## Latest verified CI baseline — 2026-10-22 UTC
 
-Candidate `development` commit: `9ac4f759c73dd32e5b169bbbecc079df23f1bf5f`. [Workflow run #39721684751](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39721684751) passed for this exact commit, including restore, Release build, tests/coverage, package creation, packaged documentation-path verification, and a clean consumer smoke test. NuGet publication was skipped and remains hard-disabled. The AI Exchange document and SVG are explicitly labelled as design direction, separate from the implemented grammar-definition API. This readiness-document correction must itself pass CI before its new head is treated as verified.
+Latest green `development` commit: `2e8c18bcbb0dbae5e44d6640cdebef02f55a8556`. [Workflow run #39723634834](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39723634834) passed for this exact commit, including restore, Release build, tests/coverage, package creation, packaged documentation-path verification, and a clean consumer smoke test. NuGet publication was skipped and remains hard-disabled. The AI Exchange document and SVG are explicitly labelled as design direction, separate from the implemented grammar-definition API.
+
+This is the latest verified green baseline, not publication approval. This readiness-document update must itself pass CI before its new head is treated as verified.
 
 ## Verified foundation
 
