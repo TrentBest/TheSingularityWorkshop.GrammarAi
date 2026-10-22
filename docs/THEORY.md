@@ -439,6 +439,53 @@ Keep these four questions distinct:
 
 Passing one question does not imply passing the next. In particular, structural validity is not semantic truth, and semantic resolution is not authorization.
 
+## A consumer example: define a small command language
+
+Imagine an application that lets an AI propose one of two operations on one of two known workshop stations. The application wants to accept a *structured choice*, not treat fluent prose as permission to operate equipment.
+
+For illustration, suppose two application-owned protocols contain these identities:
+
+```text
+Protocol 7100 — Actions
+  [7101] inspect
+  [7102] prepare
+
+Protocol 7200 — Stations
+  [7201] forge
+  [7202] laboratory
+```
+
+A grammar can define the allowed combinations without copying or taking ownership of those identities:
+
+```text
+[4001] Request -> [4002] [4003]
+
+[4002] Action ->
+    [7100:7101]
+    [7100:7102]
+
+[4003] Station ->
+    [7200:7201]
+    [7200:7202]
+```
+
+This is a conceptual grammar sketch, not a claim that the package parses the text shown here. The rule for `Request` describes an ordered pair: an action followed by a station. The alternatives under `Action` mean that the action position may be `inspect` or `prepare`; they do not mean both actions happen. The same distinction applies to the station alternatives.
+
+The consumer's application flow is then explicit:
+
+1. **Define the vocabulary.** The application owns what each action and station identity means.
+2. **Define the allowed shape.** GrammarAI describes which identities may occupy each position and in what order.
+3. **Link the definitions.** The host verifies that each referenced protocol and symbol exists in the exact versions it intends to use. GrammarAI's structural build does not perform this external lookup.
+4. **Check the candidate.** A real parser, validator, or provider integration must check whether a candidate conforms to the grammar; the grammar definition alone does not validate arbitrary model text.
+5. **Apply policy.** The host checks the user's permissions, station state, operational preconditions, and whether the proposed action requires confirmation.
+6. **Execute only through the host.** A structurally valid `prepare + forge` proposal is still only a proposal. GrammarAI neither authorizes nor performs it.
+
+The practical benefit is not that the model becomes trustworthy. It is that the application can state and inspect its intended vocabulary and structure, keep ownership boundaries clear, and reject a proposal at the layer responsible for the failed condition. A structurally valid proposal can still be inappropriate, unauthorized, or unsafe.
+
+Use this pattern when a consumer needs a portable definition of *which combinations are expressible*—for example, a small command language, a workflow request, or a structured interaction between independently owned domains. Do not use GrammarAI alone as a parser, permission system, or execution engine.
+
+---
+
 ## What GrammarAI can make deterministic
 
 GrammarAI can make the following deterministic when the host uses it:
