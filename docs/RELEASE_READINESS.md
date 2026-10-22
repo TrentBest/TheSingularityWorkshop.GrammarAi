@@ -11,6 +11,14 @@
 
 See [BRANCH_RECONCILIATION.md](BRANCH_RECONCILIATION.md) for the evidence-backed `master`/`development` and feature-branch preservation checklist. It is an audit record, not permission to merge, close PRs, or delete branches.
 
+
+
+## Phone-first release review — 2026-10-22 UTC
+
+Start with the [Release Review Brief](RELEASE_REVIEW_BRIEF.md) for the concise current contract, package boundaries, top remaining risks, and a guided reading order. It is a review aid, not a substitute for the checks below and not authorization to publish.
+
+Latest candidate checkpoint: [e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0). CI evidence: [workflow run #39726325238](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39726325238). Current readiness estimate: **70%** (qualitative working estimate, not a test metric). Recheck CI on the exact final candidate after all changes.
+
 ## Current package status
 
 The project on `development` declares **`0.1.0-alpha.2`** and targets **.NET 8 (`net8.0`)**. This checklist tracks evidence for a future package release; it does not authorize publication or change the package version.
