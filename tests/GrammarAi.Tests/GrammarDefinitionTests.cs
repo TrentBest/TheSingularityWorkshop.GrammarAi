@@ -86,4 +86,30 @@ public sealed class GrammarDefinitionTests
         Assert.Empty(grammar.Rules[0].RightHandSide);
         Assert.Equal("[3001] Optional start=[4001]\n  rule [5001] [4001] -> ε", grammar.Describe());
     }
+
+    [Fact]
+    public void Grammar_and_rule_identities_must_be_nonzero()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new GrammarBuilder(0, "Invalid", 4001));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new GrammarBuilder(3001, "Invalid", 0));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new GrammarRule(0, 4001, []));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new GrammarRule(5001, 0, []));
+    }
+
+    [Fact]
+    public void Protocol_references_require_nonzero_protocol_and_symbol_ids()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new GrammarProtocolReference(0, 2001));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new GrammarProtocolReference(1001, 0));
+    }
+
+    [Fact]
+    public void Start_symbol_must_have_a_production()
+    {
+        var builder = new GrammarBuilder(3001, "MissingStart", 4001)
+            .Rule(5001, 4002);
+
+        Assert.Throws<ArgumentException>(() => builder.Build());
+    }
+
 }
