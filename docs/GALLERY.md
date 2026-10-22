@@ -36,7 +36,7 @@ The quick start uses the public API. Tests exercise protocol-terminal references
 
 ## Detailed recipe
 
-Read [Examples](EXAMPLES.md), [Consuming GrammarAi](CONSUMING.md), [Theory](THEORY.md), and [Release Readiness](RELEASE_READINESS.md).
+Start with [Consuming GrammarAi](CONSUMING.md), then explore [Examples](EXAMPLES.md) for runnable grammar definitions.
 
 ---
 
@@ -61,4 +61,4 @@ Read [Examples](EXAMPLES.md), [Consuming GrammarAi](CONSUMING.md), [Theory](THEO
 
 ## Phone-first release review
 
-For a concise, evidence-oriented walkthrough, start with the [Release Review Brief](RELEASE_REVIEW_BRIEF.md). It summarizes the implemented contract, the boundary this package owns, the highest-value remaining review items, and the release decision path. Then use the detailed guides to inspect behavior and evidence.
+Start with [Consuming GrammarAi](CONSUMING.md) to define a grammar, reference protocol-owned terminal identities, and inspect validated structure.
