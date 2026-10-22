@@ -553,6 +553,34 @@ These questions belong to future layers and experiments rather than hidden assum
 
 ---
 
+## Linking is a separate, host-owned proof obligation
+
+The grammar's internal structure can be valid while one of its external terminal references is stale or unknown. The implemented `FindUnresolvedProtocolReferences` API makes that second check explicit without moving protocol ownership into GrammarAI:
+
+```text
+GrammarAI build
+    |
+    v
+internal structure is valid
+    |
+    v
+host supplies identity resolver
+    |
+    v
+unresolved references (if any)
+    |
+    v
+host chooses reject, repair, or continue
+```
+
+The method walks right-hand-side symbols in rule order, checks each distinct protocol/symbol pair once, and returns unresolved references in first-use order. Its resolver is supplied by the host; GrammarAI does not load ProtocolAI, a registry, or protocol files.
+
+This is deliberately an identity-link check only. An empty result means the resolver recognized every referenced pair at the time of the check. It does not prove that the protocol definition is structurally compatible with another version, that the symbol's meaning is unchanged, that a candidate response conforms to the grammar, or that an operation is authorized. Those are separate proof obligations owned by protocol-evolution tooling, a real parser/validator, and host policy respectively.
+
+The resulting domain model is now clearer: **GrammarAI can describe structure and enumerate broken external links; the host decides whether those links are acceptable and what to do next.** Keep that distinction visible in consuming documentation and future adapters.
+
+---
+
 ## Architectural invariant
 
 > **GrammarAI describes how protocol identities may be connected without owning their meaning, the model that generated them, or the execution that follows.**
