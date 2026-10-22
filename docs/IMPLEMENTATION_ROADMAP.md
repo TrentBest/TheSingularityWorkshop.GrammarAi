@@ -1,3 +1,10 @@
+<!-- The Singularity Workshop moniker -->
+<p align="center">
+  <a href="https://github.com/TrentBest">
+    <img src="https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.Visualize/development/docs/assets/moniker.svg" alt="The Singularity Workshop — animated workshop moniker" width="720" />
+  </a>
+</p>
+
 # GrammarAi — Implementation and Documentation Roadmap
 
 Purpose: living, evidence-based checklist for bringing implementation, tests, examples, and documentation to Workshop standard.
@@ -163,3 +170,24 @@ Status discipline: checked means verified in source/tests or by reproducible com
 | 2026-10-19 | Follow-up project-file review found the test/example exclusion globs used doubled backslashes, so they were normalized to the standard MSBuild path pattern while keeping explicit `docs/` and `docs/images/` package destinations. CI and rebuilt package verification are still pending; readiness unchanged. | [Project file](../TheSingularityWorkshop.GrammarAi.csproj) | 38% |
 | 2026-10-19 | Corrected test/example exclusion globs and added a CI package-content assertion after pack: fail if no Markdown guide is present under `docs/` or if the duplicated `docs/images/docs/images/` prefix returns. The latest workflow edit is committed; successful execution and rebuilt artifact inspection are still required before readiness changes. | [Build workflow](../.github/workflows/build.yml) · [Project file](../TheSingularityWorkshop.GrammarAi.csproj) |
 | 2026-10-19 | Pinned all six external GitHub Actions references to upstream-verified immutable commit SHAs. The resulting development workflow run passed build, tests, coverage upload, pack, packaged-documentation-path checks, clean-consumer installation, and artifact upload; the NuGet publish job was skipped. Three PRs remain open and extra branches remain for owner review; no branch was deleted or merged. | [Pinned workflow commit](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/4aebd3638fc18c64228de21776ff258c71e7abf7) · [CI run #39334906091](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39334906091) · [Build workflow](../.github/workflows/build.yml) | 65% |
+
+---
+
+<p align="center">
+  <a href="https://github.com/TrentBest">
+    <img src="https://github.com/TrentBest.png?size=200" alt="The Singularity Workshop on GitHub" width="200">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/TrentBest">GitHub</a> ·
+  <a href="https://coderlegion.com/">Coder Legion</a> ·
+  <a href="https://www.patreon.com/c/TheSingularityWorkshop">Patreon</a> ·
+  <a href="https://www.paypal.com/donate/?hosted_button_id=3Z7263LCQMV9J">PayPal</a>
+  <br>
+  <a href="https://github.com/TrentBest/FSM_API">FSM_API</a> ·
+  <a href="https://github.com/TrentBest/TheSingularityWorkshop.FSM_Serialization">FSM_Serialization</a> ·
+  <a href="https://github.com/TrentBest/WebPage">WebPage</a>
+</p>
+
+<p align="center"><em>The Singularity Workshop — Tools for the curious, the bold, and the systemically inclined.</em><br><strong>Because state shouldn't be a mess.</strong><br><em>And because static boundaries are invitations to cause trouble.</em></p>
