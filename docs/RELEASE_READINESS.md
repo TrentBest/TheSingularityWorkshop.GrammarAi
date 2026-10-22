@@ -6,6 +6,10 @@ The project on `development` declares **`0.1.0-alpha.2`** and targets **.NET 8 (
 
 GrammarAI is the structural layer: it composes integer-backed grammar rules and references protocol-owned terminal identities. It does not own the vocabulary, call a model, interpret application meaning, or execute commands.
 
+## Latest verified candidate — 2026-10-22 UTC
+
+Candidate `development` commit: `d5226646acd63de2c809ad86fc8a3a917f30f281`. [Workflow run #39716621201](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39716621201) passed for this exact commit, including restore, Release build, tests/coverage, package creation, documentation-path verification, and clean consumer smoke test. NuGet publication was skipped and remains hard-disabled. The AI Exchange document is explicitly labelled a design note and separates the current grammar-definition API from future host-side response validation. This readiness-document edit will create a new commit and must receive its own passing CI run.
+
 ## Verified foundation
 
 - Grammar definitions validate nonzero identities, unique rule IDs, the start symbol, and referenced nonterminals.
@@ -38,13 +42,13 @@ These checks are evidence of a sound foundation, not a completed release audit.
 - [ ] Verify package metadata, release notes, and installation instructions against the release being prepared.
 - [ ] Verify the published NuGet version and package page before making claims about distribution status.
 - [ ] Verify NuGet Trusted Publishing configuration without changing it as part of this audit.
-- [ ] Keep publication disabled unless explicitly authorized.
+- [x] Publication is hard-disabled in the workflow pending explicit owner authorization.
 
 ### Branch and review hygiene
 
 - [ ] Reconcile open pull requests and preserve unique documentation before recommending branch cleanup.
 - [ ] Keep only `master` and `development` after the user has reviewed the cleanup candidates; do not delete branches automatically.
-- [ ] Confirm the final release commit passes CI and the consumer smoke test.
+- [x] The current candidate passed CI and the consumer smoke test in workflow run #39716621201; the final release candidate must be rechecked after remaining changes.
 
 ## Release recommendation
 
