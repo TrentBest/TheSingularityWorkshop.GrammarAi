@@ -49,7 +49,7 @@ Follow the quick-start section below, then build a small grammar and inspect its
 
 ## 🟪 05 Documentation and theory
 
-[Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
+[Documentation index](DOCUMENTATION_INDEX.md) · [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
 
 ---
 
