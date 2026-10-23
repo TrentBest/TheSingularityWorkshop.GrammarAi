@@ -51,7 +51,7 @@ Start with the [visual tour](docs/GALLERY.md), then follow the quick-start below
 
 ## 🟪 05 Documentation and theory
 
-[Documentation index](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/DOCUMENTATION_INDEX.md) · [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
+[Documentation index](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/DOCUMENTATION_INDEX.md) · [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) · [AI Exchange design](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/AI_EXCHANGE.md)
 
 ---
 
@@ -823,6 +823,7 @@ The linked documents are the **rooms**.
 |---|---|
 | Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Visual tour and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
+| Host/LLM exchange architecture (design note) | [AI_EXCHANGE.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/AI_EXCHANGE.md) |
 | Visual overview | [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
 | Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
 | Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
