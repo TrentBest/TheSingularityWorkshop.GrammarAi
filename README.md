@@ -8,11 +8,16 @@
 
 # TheSingularityWorkshop.GrammarAi
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build](https://img.shields.io/github/actions/workflow/status/TrentBest/TheSingularityWorkshop.GrammarAi/build.yml?branch=development&style=flat-square&logo=github)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/build.yml)
 [![NuGet version](https://img.shields.io/nuget/v/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
 [![NuGet downloads](https://img.shields.io/nuget/dt/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
-[![Build](https://img.shields.io/github/actions/workflow/status/TrentBest/TheSingularityWorkshop.GrammarAi/build.yml?branch=master&style=flat-square&logo=github)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/build.yml)
 [![Code Coverage](https://img.shields.io/codecov/c/github/TrentBest/TheSingularityWorkshop.GrammarAi?style=flat-square)](https://codecov.io/gh/TrentBest/TheSingularityWorkshop.GrammarAi)
+[![Last commit](https://img.shields.io/github/last-commit/TrentBest/TheSingularityWorkshop.GrammarAi?style=flat-square)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commits/development)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+
+
 
 
 > **The structure layer for self-defining, integer-backed AI protocols.**
@@ -27,15 +32,15 @@ flowchart TD
   V --> H[Host-owned interpretation]
 ```
 
-## 🟣 01 — Why
+## 🟦 01 — What
+
+GrammarAI is a small structural .NET library for integer-backed grammar definitions. It owns grammar identity, the start symbol, nonterminals, and ordered productions. Terminal symbols reference protocol-owned identities; GrammarAI validates its own structure without loading external protocol definitions or executing the resulting content.
+
+## 🟣 02 — Why
 
 Identity and structure are different concerns. GrammarAI lets independent protocols express valid relationships between symbols without copying their identities, choosing a model provider, or deciding what a host should execute.
 
 **Explore the Workshop:** [Find packages on NuGet](https://www.nuget.org/packages?q=TheSingularityWorkshop) · [Browse the repository guide](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/development/docs/WORKSHOP_REPOSITORIES.md)
-
-## 🟦 02 — What
-
-GrammarAI is a small structural .NET library for integer-backed grammar definitions. It owns grammar identity, the start symbol, nonterminals, and ordered productions. Terminal symbols reference protocol-owned identities; GrammarAI validates its own structure without loading external protocol definitions or executing the resulting content.
 
 ## 🔺 03 How
 
@@ -50,6 +55,8 @@ The picture teaches the core distinction: **different rules offer alternatives; 
 Start with the [visual tour](docs/GALLERY.md), then follow the quick-start below to build a small grammar and inspect its description and validation behavior. Grammar describes structure; it does not execute commands.
 
 ## 🟪 05 Documentation and theory
+
+[Problem domain](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/PROBLEM_DOMAIN.md) — grammar concepts, structural validation, and non-goals.
 
 [Documentation index](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/DOCUMENTATION_INDEX.md) · [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
 
