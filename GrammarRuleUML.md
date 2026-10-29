@@ -47,3 +47,8 @@ An empty right-hand side explicitly represents epsilon. A nonterminal with no pr
 The rule enforces local construction invariants only. `GrammarDefinition` checks cross-rule relationships, while external protocol linking and candidate conformance remain separate responsibilities.
 
 See [`GrammarRule.md`](GrammarRule.md) for the class card and detailed contract.
+
+---
+
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
