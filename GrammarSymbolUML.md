@@ -44,3 +44,8 @@ Use `Terminal(reference)` to preserve the identity pair of a symbol owned by an 
 The symbol discriminates grammar structure from external vocabulary identity; it does not parse, establish truth, or authorize actions.
 
 See [`GrammarSymbol.md`](GrammarSymbol.md) for the class card and detailed contract.
+
+---
+
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
