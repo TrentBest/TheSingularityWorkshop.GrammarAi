@@ -55,3 +55,8 @@ Call `Build()` to obtain an immutable snapshot. The definition is independent of
 The builder checks basic grammar metadata at construction and delegates whole-grammar structural validation to `GrammarDefinition`. It does not resolve external protocol references, parse text, or authorize actions.
 
 See [`GrammarBuilder.md`](GrammarBuilder.md) for the class card and detailed responsibility boundary.
+
+---
+
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
