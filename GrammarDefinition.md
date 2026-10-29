@@ -72,3 +72,8 @@ The rule collection can be empty only if construction rules permit it; the curre
 ## Source of truth
 
 Implementation: [`GrammarDefinition.cs`](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/GrammarDefinition.cs). This document describes the current source contract, not a parser or provider adapter that the package does not implement.
+
+---
+
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
