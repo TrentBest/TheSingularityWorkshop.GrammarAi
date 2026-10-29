@@ -42,3 +42,8 @@ The reference lets a grammar use a protocol-owned terminal without becoming the 
 A nonzero reference is syntactically valid as an identifier pair; it does not prove that the protocol or symbol exists, that versions are compatible, or that a use is authorized.
 
 See [`GrammarProtocolReference.md`](GrammarProtocolReference.md) for the class card and contract.
+
+---
+
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
