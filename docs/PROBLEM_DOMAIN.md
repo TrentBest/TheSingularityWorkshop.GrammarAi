@@ -46,3 +46,8 @@ These boundaries describe intended ownership. Do not infer an existing project d
 ## Evidence and maturity
 
 The current source model is represented by GrammarDefinition, GrammarRule, GrammarSymbol, GrammarProtocolReference, and GrammarBuilder. The current alpha boundary does not establish grammar parsing, grammar compilation, provider-specific export, constrained decoding, or protocol negotiation. See [Consuming GrammarAi](CONSUMING.md), [Examples](EXAMPLES.md), and [Theory](THEORY.md) for the practical and architectural views.
+
+---
+
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
