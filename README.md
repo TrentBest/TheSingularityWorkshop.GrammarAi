@@ -52,7 +52,7 @@ Define terminals and nonterminals, compose grammar rules, and validate structure
 
 The picture teaches the core distinction: **different rules offer alternatives; symbols inside one rule are an ordered sequence.** Building the grammar checks its internal structure, but external protocol references still need to be resolved by the host, and no grammar check authorizes an action.
 
-Start with the [visual tour](docs/GALLERY.md), then follow the quick-start below to build a small grammar and inspect its description and validation behavior. Grammar describes structure; it does not execute commands.
+Start with the [visual tour](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md), then follow the quick-start below to build a small grammar and inspect its description and validation behavior. Grammar describes structure; it does not execute commands.
 
 ## 🟪 05 Documentation and theory
 
