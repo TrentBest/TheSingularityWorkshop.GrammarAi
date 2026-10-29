@@ -78,3 +78,8 @@ The host independently checks meaning, context, permissions, and policy before a
 - An empty right-hand side is explicit epsilon, not an absent production.
 
 See [`GrammarDefinition.md`](GrammarDefinition.md) for the companion class card and responsibility boundary.
+
+---
+
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
