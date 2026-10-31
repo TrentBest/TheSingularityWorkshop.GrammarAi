@@ -50,7 +50,7 @@ Define terminals and nonterminals, compose grammar rules, and validate structure
 
 ![Animated walkthrough of a GrammarAI definition: start symbol, alternative productions, ordered sequences, and the structural-validation boundary](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/development/docs/images/grammar-derivation.svg)
 
-The picture teaches the core distinction: **different rules offer alternatives; symbols inside one rule are an ordered sequence.** Building the grammar checks its internal structure, but external protocol references still need to be resolved by the host, and no grammar check authorizes an action.
+The picture teaches the core distinction: **different rules offer alternatives; symbols inside one rule are an ordered sequence.** Building the grammar checks its internal structure, but external protocol references still need to be resolved by the host, and no grammar check authorizes an action. Use `FindUnresolvedProtocolReferences` with a host-owned lookup to list missing protocol/symbol pairs in first-use order, without adding a ProtocolAI dependency.
 
 Start with the [visual tour](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md), then follow the quick-start below to build a small grammar and inspect its description and validation behavior. Grammar describes structure; it does not execute commands.
 
