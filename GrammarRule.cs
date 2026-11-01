@@ -20,6 +20,8 @@ public sealed record GrammarRule
         var symbols = rightHandSide.Take(GrammarLimits.MaxSymbolsPerRule + 1).ToArray();
         if (symbols.Length > GrammarLimits.MaxSymbolsPerRule)
             throw new ArgumentException($"A production cannot contain more than {GrammarLimits.MaxSymbolsPerRule} symbols.", nameof(rightHandSide));
+        if (symbols.Any(symbol => symbol.Id == 0))
+            throw new ArgumentException("A production cannot contain an uninitialized grammar symbol.", nameof(rightHandSide));
 
         Id = id;
         LeftHandSide = leftHandSide;
