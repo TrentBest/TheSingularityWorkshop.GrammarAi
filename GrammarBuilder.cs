@@ -17,6 +17,7 @@ public sealed class GrammarBuilder
     {
         if (id == 0) throw new ArgumentOutOfRangeException(nameof(id));
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("A grammar name is required.", nameof(name));
+        if (name.Length > GrammarLimits.MaxNameCharacters) throw new ArgumentException($"A grammar name cannot exceed {GrammarLimits.MaxNameCharacters} characters.", nameof(name));
         if (startSymbol == 0) throw new ArgumentOutOfRangeException(nameof(startSymbol));
 
         Id = id;
@@ -42,6 +43,7 @@ public sealed class GrammarBuilder
     /// <exception cref="ArgumentNullException"><paramref name="rightHandSide"/> is null.</exception>
     public GrammarBuilder Rule(ulong ruleId, ulong leftHandSide, params GrammarSymbol[] rightHandSide)
     {
+        if (_rules.Count >= GrammarLimits.MaxRules) throw new InvalidOperationException($"A grammar cannot contain more than {GrammarLimits.MaxRules} rules.");
         _rules.Add(new GrammarRule(ruleId, leftHandSide, rightHandSide));
         return this;
     }
