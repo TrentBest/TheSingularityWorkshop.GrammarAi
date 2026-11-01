@@ -325,45 +325,42 @@ GrammarAI's role is therefore stable even as the transport changes.
 
 ---
 
-## Command semantics sit above grammar
+## Command proposals sit above grammar
 
-GrammarAI defines **HOW protocol identities may legally compose**.
+GrammarAi defines **HOW protocol identities may legally compose**. It does not decide what an application should execute.
 
-It does not need to know what a command does.
-
-That distinction permits a later CommandAI layer to consume GrammarAI:
+A host may use a grammar to describe the structure of a proposed command, then represent that proposal with CommandAi. These are separate artifacts with separate responsibilities:
 
 ```text
-ProtocolAI
-    WHAT
-
-GrammarAI
-    HOW identities may organize
-
-CommandAI
-    WHAT functionality is assembled from that grammar
+ProtocolAi
+  WHAT identities mean
+       |
+       v
+GrammarAi
+  HOW identities may be organized
+       |
+       v
+CommandAi
+  VERSIONED PROPOSAL representation
+       |
+       v
+Host application
+  resolve -> validate -> authorize -> approve -> execute
 ```
 
-For example, a tool may expose a button with protocol identity `A`. GrammarAI can describe the legal statement structure required to express an action over that identity. A command layer can then define the executable semantic composition.
+For example, a grammar might describe the legal structure of an action selection and its target. CommandAi can carry a versioned proposal using opaque action and parameter identities plus explicitly typed values. Neither a valid grammar definition nor a well-formed command proposal proves user intent, policy compliance, or permission.
 
-A conceptual statement might therefore resemble:
-
-```text
-[Actions #]
-    [Click]
-        [Button A]
-```
-
-Here `[Actions #]` is not arbitrary prose. It identifies the semantic collection from which GrammarAI can obtain legal choices.
+The host remains responsible for linking protocol references, validating candidate output against the intended grammar, resolving command identities, checking current application state, applying authorization and approval policy, and dispatching any permitted operation.
 
 The important boundary is:
 
-- **ProtocolAI** resolves what the symbols mean.
-- **GrammarAI** determines how those symbols may be organized.
-- **CommandAI** may assemble executable functionality from valid grammar.
+- **ProtocolAi** owns vocabulary and symbol identity.
+- **GrammarAi** owns structural composition.
+- **CommandAi** owns versioned command-proposal representation; it does not execute.
+- **HeadlessAi** owns configured endpoint request/response communication.
+- **The host** owns interpretation, trust, policy, authorization, approval, and execution.
 
-GrammarAI itself remains free of execution, providers, GUI frameworks, and API credentials.
-
+GrammarAi remains free of execution, providers, GUI frameworks, and API credentials.
 
 ## Related implementation references
 
@@ -391,4 +388,5 @@ GrammarAI itself remains free of execution, providers, GUI frameworks, and API c
   <a href="https://github.com/TrentBest/WebPage">WebPage</a>
 </p>
 
-<p align="center"><em>The Singularity Workshop — Tools for the curious, the bold, and the systemically inclined.</em><br><strong>Because state shouldn't be a mess.</strong><br><em>And because static boundaries are invitations to cause trouble.</em></p>
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
