@@ -372,12 +372,6 @@ GrammarAi remains free of execution, providers, GUI frameworks, and API credenti
 ---
 
 <p align="center">
-  <a href="https://github.com/TrentBest">
-    <img src="https://github.com/TrentBest.png?size=200" alt="The Singularity Workshop on GitHub" width="200">
-  </a>
-</p>
-
-<p align="center">
   <a href="https://github.com/TrentBest">GitHub</a> ·
   <a href="https://coderlegion.com/">Coder Legion</a> ·
   <a href="https://www.patreon.com/c/TheSingularityWorkshop">Patreon</a> ·
