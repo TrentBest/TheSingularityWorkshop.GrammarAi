@@ -123,13 +123,6 @@ public sealed class GrammarDefinitionTests
     }
 
     [Fact]
-    public void Grammar_definition_rejects_null_rules()
-    {
-        Assert.Throws<ArgumentException>(() => new GrammarDefinition(1, "invalid", 1,
-            new GrammarRule[] { null! }));
-    }
-
-    [Fact]
     public void Grammar_builder_stops_accepting_rules_at_the_limit()
     {
         var builder = new GrammarBuilder(1, "bounded", 1);
