@@ -32,6 +32,10 @@ These companion pages describe the current public types and link to focused rela
 | `GrammarSymbol` | [Class guide](GrammarSymbol.md) | [UML](GrammarSymbolUML.md) |
 | `GrammarProtocolReference` | [Class guide](GrammarProtocolReference.md) | [UML](GrammarProtocolReferenceUML.md) |
 
+## AI agent onboarding
+
+Before changing this repository, read [AGENTS.md](AGENTS.md) and the [shared FSM_COS Documentation Standard](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/development/DOCUMENTATION_STANDARD.md). The agent guide records GrammarAi's structural boundary, external protocol-reference ownership, branch policy, and verification requirements.
+
 ## Where it fits
 
 - [ProtocolAi](https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi) owns the vocabulary and identities referenced by grammar terminals.
