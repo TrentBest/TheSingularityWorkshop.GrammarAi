@@ -26,6 +26,8 @@ public sealed class GrammarDefinition
         var values = rules.Take(GrammarLimits.MaxRules + 1).ToArray();
         if (values.Length > GrammarLimits.MaxRules)
             throw new ArgumentException($"A grammar cannot contain more than {GrammarLimits.MaxRules} rules.", nameof(rules));
+        if (values.Any(rule => rule is null))
+            throw new ArgumentException("A grammar cannot contain null rules.", nameof(rules));
         var totalSymbols = values.Sum(rule => (long)rule.RightHandSide.Count);
         if (totalSymbols > GrammarLimits.MaxTotalSymbols)
             throw new ArgumentException($"A grammar cannot contain more than {GrammarLimits.MaxTotalSymbols} production symbols in total.", nameof(rules));
