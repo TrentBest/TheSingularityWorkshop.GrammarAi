@@ -174,4 +174,20 @@ public sealed class GrammarDefinitionTests
     }
 
 
+    [Fact]
+    public void Protocol_link_resolver_exceptions_propagate_to_the_host()
+    {
+        var reference = new GrammarProtocolReference(1001, 2001);
+        var grammar = new GrammarBuilder(3001, "Linked", 4001)
+            .Rule(5001, 4001, GrammarSymbol.Terminal(reference))
+            .Build();
+
+        var exception = Assert.Throws<InvalidOperationException>(() =>
+            grammar.FindUnresolvedProtocolReferences(_ =>
+                throw new InvalidOperationException("registry unavailable")));
+
+        Assert.Equal("registry unavailable", exception.Message);
+    }
+
+
 }
