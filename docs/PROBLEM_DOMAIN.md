@@ -33,6 +33,10 @@ GrammarAi does not own symbol meaning, infer a parse from free-form text, compil
 
 These boundaries describe intended ownership. Do not infer an existing project dependency or end-to-end adapter merely because two package domains are related.
 
+## Resource boundaries
+
+Grammar construction applies explicit limits before retaining untrusted collections: at most 4,096 rules, 1,024 symbols per production, and 65,536 right-hand-side symbols across a grammar. Grammar names are limited to 256 UTF-16 characters. These are representation and memory bounds, not a limit on grammar meaning or recursion depth at a future parser; GrammarAi does not parse or execute the grammar.
+
 ## Acceptance criteria
 
 1. Grammar identity, name, and start symbol are explicit and non-zero.
