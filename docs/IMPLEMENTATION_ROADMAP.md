@@ -175,11 +175,8 @@ Status discipline: checked means verified in source/tests or by reproducible com
 
 ---
 
-<p align="center">
-  <a href="https://github.com/TrentBest">
-    <img src="https://github.com/TrentBest.png?size=200" alt="The Singularity Workshop on GitHub" width="200">
-  </a>
-</p>
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
 
 <p align="center">
   <a href="https://github.com/TrentBest">GitHub</a> ·
