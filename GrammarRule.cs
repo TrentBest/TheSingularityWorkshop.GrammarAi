@@ -17,9 +17,13 @@ public sealed record GrammarRule
         if (leftHandSide == 0) throw new ArgumentOutOfRangeException(nameof(leftHandSide));
         ArgumentNullException.ThrowIfNull(rightHandSide);
 
+        var symbols = rightHandSide.Take(GrammarLimits.MaxSymbolsPerRule + 1).ToArray();
+        if (symbols.Length > GrammarLimits.MaxSymbolsPerRule)
+            throw new ArgumentException($"A production cannot contain more than {GrammarLimits.MaxSymbolsPerRule} symbols.", nameof(rightHandSide));
+
         Id = id;
         LeftHandSide = leftHandSide;
-        RightHandSide = Array.AsReadOnly(rightHandSide.ToArray());
+        RightHandSide = Array.AsReadOnly(symbols);
     }
 
     /// <summary>Gets the rule's nonzero identity.</summary>
