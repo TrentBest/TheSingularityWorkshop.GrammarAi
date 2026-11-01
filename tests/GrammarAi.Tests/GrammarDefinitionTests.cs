@@ -139,4 +139,9 @@ public sealed class GrammarDefinitionTests
             builder.Rule((ulong)i, 1, production);
         Assert.Throws<ArgumentException>(() => builder.Build());
     }
+    [Fact]
+    public void Grammar_rule_rejects_uninitialized_symbols()
+    {
+        Assert.Throws<ArgumentException>(() => new GrammarRule(1, 1, [default]));
+    }
 }
