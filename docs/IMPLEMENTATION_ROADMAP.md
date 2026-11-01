@@ -160,6 +160,8 @@ Status discipline: checked means verified in source/tests or by reproducible com
 - [ ] What minimum contract does AnyApp need to demonstrate semantic exchange without moving execution into GrammarAi?
 
 ## Progress log
+| 2026-11-01 | Added explicit grammar resource bounds for rule count, per-production symbols, and aggregate production symbols; rejected default/uninitialized symbols at rule construction. Added type/UML documentation for GrammarLimits. Latest development workflow [#186](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/41281228647) passed the Release build and all 15 tests. The host-driven external protocol resolver remains in open PR [#8](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/pull/8); no merge or publication occurred. | [GrammarLimits](../GrammarLimits.cs) · [GrammarRule](../GrammarRule.cs) · [Tests](../tests/GrammarAi.Tests/GrammarDefinitionTests.cs) · [Run #186](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/41281228647) | Readiness unchanged |
+
 | Date | Change | Evidence | Readiness |
 |---|---|---|---|
 | 2026-10-18 | Initial roadmap created after reviewing README, theory, and shared documentation standard. Full source/test/CI audit remains outstanding. | [README](../README.md) · [Theory](THEORY.md) · [Documentation Standard](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/master/DOCUMENTATION_STANDARD.md) | 35% |
