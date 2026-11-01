@@ -130,4 +130,13 @@ public sealed class GrammarDefinitionTests
             builder.Rule((ulong)i, 1);
         Assert.Throws<InvalidOperationException>(() => builder.Rule(GrammarLimits.MaxRules + 1UL, 1));
     }
+    [Fact]
+    public void Grammar_builder_bounds_aggregate_production_symbols()
+    {
+        var builder = new GrammarBuilder(1, "bounded-total", 1);
+        var production = Enumerable.Repeat(GrammarSymbol.NonTerminal(1), GrammarLimits.MaxSymbolsPerRule).ToArray();
+        for (var i = 1; i <= GrammarLimits.MaxTotalSymbols / GrammarLimits.MaxSymbolsPerRule + 1; i++)
+            builder.Rule((ulong)i, 1, production);
+        Assert.Throws<ArgumentException>(() => builder.Build());
+    }
 }
