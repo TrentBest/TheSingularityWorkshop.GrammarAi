@@ -16,6 +16,8 @@ Limits applied to grammar rule collections and ordered production symbols.
 
 ## Contract and use
 
+The current limits are: 4,096 rules per grammar; 1,024 symbols per production; 65,536 right-hand-side symbols across a grammar; and 256 characters per grammar name. The builder and immutable definition enforce the applicable bounds.
+
 The public constants are enforced by the owning constructors/builders. Treat them as part of the current representation contract; do not silently bypass them in host adapters.
 
 ## Verification
