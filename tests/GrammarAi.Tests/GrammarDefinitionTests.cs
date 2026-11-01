@@ -112,4 +112,22 @@ public sealed class GrammarDefinitionTests
         Assert.Throws<ArgumentException>(() => builder.Build());
     }
 
+    [Fact]
+    public void Grammar_definition_and_production_inputs_are_bounded()
+    {
+        Assert.Throws<ArgumentException>(() => new GrammarBuilder(1, new string('g', GrammarLimits.MaxNameCharacters + 1), 1));
+        Assert.Throws<ArgumentException>(() => new GrammarRule(1, 1,
+            Enumerable.Repeat(GrammarSymbol.NonTerminal(1), GrammarLimits.MaxSymbolsPerRule + 1)));
+        Assert.Throws<ArgumentException>(() => new GrammarBuilder(1, "bounded", 1)
+            .Rule(1, 1, Enumerable.Repeat(GrammarSymbol.NonTerminal(1), GrammarLimits.MaxSymbolsPerRule + 1).ToArray()));
+    }
+
+    [Fact]
+    public void Grammar_builder_stops_accepting_rules_at_the_limit()
+    {
+        var builder = new GrammarBuilder(1, "bounded", 1);
+        for (var i = 1; i <= GrammarLimits.MaxRules; i++)
+            builder.Rule((ulong)i, 1);
+        Assert.Throws<InvalidOperationException>(() => builder.Rule(GrammarLimits.MaxRules + 1UL, 1));
+    }
 }
