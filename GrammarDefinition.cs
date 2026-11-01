@@ -19,9 +19,16 @@ public sealed class GrammarDefinition
     {
         if (id == 0) throw new ArgumentOutOfRangeException(nameof(id));
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("A grammar name is required.", nameof(name));
+        if (name.Length > GrammarLimits.MaxNameCharacters) throw new ArgumentException($"A grammar name cannot exceed {GrammarLimits.MaxNameCharacters} characters.", nameof(name));
         if (startSymbol == 0) throw new ArgumentOutOfRangeException(nameof(startSymbol));
 
-        var values = rules?.ToArray() ?? throw new ArgumentNullException(nameof(rules));
+        ArgumentNullException.ThrowIfNull(rules);
+        var values = rules.Take(GrammarLimits.MaxRules + 1).ToArray();
+        if (values.Length > GrammarLimits.MaxRules)
+            throw new ArgumentException($"A grammar cannot contain more than {GrammarLimits.MaxRules} rules.", nameof(rules));
+        var totalSymbols = values.Sum(rule => (long)rule.RightHandSide.Count);
+        if (totalSymbols > GrammarLimits.MaxTotalSymbols)
+            throw new ArgumentException($"A grammar cannot contain more than {GrammarLimits.MaxTotalSymbols} production symbols in total.", nameof(rules));
         if (values.GroupBy(x => x.Id).Any(g => g.Count() > 1))
             throw new ArgumentException("A grammar cannot define the same rule ID more than once.", nameof(rules));
 
