@@ -10,7 +10,7 @@ Limits applied to grammar rule collections and ordered production symbols.
 ## Declaration and ownership
 
 - **Declaration:** public static class `GrammarLimits`.
-- **Source:** [GrammarLimits.cs](../../GrammarLimits.cs).
+- **Source:** [GrammarLimits.cs](GrammarLimits.cs).
 - **Responsibility:** Centralizes explicit, testable representation limits so callers can reason about bounded input.
 - **Non-goals:** These constants do not establish semantic validity, authorization, or execution safety.
 
@@ -24,8 +24,10 @@ See the package test project for boundary and over-limit regression cases.
 
 ## Related documentation
 
-- [Problem domain](../PROBLEM_DOMAIN.md)
-- [Documentation index](../../DOCUMENTATION_INDEX.md)
+- [Companion UML and use cases](./GrammarLimitsUML.md)
+
+- [Problem domain](docs/PROBLEM_DOMAIN.md)
+- [Documentation index](DOCUMENTATION_INDEX.md)
 
 ---
 
