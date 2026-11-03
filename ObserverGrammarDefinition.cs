@@ -154,13 +154,15 @@ public sealed record ObserverGrammarDefinition
     public const int CurrentSchemaVersion = 1;
     public const int MaxEvidencePredicates = 64;
 
-    public ObserverGrammarDefinition(string observerId, string observerVersion, ObserverProtocolReference sourceEvent,
-        ObserverCandidateScope candidate, IReadOnlyList<ObserverEvidencePredicate> evidence,
+    public ObserverGrammarDefinition(string observerId, string observerVersion, ObserverProtocolReference registrationRequest,
+        ObserverProtocolReference sourceEvent, ObserverCandidateScope candidate,
+        IReadOnlyList<ObserverEvidencePredicate> evidence,
         ObserverGateTransitionIntent successAction, ObserverNonSuccessBehavior nonSuccessBehavior,
         ObserverFailureBehavior failureBehavior = ObserverFailureBehavior.DiagnosticOnly)
     {
         ObserverId = ObserverProtocolReference.Required(observerId, nameof(observerId), 256);
         ObserverVersion = ObserverProtocolReference.Required(observerVersion, nameof(observerVersion), 64);
+        RegistrationRequest = registrationRequest ?? throw new ArgumentNullException(nameof(registrationRequest));
         SourceEvent = sourceEvent ?? throw new ArgumentNullException(nameof(sourceEvent));
         Candidate = candidate ?? throw new ArgumentNullException(nameof(candidate));
         ArgumentNullException.ThrowIfNull(evidence);
@@ -183,6 +185,7 @@ public sealed record ObserverGrammarDefinition
     public int SchemaVersion => CurrentSchemaVersion;
     public string ObserverId { get; }
     public string ObserverVersion { get; }
+    public ObserverProtocolReference RegistrationRequest { get; }
     public ObserverProtocolReference SourceEvent { get; }
     public ObserverCandidateScope Candidate { get; }
     public IReadOnlyList<ObserverEvidencePredicate> Evidence { get; }
