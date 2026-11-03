@@ -55,6 +55,7 @@ GrammarAi owns grammar identity, nonterminals, ordered productions, and referenc
 | Deterministic description | `GrammarDefinition.Describe` | `Description_is_deterministic` |
 | Epsilon representation | Empty `GrammarRule.RightHandSide` | `Empty_production_is_explicit_epsilon` |
 | Reachability | `GrammarDefinition.FindUnreachableNonTerminals` | reachability, recursion, and declaration-order tests |
+| External protocol-link discovery | `GrammarDefinition.FindUnresolvedProtocolReferences` with a host-supplied resolver | distinct references, first-use order, resolved/unresolved results, null resolver, exception propagation |
 | Resource bounds | `GrammarLimits` | bounded-name, rule, per-rule symbol, and aggregate-symbol tests |
 
 The evidence paths above are in `tests/GrammarAi.Tests/GrammarDefinitionTests.cs`. The test names and current source should be treated as the authority when documentation and implementation appear to differ.
