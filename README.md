@@ -58,7 +58,7 @@ Start with the [visual tour](https://github.com/TrentBest/TheSingularityWorkshop
 
 [Problem domain](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/PROBLEM_DOMAIN.md) — grammar concepts, structural validation, and non-goals.
 
-[Documentation index](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/DOCUMENTATION_INDEX.md) · [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
+[Documentation index](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/DOCUMENTATION_INDEX.md) · [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) · [If you only have a minute](#if-you-only-have-a-minute) · [Build a grammar](#6-build-a-grammar) · [Consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) · [Observer grammar](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/OBSERVER_GRAMMAR.md)
 
 ---
 
@@ -831,7 +831,7 @@ The linked documents are the **rooms**.
 | Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Visual tour and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
 | Visual overview | [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
-| Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
+| Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |\n| Versioned observer conditions and gate intent | [OBSERVER_GRAMMAR.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/OBSERVER_GRAMMAR.md) |
 | Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
 | Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Package | [NuGet](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi) |
@@ -896,4 +896,4 @@ Everything else composes around it rather than blurring it.
 ---
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
-<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
