@@ -122,19 +122,24 @@ var grammar = new GrammarBuilder(
     .Rule(
         7501,
         7400,
+        GrammarSymbol.NonTerminal(7401),
+        GrammarSymbol.NonTerminal(7402))
+    .Rule(
+        7502,
+        7401,
         GrammarSymbol.Terminal(
             new GrammarProtocolReference(7100, 7101)))
     .Rule(
-        7502,
-        7400,
+        7503,
+        7402,
         GrammarSymbol.Terminal(
             new GrammarProtocolReference(7200, 7201)))
     .Build();
 ```
 
-The resulting artifact can describe relationships between independently owned vocabularies.
+The start production expands to an ordered pair: the action terminal from Protocol A followed by the station terminal from Protocol B. The grammar references both independently owned vocabularies without copying their meanings.
 
-The current alpha does not define the semantics of combining those rules into an executable command. That belongs to a host layer.
+This remains a structural description, not an executable command. The host decides what the pair means, whether it is permitted, and whether any action may be taken.
 
 ## Example 5 — Self-description
 
@@ -208,11 +213,8 @@ That adapter is deliberately not part of the current alpha.
 
 ---
 
-<p align="center">
-  <a href="https://github.com/TrentBest">
-    <img src="https://github.com/TrentBest.png?size=200" alt="The Singularity Workshop on GitHub" width="200">
-  </a>
-</p>
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
 
 <p align="center">
   <a href="https://github.com/TrentBest">GitHub</a> ·
