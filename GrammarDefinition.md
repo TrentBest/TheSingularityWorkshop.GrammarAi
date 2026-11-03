@@ -22,6 +22,12 @@ A definition describes structure; it does not parse candidate text, load externa
 
 The constructor is internal; consumers normally obtain a definition through `GrammarBuilder.Build()`.
 
+## Reachability analysis
+
+`FindUnreachableNonTerminals()` performs a cycle-safe graph traversal from `StartSymbol`, following every nonterminal reference in every production alternative. It returns each unreachable nonterminal once, in the order its left-hand-side production first appears. The result is immutable and the grammar is not modified.
+
+Unreachable declarations are **allowed**, not build errors: a definition may intentionally include reusable fragments that a particular start symbol does not currently select. This method reports a structural fact; it does not decide whether an application should keep or remove those fragments.
+
 ## UML class card
 
 ```mermaid
@@ -35,6 +41,7 @@ classDiagram
       +string Name
       +ulong StartSymbol
       +IReadOnlyList~GrammarRule~ Rules
+      +FindUnreachableNonTerminals() IReadOnlyList~ulong~
       +Describe() string
       +ToString() string
       -GrammarDefinition(...)
@@ -76,4 +83,4 @@ Implementation: [`GrammarDefinition.cs`](https://github.com/TrentBest/TheSingula
 ---
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
-<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
