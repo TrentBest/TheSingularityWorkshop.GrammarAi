@@ -179,6 +179,27 @@ public sealed record ObserverGrammarDefinition
     public IReadOnlyList<ObserverEvidencePredicate> Evidence { get; }
     public ObserverGateTransitionIntent SuccessAction { get; }
     public ObserverNonSuccessBehavior NonSuccessBehavior { get; }
+
+    /// <summary>Rejects an event whose repository, ref, or candidate SHA differs from this observer's exact binding.</summary>
+    public void ValidateCandidate(ObserverCandidateScope actual)
+    {
+        ArgumentNullException.ThrowIfNull(actual);
+        if (!string.Equals(Candidate.Repository, actual.Repository, StringComparison.Ordinal) ||
+            !string.Equals(Candidate.CandidateRef, actual.CandidateRef, StringComparison.Ordinal) ||
+            !string.Equals(Candidate.CandidateSha, actual.CandidateSha, StringComparison.OrdinalIgnoreCase))
+            throw new ArgumentException("Event candidate does not match the observer's exact repository/ref/SHA binding.", nameof(actual));
+    }
+
+    /// <summary>Rejects an evidence packet that omits any evidence identity required by this definition.</summary>
+    /// <remarks>This checks presence only. It does not verify evidence authenticity or evaluate predicate truth.</remarks>
+    public void ValidateRequiredEvidence(IEnumerable<string> availableEvidenceIds)
+    {
+        ArgumentNullException.ThrowIfNull(availableEvidenceIds);
+        var available = new HashSet<string>(availableEvidenceIds, StringComparer.Ordinal);
+        var missing = Evidence.Select(item => item.EvidenceId).Where(id => !available.Contains(id)).ToArray();
+        if (missing.Length > 0)
+            throw new ArgumentException($"Evidence packet is incomplete; missing: {string.Join(", ", missing)}.", nameof(availableEvidenceIds));
+    }
 }
 
 /// <summary>Explicit result vocabulary shared with ProtocolAi; values are data, not computed here.</summary>
