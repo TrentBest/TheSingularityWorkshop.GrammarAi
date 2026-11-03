@@ -19,7 +19,8 @@ GrammarAi defines how symbols can be arranged into grammar productions. The gram
 | Define and inspect a grammar | [Examples](docs/EXAMPLES.md) |
 | See protocol identities become grammar structure | [Gallery](docs/GALLERY.md) |
 | Understand terminal references and nonterminal rules | [Consuming guide: protocol identities](docs/CONSUMING.md#2-start-with-protocol-identities) |
-| Understand recursion, epsilon, and reachability | [Theory chapter 3](docs/theory/03-productions-recursion.md) |\n| Define bounded observer conditions and gate-transition intent | [Observer grammar](docs/OBSERVER_GRAMMAR.md) |
+| Understand recursion, epsilon, and reachability | [Theory chapter 3](docs/theory/03-productions-recursion.md) |
+| Define bounded observer conditions and gate-transition intent | [Observer grammar](docs/OBSERVER_GRAMMAR.md) |
 
 ## Theory learning path
 
