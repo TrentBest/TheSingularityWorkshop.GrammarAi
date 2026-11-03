@@ -831,7 +831,8 @@ The linked documents are the **rooms**.
 | Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Visual tour and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
 | Visual overview | [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
-| Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |\n| Versioned observer conditions and gate intent | [OBSERVER_GRAMMAR.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/OBSERVER_GRAMMAR.md) |
+| Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
+| Versioned observer conditions and gate intent | [OBSERVER_GRAMMAR.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/OBSERVER_GRAMMAR.md) |
 | Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
 | Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Package | [NuGet](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi) |
