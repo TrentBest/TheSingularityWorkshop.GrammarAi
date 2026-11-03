@@ -91,10 +91,9 @@ public sealed class ObserverGrammarTests
 
         definition.ValidateRequiredEvidence(["build-succeeded", "tests-passed", "extra-diagnostic"]);
 
-        Assert.Equal(ObserverEvaluationState.True, ObserverEvaluationState.True);
-        Assert.Equal(ObserverEvaluationState.False, ObserverEvaluationState.False);
-        Assert.Equal(ObserverEvaluationState.Unknown, ObserverEvaluationState.Unknown);
-        Assert.Equal(ObserverEvaluationState.Incomplete, ObserverEvaluationState.Incomplete);
+        Assert.Equal(
+            new[] { ObserverEvaluationState.True, ObserverEvaluationState.False, ObserverEvaluationState.Unknown, ObserverEvaluationState.Incomplete },
+            Enum.GetValues<ObserverEvaluationState>());
     }
 
     [Fact]
