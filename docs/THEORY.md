@@ -21,7 +21,7 @@ Read these chapters in order. Each chapter introduces a concept, explains its pr
 | [2. The grammar model](theory/02-grammar-model.md) | Definitions, productions, symbols, builder | How the public structural model fits together |
 | [3. Productions, recursion, and reachability](theory/03-productions-recursion.md) | Alternatives, sequences, epsilon, recursion, graph reachability | How to read and inspect grammar structure |
 | [4. Structural validation and ownership boundaries](theory/04-validation-and-ownership.md) | Construction invariants, resource bounds, external references | What GrammarAi checks and what remains host-owned |
-| [5. Worked example: a small command language](theory/05-worked-example.md) | End-to-end structural example | How a consumer builds a grammar without confusing it with authorization or execution |
+| [5. Worked example: a small command language](theory/05-worked-example.md) | End-to-end structural example | How a consumer builds a grammar without confusing it with authorization or execution |\n| [6. Advanced implications and architectural boundaries](theory/06-advanced-implications.md) | Deprobabilization, CFG foundations, provider neutrality, ownership, and open questions | What deterministic structure can contribute—and what it cannot guarantee |
 
 ## Architectural model
 
