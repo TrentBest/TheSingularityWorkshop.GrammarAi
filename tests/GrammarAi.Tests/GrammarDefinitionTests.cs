@@ -140,6 +140,58 @@ public sealed class GrammarDefinitionTests
         Assert.Throws<ArgumentException>(() => builder.Build());
     }
     [Fact]
+    public void Unreachable_nonterminals_are_reported_in_first_declaration_order()
+    {
+        var grammar = new GrammarBuilder(3001, "Fragments", 4001)
+            .Rule(5001, 4001, GrammarSymbol.NonTerminal(4002))
+            .Rule(5002, 4002, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2001)))
+            .Rule(5003, 4009, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2009)))
+            .Rule(5004, 4008, GrammarSymbol.NonTerminal(4009))
+            .Rule(5005, 4007, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2007)))
+            .Build();
+
+        Assert.Equal(new ulong[] { 4009, 4008, 4007 }, grammar.FindUnreachableNonTerminals());
+    }
+
+    [Fact]
+    public void Reachability_follows_alternatives_and_ordered_sequences()
+    {
+        var grammar = new GrammarBuilder(3001, "Reachable", 4001)
+            .Rule(5001, 4001, GrammarSymbol.NonTerminal(4002), GrammarSymbol.NonTerminal(4003))
+            .Rule(5002, 4001, GrammarSymbol.NonTerminal(4004))
+            .Rule(5003, 4002, GrammarSymbol.NonTerminal(4005))
+            .Rule(5004, 4003, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2003)))
+            .Rule(5005, 4004)
+            .Rule(5006, 4005, GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2005)))
+            .Build();
+
+        Assert.Empty(grammar.FindUnreachableNonTerminals());
+    }
+
+    [Fact]
+    public void Reachability_terminates_for_mutually_recursive_nonterminals()
+    {
+        var grammar = new GrammarBuilder(3001, "MutualRecursion", 4001)
+            .Rule(5001, 4001, GrammarSymbol.NonTerminal(4002))
+            .Rule(5002, 4002, GrammarSymbol.NonTerminal(4003))
+            .Rule(5003, 4003, GrammarSymbol.NonTerminal(4002))
+            .Rule(5004, 4009)
+            .Build();
+
+        Assert.Equal(new ulong[] { 4009 }, grammar.FindUnreachableNonTerminals());
+    }
+
+    [Fact]
+    public void Epsilon_start_production_has_no_unreachable_nonterminals()
+    {
+        var grammar = new GrammarBuilder(3001, "Epsilon", 4001)
+            .Rule(5001, 4001)
+            .Build();
+
+        Assert.Empty(grammar.FindUnreachableNonTerminals());
+    }
+
+    [Fact]
     public void Grammar_rule_rejects_uninitialized_symbols()
     {
         Assert.Throws<ArgumentException>(() => new GrammarRule(1, 1, [default]));
