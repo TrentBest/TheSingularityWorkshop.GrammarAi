@@ -24,7 +24,7 @@ It is an observer-specific model alongside the existing general grammar engine. 
 | Atomic command proposal representation | CommandAi |
 | Durable observer lifecycle, delivery/replay, policy, approval, authorization and execution | Foundry / host |
 
-GrammarAi refers to the ProtocolAi envelope schema, version, event kind, and payload type by identity strings. It does not copy ProtocolAi DTOs or take a runtime dependency on ProtocolAi.
+GrammarAi refers to both the ProtocolAi observer-registration request contract and the source-event contract by envelope schema, version, event kind, and payload type identity strings. ProtocolAi continues to own the request and event DTOs. It does not copy ProtocolAi DTOs or take a runtime dependency on ProtocolAi.
 
 The candidate binding is exact: canonical `owner/repository`, ref, and full Git object SHA. The consumer maps those values from ProtocolAi's `ProtocolCandidateProvenance` and must reject any mismatch. The SHA carried by the event is not proof that the evidence is trustworthy.
 
@@ -64,6 +64,11 @@ using TheSingularityWorkshop.GrammarAi;
 var observer = new ObserverGrammarDefinition(
     observerId: "build-and-tests",
     observerVersion: "1",
+    registrationRequest: new ObserverProtocolReference(
+        "TheSingularityWorkshop.ProtocolAi.EventEnvelope",
+        1,
+        "ObserverRegistrationRequested",
+        "ProtocolObserverRegistrationRequest"),
     sourceEvent: new ObserverProtocolReference(
         "TheSingularityWorkshop.ProtocolAi.EventEnvelope",
         1,
