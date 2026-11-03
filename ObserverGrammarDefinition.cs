@@ -58,8 +58,20 @@ public enum ObserverEvidenceOperator { Present, Equals }
 /// <summary>A typed scalar literal used by a bounded evidence predicate.</summary>
 public sealed record ObserverEvidenceValue
 {
-    private ObserverEvidenceValue(ObserverEvidenceValueKind kind, bool? boolean, long? integer, string? text)
+    public ObserverEvidenceValue(ObserverEvidenceValueKind kind, bool? boolean, long? integer, string? text)
     {
+        if (!Enum.IsDefined(kind)) throw new ArgumentOutOfRangeException(nameof(kind));
+        var populated = (boolean.HasValue ? 1 : 0) + (integer.HasValue ? 1 : 0) + (text is not null ? 1 : 0);
+        if (populated != 1 ||
+            (kind == ObserverEvidenceValueKind.Boolean && !boolean.HasValue) ||
+            (kind == ObserverEvidenceValueKind.Integer && !integer.HasValue) ||
+            (kind == ObserverEvidenceValueKind.Text && text is null))
+            throw new ArgumentException("Exactly one value must be supplied and it must match the declared kind.");
+        if (text is not null)
+        {
+            if (string.IsNullOrWhiteSpace(text)) throw new ArgumentException("Evidence text cannot be empty.", nameof(text));
+            if (text.Length > 1024) throw new ArgumentException("Evidence text cannot exceed 1024 characters.", nameof(text));
+        }
         Kind = kind;
         Boolean = boolean;
         Integer = integer;
@@ -197,6 +209,12 @@ public static class ObserverGrammarJson
             using var document = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 16 });
             if (document.RootElement.ValueKind != JsonValueKind.Object)
                 throw new FormatException("Observer grammar must be a JSON object.");
+            if (!document.RootElement.TryGetProperty("schema", out var schema) ||
+                schema.GetString() != ObserverGrammarDefinition.CurrentSchema ||
+                !document.RootElement.TryGetProperty("schemaVersion", out var version) ||
+                !version.TryGetInt32(out var schemaVersion) ||
+                schemaVersion != ObserverGrammarDefinition.CurrentSchemaVersion)
+                throw new FormatException("Unsupported or missing observer grammar schema/version.");
             RejectDuplicateProperties(document.RootElement);
             var result = JsonSerializer.Deserialize<ObserverGrammarDefinition>(json, Options)
                 ?? throw new FormatException("Observer grammar cannot be null.");
