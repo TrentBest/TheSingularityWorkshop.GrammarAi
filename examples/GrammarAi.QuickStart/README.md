@@ -34,7 +34,7 @@ The current example uses a project reference so the repository exercises its own
 
 <p align="center">
   <a href="https://github.com/TrentBest">
-    <img src="https://github.com/TrentBest.png?size=200" alt="The Singularity Workshop on GitHub" width="200">
+    <img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200">
   </a>
 </p>
 
