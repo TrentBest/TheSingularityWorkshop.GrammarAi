@@ -12,6 +12,11 @@ public sealed class ObserverGrammarTests
             new ObserverProtocolReference(
                 "TheSingularityWorkshop.ProtocolAi.EventEnvelope",
                 1,
+                "ObserverRegistrationRequested",
+                "ProtocolObserverRegistrationRequest"),
+            new ObserverProtocolReference(
+                "TheSingularityWorkshop.ProtocolAi.EventEnvelope",
+                1,
                 "SourceEvent",
                 "ProtocolSourceEvent"),
             new ObserverCandidateScope(
@@ -45,6 +50,7 @@ public sealed class ObserverGrammarTests
         Assert.Equal(ObserverGrammarDefinition.CurrentSchema, restored.Schema);
         Assert.Equal(1, restored.SchemaVersion);
         Assert.Equal(original.ObserverId, restored.ObserverId);
+        Assert.Equal(original.RegistrationRequest.PayloadType, restored.RegistrationRequest.PayloadType);
         Assert.Equal(original.SourceEvent.EventKind, restored.SourceEvent.EventKind);
         Assert.Equal(original.Candidate.CandidateSha, restored.Candidate.CandidateSha);
         Assert.Equal(2, restored.Evidence.Count);
@@ -212,6 +218,7 @@ public sealed class ObserverGrammarTests
         Assert.Throws<ArgumentException>(() => new ObserverGrammarDefinition(
             "observer",
             "1",
+            new ObserverProtocolReference("ProtocolAi.EventEnvelope", 1, "ObserverRegistrationRequested", "ProtocolObserverRegistrationRequest"),
             new ObserverProtocolReference("ProtocolAi.EventEnvelope", 1, "SourceEvent", "ProtocolSourceEvent"),
             new ObserverCandidateScope("owner/repo", "refs/heads/main", new string('c', 40)),
             evidence,
