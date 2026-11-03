@@ -38,6 +38,9 @@ public sealed record ObserverCandidateScope
         if (parts.Length != 2 || parts.Any(string.IsNullOrWhiteSpace))
             throw new ArgumentException("Repository must use canonical owner/name form.", nameof(repository));
         CandidateRef = ObserverProtocolReference.Required(candidateRef, nameof(candidateRef), 512);
+        if (!CandidateRef.StartsWith("refs/", StringComparison.Ordinal) ||
+            CandidateRef.Contains('*') || CandidateRef.Contains('?') || CandidateRef.Contains('[') || CandidateRef.Contains(']'))
+            throw new ArgumentException("Candidate ref must be a fully qualified, non-wildcard Git ref.", nameof(candidateRef));
         CandidateSha = ObserverProtocolReference.Required(candidateSha, nameof(candidateSha), 64);
         if ((CandidateSha.Length != 40 && CandidateSha.Length != 64) || !CandidateSha.All(Uri.IsHexDigit))
             throw new ArgumentException("Candidate SHA must be a full 40- or 64-character hexadecimal Git object ID.", nameof(candidateSha));
@@ -141,6 +144,9 @@ public sealed record ObserverGateTransitionIntent
 /// <summary>Defines what a consumer should do when the predicate is not definitively true.</summary>
 public enum ObserverNonSuccessBehavior { NoTransition, DiagnosticOnly }
 
+/// <summary>Defines how a failed, cancelled, or otherwise unsuccessful source event is handled.</summary>
+public enum ObserverFailureBehavior { NoTransition, DiagnosticOnly }
+
 /// <summary>Versioned, bounded observer condition/action data. It never evaluates evidence or executes an action.</summary>
 public sealed record ObserverGrammarDefinition
 {
@@ -150,7 +156,8 @@ public sealed record ObserverGrammarDefinition
 
     public ObserverGrammarDefinition(string observerId, string observerVersion, ObserverProtocolReference sourceEvent,
         ObserverCandidateScope candidate, IReadOnlyList<ObserverEvidencePredicate> evidence,
-        ObserverGateTransitionIntent successAction, ObserverNonSuccessBehavior nonSuccessBehavior)
+        ObserverGateTransitionIntent successAction, ObserverNonSuccessBehavior nonSuccessBehavior,
+        ObserverFailureBehavior failureBehavior = ObserverFailureBehavior.DiagnosticOnly)
     {
         ObserverId = ObserverProtocolReference.Required(observerId, nameof(observerId), 256);
         ObserverVersion = ObserverProtocolReference.Required(observerVersion, nameof(observerVersion), 64);
@@ -168,6 +175,8 @@ public sealed record ObserverGrammarDefinition
         SuccessAction = successAction ?? throw new ArgumentNullException(nameof(successAction));
         if (!Enum.IsDefined(nonSuccessBehavior)) throw new ArgumentOutOfRangeException(nameof(nonSuccessBehavior));
         NonSuccessBehavior = nonSuccessBehavior;
+        if (!Enum.IsDefined(failureBehavior)) throw new ArgumentOutOfRangeException(nameof(failureBehavior));
+        FailureBehavior = failureBehavior;
     }
 
     public string Schema => CurrentSchema;
@@ -179,6 +188,7 @@ public sealed record ObserverGrammarDefinition
     public IReadOnlyList<ObserverEvidencePredicate> Evidence { get; }
     public ObserverGateTransitionIntent SuccessAction { get; }
     public ObserverNonSuccessBehavior NonSuccessBehavior { get; }
+    public ObserverFailureBehavior FailureBehavior { get; }
 
     /// <summary>Rejects an event whose repository, ref, or candidate SHA differs from this observer's exact binding.</summary>
     public void ValidateCandidate(ObserverCandidateScope actual)
@@ -208,6 +218,8 @@ public enum ObserverEvaluationState { True, False, Unknown, Incomplete }
 /// <summary>Strict JSON codec for the versioned observer grammar document.</summary>
 public static class ObserverGrammarJson
 {
+    public const int MaxDocumentCharacters = 65_536;
+
     private static readonly JsonSerializerOptions Options = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -225,6 +237,8 @@ public static class ObserverGrammarJson
     public static ObserverGrammarDefinition Deserialize(string json)
     {
         if (string.IsNullOrWhiteSpace(json)) throw new ArgumentException("Observer grammar JSON is required.", nameof(json));
+        if (json.Length > MaxDocumentCharacters)
+            throw new FormatException($"Observer grammar JSON cannot exceed {MaxDocumentCharacters} characters.");
         try
         {
             using var document = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 16 });
