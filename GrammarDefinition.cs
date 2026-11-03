@@ -63,6 +63,61 @@ public sealed class GrammarDefinition
     public IReadOnlyList<GrammarRule> Rules => _rules;
 
     /// <summary>
+    /// Finds nonterminals that cannot be reached by following productions from the start symbol.
+    /// </summary>
+    /// <remarks>
+    /// Unreachable nonterminals are reported as analysis findings, not construction errors. A grammar may
+    /// intentionally retain reusable or host-selected fragments that are not reachable from its current start symbol.
+    /// Results follow the first declaration order of each nonterminal and do not mutate the grammar.
+    /// </remarks>
+    /// <returns>An immutable list of unreachable nonterminal identities in declaration order.</returns>
+    public IReadOnlyList<ulong> FindUnreachableNonTerminals()
+    {
+        var productions = new Dictionary<ulong, List<ulong>>();
+        foreach (var rule in _rules)
+        {
+            if (!productions.TryGetValue(rule.LeftHandSide, out var references))
+            {
+                references = [];
+                productions.Add(rule.LeftHandSide, references);
+            }
+
+            foreach (var symbol in rule.RightHandSide)
+            {
+                if (symbol.IsNonTerminal)
+                    references.Add(symbol.Id);
+            }
+        }
+
+        var reachable = new HashSet<ulong> { StartSymbol };
+        var pending = new Queue<ulong>();
+        pending.Enqueue(StartSymbol);
+
+        while (pending.Count > 0)
+        {
+            var current = pending.Dequeue();
+            if (!productions.TryGetValue(current, out var references))
+                continue;
+
+            foreach (var reference in references)
+            {
+                if (reachable.Add(reference))
+                    pending.Enqueue(reference);
+            }
+        }
+
+        var reported = new HashSet<ulong>();
+        var unreachable = new List<ulong>();
+        foreach (var rule in _rules)
+        {
+            if (!reachable.Contains(rule.LeftHandSide) && reported.Add(rule.LeftHandSide))
+                unreachable.Add(rule.LeftHandSide);
+        }
+
+        return Array.AsReadOnly(unreachable.ToArray());
+    }
+
+    /// <summary>
     /// Emits a deterministic representation suitable for inclusion in an AI-facing protocol description.
     /// </summary>
     /// <returns>A stable text representation of this grammar.</returns>
