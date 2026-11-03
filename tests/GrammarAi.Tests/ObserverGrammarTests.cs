@@ -192,8 +192,10 @@ public sealed class ObserverGrammarTests
     [Fact]
     public void Oversized_observer_documents_are_rejected()
     {
-        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize(
-            new string(' ', ObserverGrammarJson.MaxDocumentCharacters + 1)));
+        var oversized = "{\"schema\":\"TheSingularityWorkshop.GrammarAi.Observer\",\"schemaVersion\":1,\"padding\":\"" +
+            new string('x', ObserverGrammarJson.MaxDocumentCharacters) + "\"}";
+
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize(oversized));
     }
 
     [Fact]
