@@ -38,11 +38,14 @@ Version 1 supports only:
 - `Equals`: the named evidence field must equal one typed scalar literal.
 - Scalar types: Boolean, Integer, and Text.
 - A bounded list of up to 64 distinct evidence identities.
-- A single named success action targeting a versioned gate.\n- Separate explicit handling for predicate non-success and failed/cancelled source events.
+- A single named success action targeting a versioned gate.
+- Separate explicit handling for predicate non-success and failed/cancelled source events.
 
 There is no embedded expression language, arbitrary code, callback, script, unbounded nesting, dynamic target, or free-form action. The success intent is limited to the ProtocolAi-compatible `Satisfied` state in this schema version.
 
-The definition separately records behavior for predicate non-success (`False`, `Unknown`, or `Incomplete`) and failed/cancelled source events. A failure diagnostic cannot satisfy the success predicate. The JSON document is capped at 65,536 characters.\n\nThe definition also records the non-success behavior. A consumer must preserve the distinct evaluation states:
+The definition separately records behavior for predicate non-success (`False`, `Unknown`, or `Incomplete`) and failed/cancelled source events. A failure diagnostic cannot satisfy the success predicate. The JSON document is capped at 65,536 characters.
+
+The definition also records the non-success behavior. A consumer must preserve the distinct evaluation states:
 
 | State | Meaning |
 |---|---|
