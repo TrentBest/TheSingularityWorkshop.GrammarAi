@@ -54,7 +54,7 @@ Status discipline: checked means verified in source/tests or by reproducible com
 - [ ] Decide whether nonterminals may have multiple productions and define alternative ordering.
 - [ ] Validate that start symbol has a production.
 - [ ] Validate that every internal nonterminal reference has a production.
-- [ ] Define treatment of unreachable nonterminals/rules: allowed, warning, or validation error.
+- [x] Unreachable nonterminals are allowed at build time; `FindUnreachableNonTerminals()` reports them as non-mutating analysis findings in first-declaration order. Consumers decide whether an unused fragment is useful.
 - [ ] Define duplicate rule IDs, duplicate productions, and duplicate alternatives.
 - [ ] Ensure terminal and nonterminal variants cannot be confused or formed into invalid states.
 - [ ] Define how independent protocols may be referenced and how duplicate external references are treated.
@@ -76,7 +76,7 @@ Status discipline: checked means verified in source/tests or by reproducible com
 - [ ] Inventory Build and validation behavior from source; distinguish construction checks from explicit validation.
 - [ ] Define invalid conditions, diagnostics, ordering, and fail-fast versus aggregate behavior.
 - [ ] Test missing start productions, missing nonterminal productions, invalid IDs, duplicate IDs, malformed symbols, and empty grammars.
-- [ ] Decide whether unreachable rules, recursive cycles, duplicate alternatives, and unused declarations are errors, warnings, or allowed.
+- [x] Unreachable nonterminals are allowed and surfaced through explicit reachability analysis; recursive cycles are traversed safely. Duplicate alternatives and unused declaration policy beyond reachability remain open.
 - [ ] Use cycle-safe graph traversal if validation/inspection walks recursive relationships.
 - [ ] Ensure validation terminates predictably for large or adversarial input.
 - [ ] Separate structural validity from external protocol resolution.
@@ -160,6 +160,8 @@ Status discipline: checked means verified in source/tests or by reproducible com
 - [ ] What minimum contract does AnyApp need to demonstrate semantic exchange without moving execution into GrammarAi?
 
 ## Progress log
+| 2026-11-03 | Added `GrammarDefinition.FindUnreachableNonTerminals()`: iterative, cycle-safe reachability from the start symbol; returns distinct unreachable nonterminal IDs in first-declaration order. Unreachable fragments remain legal and are reported only as analysis findings. Added tests for declaration ordering, alternatives/sequences, mutual recursion, and epsilon; updated the type guide. CI verification is pending, so release readiness remains unchanged. | [GrammarDefinition](../GrammarDefinition.cs) · [Tests](../tests/GrammarAi.Tests/GrammarDefinitionTests.cs) · [Type guide](../GrammarDefinition.md) | Unchanged |
+
 | 2026-11-01 | Added explicit grammar resource bounds for rule count, per-production symbols, and aggregate production symbols; rejected default/uninitialized symbols at rule construction. Added type/UML documentation for GrammarLimits. Latest development workflow [#190](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/41281867810) passed the Release build and all 15 tests. The host-driven external protocol resolver remains in open PR [#8](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/pull/8); no merge or publication occurred. | [GrammarLimits](../GrammarLimits.cs) · [GrammarRule](../GrammarRule.cs) · [Tests](../tests/GrammarAi.Tests/GrammarDefinitionTests.cs) · [Run #186](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/41281228647) | Readiness unchanged |
 
 | Date | Change | Evidence | Readiness |
