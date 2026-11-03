@@ -149,7 +149,7 @@ public sealed record ObserverGrammarDefinition
     public const int MaxEvidencePredicates = 64;
 
     public ObserverGrammarDefinition(string observerId, string observerVersion, ObserverProtocolReference sourceEvent,
-        ObserverCandidateScope candidate, IEnumerable<ObserverEvidencePredicate> evidence,
+        ObserverCandidateScope candidate, IReadOnlyList<ObserverEvidencePredicate> evidence,
         ObserverGateTransitionIntent successAction, ObserverNonSuccessBehavior nonSuccessBehavior)
     {
         ObserverId = ObserverProtocolReference.Required(observerId, nameof(observerId), 256);
