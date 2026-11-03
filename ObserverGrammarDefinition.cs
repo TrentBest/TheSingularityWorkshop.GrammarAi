@@ -93,14 +93,14 @@ public sealed record ObserverEvidenceValue
     }
 }
 
-/// <summary>One typed requirement over a named field in the referenced ProtocolAi payload.</summary>
+/// <summary>One typed requirement over a named field in an external evidence packet referenced by protocol provenance.</summary>
 public sealed record ObserverEvidencePredicate
 {
-    public ObserverEvidencePredicate(string evidenceId, string payloadField, ObserverEvidenceValueKind valueKind,
+    public ObserverEvidencePredicate(string evidenceId, string evidenceField, ObserverEvidenceValueKind valueKind,
         ObserverEvidenceOperator operation, ObserverEvidenceValue? expectedValue = null)
     {
         EvidenceId = ObserverProtocolReference.Required(evidenceId, nameof(evidenceId), 128);
-        PayloadField = ObserverProtocolReference.Required(payloadField, nameof(payloadField), 256);
+        EvidenceField = ObserverProtocolReference.Required(evidenceField, nameof(evidenceField), 256);
         if (!Enum.IsDefined(valueKind)) throw new ArgumentOutOfRangeException(nameof(valueKind));
         if (!Enum.IsDefined(operation)) throw new ArgumentOutOfRangeException(nameof(operation));
         if (operation == ObserverEvidenceOperator.Equals && expectedValue is null)
@@ -115,7 +115,7 @@ public sealed record ObserverEvidencePredicate
     }
 
     public string EvidenceId { get; }
-    public string PayloadField { get; }
+    public string EvidenceField { get; }
     public ObserverEvidenceValueKind ValueKind { get; }
     public ObserverEvidenceOperator Operation { get; }
     public ObserverEvidenceValue? ExpectedValue { get; }
