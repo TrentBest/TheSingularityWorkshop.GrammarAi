@@ -83,7 +83,7 @@ A grammar can have:
 - nonterminals;
 - ordered production rules;
 - references to external protocol symbols;
-- deterministic validation;
+- deterministic construction checks and reachability analysis;
 - deterministic self-description.
 
 That makes it a portable artifact.
@@ -541,7 +541,7 @@ This is exactly the kind of boundary that allows a tiny primitive to remain usef
 
 - How are grammar IDs allocated?
 - How are grammar versions negotiated?
-- Should recursive productions be explicitly supported?
+- Recursive and mutually recursive productions are supported by the current structural model; decide whether future consumers need additional recursion-specific constraints.
 - How are independently authored grammars composed?
 - How should abstract grammar map to provider-specific constraints?
 - How should generated output be validated?
@@ -571,11 +571,8 @@ The interesting part is the boundary.
 
 ---
 
-<p align="center">
-  <a href="https://github.com/TrentBest">
-    <img src="https://github.com/TrentBest.png?size=200" alt="The Singularity Workshop on GitHub" width="200">
-  </a>
-</p>
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
 
 <p align="center">
   <a href="https://github.com/TrentBest">GitHub</a> ·
