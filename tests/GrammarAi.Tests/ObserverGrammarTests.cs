@@ -170,6 +170,33 @@ public sealed class ObserverGrammarTests
     }
 
     [Fact]
+    public void Wildcard_candidate_refs_are_rejected()
+    {
+        Assert.Throws<ArgumentException>(() => new ObserverCandidateScope(
+            "TrentBest/Example",
+            "refs/heads/*",
+            new string('a', 40)));
+    }
+
+    [Fact]
+    public void Failure_behavior_round_trips_separately_from_predicate_non_success_behavior()
+    {
+        var definition = CreateDefinition();
+        var json = ObserverGrammarJson.Serialize(definition);
+        var restored = ObserverGrammarJson.Deserialize(json);
+
+        Assert.Equal(ObserverNonSuccessBehavior.DiagnosticOnly, restored.NonSuccessBehavior);
+        Assert.Equal(ObserverFailureBehavior.DiagnosticOnly, restored.FailureBehavior);
+    }
+
+    [Fact]
+    public void Oversized_observer_documents_are_rejected()
+    {
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize(
+            new string(' ', ObserverGrammarJson.MaxDocumentCharacters + 1)));
+    }
+
+    [Fact]
     public void Evidence_predicate_count_is_bounded()
     {
         var evidence = Enumerable.Range(0, ObserverGrammarDefinition.MaxEvidencePredicates + 1)
