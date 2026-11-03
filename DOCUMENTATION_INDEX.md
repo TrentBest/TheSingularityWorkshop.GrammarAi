@@ -14,11 +14,24 @@ GrammarAi defines how symbols can be arranged into grammar productions. The gram
 | Your goal | Read |
 |---|---|
 | Understand the problem and the WHAT/HOW boundary | [README](README.md) |
+| Follow the textbook-style theory learning path | [GrammarAi Theory](docs/THEORY.md) |
 | Add GrammarAi to a .NET application | [Consuming GrammarAi](docs/CONSUMING.md) |
 | Define and inspect a grammar | [Examples](docs/EXAMPLES.md) |
 | See protocol identities become grammar structure | [Gallery](docs/GALLERY.md) |
 | Understand terminal references and nonterminal rules | [Consuming guide: protocol identities](docs/CONSUMING.md#2-start-with-protocol-identities) |
-| Understand the role of recursive productions and epsilon | [Examples](docs/EXAMPLES.md) |
+| Understand recursion, epsilon, and reachability | [Theory chapter 3](docs/theory/03-productions-recursion.md) |
+
+## Theory learning path
+
+The explanatory material is split into five progressive chapters:
+
+1. [From vocabulary to language](docs/theory/01-why-grammar.md)
+2. [The grammar model](docs/theory/02-grammar-model.md)
+3. [Productions, recursion, and reachability](docs/theory/03-productions-recursion.md)
+4. [Structural validation and ownership boundaries](docs/theory/04-validation-and-ownership.md)
+5. [Worked example: a small command language](docs/theory/05-worked-example.md)
+
+The theory pages explain concepts and map claims to current source and tests. Operational setup remains in the consuming guide; public type contracts remain in the class guides below.
 
 ## Source-level class guides
 
@@ -53,4 +66,4 @@ GrammarAi does not call a model, parse generated text, authorize actions, or exe
 ---
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
-<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
