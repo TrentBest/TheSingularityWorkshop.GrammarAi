@@ -872,6 +872,7 @@ Everything else composes around it rather than blurring it.
 - **Theory:** [docs/THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md)
 - **Examples:** [docs/EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md)
 - **Consuming:** [docs/CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md)
+- **Observer grammar:** [docs/OBSERVER_GRAMMAR.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/OBSERVER_GRAMMAR.md) — bounded observer conditions and gate-transition intent; no evidence evaluation or execution.
 - **AI Exchange design:** [docs/AI_EXCHANGE.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/AI_EXCHANGE.md) — host/LLM exchange architecture and ownership boundaries; design guidance, not a shipped exchange API.
 
 - **ProtocolAI:** https://github.com/TrentBest/TheSingularityWorkshop.ProtocolAi
