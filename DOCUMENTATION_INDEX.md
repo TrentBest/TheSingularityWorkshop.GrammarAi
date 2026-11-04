@@ -16,6 +16,7 @@ GrammarAi defines how symbols can be arranged into grammar productions. The gram
 | Understand the problem and the WHAT/HOW boundary | [README](README.md) |
 | Follow the textbook-style theory learning path | [GrammarAi Theory](docs/THEORY.md) |
 | Add GrammarAi to a .NET application | [Consuming GrammarAi](docs/CONSUMING.md) |
+| Understand the host/LLM exchange design and its ownership boundaries | [AI Exchange design note](docs/AI_EXCHANGE.md) |
 | Define and inspect a grammar | [Examples](docs/EXAMPLES.md) |
 | See protocol identities become grammar structure | [Gallery](docs/GALLERY.md) |
 | Understand terminal references and nonterminal rules | [Consuming guide: protocol identities](docs/CONSUMING.md#2-start-with-protocol-identities) |
