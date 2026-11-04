@@ -27,6 +27,15 @@ Or add this to your project file:
 
 Use the version currently published on NuGet when consuming a later release.
 
+### Visual Studio walkthrough
+
+1. Create a **Console App** project targeting **.NET 8**.
+2. Open **View → Terminal** and change to the directory containing the new project's `.csproj` file.
+3. Run the package-install command above (or use **Manage NuGet Packages** and select `TheSingularityWorkshop.GrammarAi`).
+4. Paste the complete example from [Define a grammar](#3-define-a-grammar) into `Program.cs`.
+5. Run the project with Visual Studio's **Run** button or `dotnet run`.
+
+
 ## 2. Start with protocol identities
 
 GrammarAI deliberately does not need a direct ProtocolAI package reference. Instead, it refers to externally owned symbols by:
