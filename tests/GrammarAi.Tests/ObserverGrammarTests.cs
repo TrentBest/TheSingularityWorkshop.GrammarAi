@@ -225,4 +225,122 @@ public sealed class ObserverGrammarTests
             new ObserverGateTransitionIntent("gate", "1"),
             ObserverNonSuccessBehavior.NoTransition));
     }
+
+    [Fact]
+    public void Protocol_reference_rejects_invalid_version_and_required_fields()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ObserverProtocolReference("schema", 0, "kind", "payload"));
+        Assert.Throws<ArgumentException>(() => new ObserverProtocolReference(" ", 1, "kind", "payload"));
+        Assert.Throws<ArgumentException>(() => new ObserverProtocolReference("schema", 1, "", "payload"));
+        Assert.Throws<ArgumentException>(() => new ObserverProtocolReference("schema", 1, "kind", new string('x', 257)));
+    }
+
+    [Fact]
+    public void Candidate_scope_rejects_noncanonical_repository_and_invalid_refs()
+    {
+        var sha = new string('a', 40);
+        Assert.Throws<ArgumentException>(() => new ObserverCandidateScope("owner", "refs/heads/main", sha));
+        Assert.Throws<ArgumentException>(() => new ObserverCandidateScope("owner//repo", "refs/heads/main", sha));
+        Assert.Throws<ArgumentException>(() => new ObserverCandidateScope("owner/repo", "main", sha));
+        Assert.Throws<ArgumentException>(() => new ObserverCandidateScope("owner/repo", "refs/heads/main?", sha));
+        Assert.Throws<ArgumentException>(() => new ObserverCandidateScope("owner/repo", "refs/heads/main", new string('g', 40)));
+        Assert.Throws<ArgumentException>(() => new ObserverCandidateScope("owner/repo", "refs/heads/main", new string('a', 39)));
+    }
+
+    [Fact]
+    public void Candidate_scope_normalizes_sha_and_accepts_sha256()
+    {
+        var sha1 = new ObserverCandidateScope("owner/repo", "refs/heads/main", new string('A', 40));
+        var sha256 = new ObserverCandidateScope("owner/repo", "refs/heads/main", new string('b', 64));
+        Assert.Equal(new string('a', 40), sha1.CandidateSha);
+        Assert.Equal(new string('b', 64), sha256.CandidateSha);
+    }
+
+    [Fact]
+    public void Evidence_values_validate_kind_and_text_bounds()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ObserverEvidenceValue((ObserverEvidenceValueKind)99, true, null, null));
+        Assert.Throws<ArgumentException>(() => new ObserverEvidenceValue(ObserverEvidenceValueKind.Boolean, null, null, null));
+        Assert.Throws<ArgumentException>(() => ObserverEvidenceValue.FromText(" "));
+        Assert.Throws<ArgumentException>(() => ObserverEvidenceValue.FromText(new string('x', 1025)));
+        Assert.Equal(42L, ObserverEvidenceValue.FromInteger(42).Integer);
+        Assert.Equal("ok", ObserverEvidenceValue.FromText("ok").Text);
+        Assert.True(ObserverEvidenceValue.FromBoolean(true).Boolean);
+    }
+
+    [Fact]
+    public void Evidence_predicates_reject_invalid_enums_and_required_identifiers()
+    {
+        Assert.Throws<ArgumentException>(() => new ObserverEvidencePredicate("", "field", ObserverEvidenceValueKind.Boolean, ObserverEvidenceOperator.Present));
+        Assert.Throws<ArgumentException>(() => new ObserverEvidencePredicate("id", " ", ObserverEvidenceValueKind.Boolean, ObserverEvidenceOperator.Present));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ObserverEvidencePredicate("id", "field", (ObserverEvidenceValueKind)99, ObserverEvidenceOperator.Present));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ObserverEvidencePredicate("id", "field", ObserverEvidenceValueKind.Boolean, (ObserverEvidenceOperator)99));
+    }
+
+    [Fact]
+    public void Observer_definition_rejects_empty_duplicate_and_null_predicates()
+    {
+        var valid = CreateDefinition();
+        ObserverGrammarDefinition CreateWith(IReadOnlyList<ObserverEvidencePredicate> evidence) =>
+            new("id", "1", valid.RegistrationRequest, valid.SourceEvent, valid.Candidate, evidence,
+                valid.SuccessAction, ObserverNonSuccessBehavior.NoTransition);
+        Assert.Throws<ArgumentException>(() => CreateWith(Array.Empty<ObserverEvidencePredicate>()));
+        Assert.Throws<ArgumentException>(() => CreateWith(new ObserverEvidencePredicate[] { null! }));
+        Assert.Throws<ArgumentException>(() => CreateWith(new[]
+        {
+            new ObserverEvidencePredicate("same", "one", ObserverEvidenceValueKind.Boolean, ObserverEvidenceOperator.Present),
+            new ObserverEvidencePredicate("same", "two", ObserverEvidenceValueKind.Boolean, ObserverEvidenceOperator.Present)
+        }));
+    }
+
+    [Fact]
+    public void Observer_definition_rejects_invalid_behaviors_and_null_dependencies()
+    {
+        var valid = CreateDefinition();
+        Assert.Throws<ArgumentNullException>(() => new ObserverGrammarDefinition("id", "1", null!, valid.SourceEvent, valid.Candidate,
+            valid.Evidence, valid.SuccessAction, ObserverNonSuccessBehavior.NoTransition));
+        Assert.Throws<ArgumentNullException>(() => new ObserverGrammarDefinition("id", "1", valid.RegistrationRequest, null!, valid.Candidate,
+            valid.Evidence, valid.SuccessAction, ObserverNonSuccessBehavior.NoTransition));
+        Assert.Throws<ArgumentNullException>(() => new ObserverGrammarDefinition("id", "1", valid.RegistrationRequest, valid.SourceEvent, null!,
+            valid.Evidence, valid.SuccessAction, ObserverNonSuccessBehavior.NoTransition));
+        Assert.Throws<ArgumentNullException>(() => new ObserverGrammarDefinition("id", "1", valid.RegistrationRequest, valid.SourceEvent, valid.Candidate,
+            null!, valid.SuccessAction, ObserverNonSuccessBehavior.NoTransition));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ObserverGrammarDefinition("id", "1", valid.RegistrationRequest, valid.SourceEvent,
+            valid.Candidate, valid.Evidence, valid.SuccessAction, (ObserverNonSuccessBehavior)99));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new ObserverGrammarDefinition("id", "1", valid.RegistrationRequest, valid.SourceEvent,
+            valid.Candidate, valid.Evidence, valid.SuccessAction, ObserverNonSuccessBehavior.NoTransition, (ObserverFailureBehavior)99));
+        Assert.Throws<ArgumentNullException>(() => new ObserverGrammarDefinition("id", "1", valid.RegistrationRequest, valid.SourceEvent,
+            valid.Candidate, valid.Evidence, null!, ObserverNonSuccessBehavior.NoTransition));
+    }
+
+    [Fact]
+    public void Observer_validation_methods_reject_null_inputs_and_accept_matching_sha_case()
+    {
+        var definition = CreateDefinition();
+        Assert.Throws<ArgumentNullException>(() => definition.ValidateCandidate(null!));
+        Assert.Throws<ArgumentNullException>(() => definition.ValidateRequiredEvidence(null!));
+        definition.ValidateCandidate(new ObserverCandidateScope("TrentBest/Example", "refs/heads/development", new string('A', 40)));
+        Assert.Throws<ArgumentException>(() => definition.ValidateRequiredEvidence(new[] { "BUILD-SUCCEEDED", "tests-passed" }));
+    }
+
+    [Fact]
+    public void Observer_json_rejects_empty_malformed_nonobject_and_missing_schema_documents()
+    {
+        Assert.Throws<ArgumentException>(() => ObserverGrammarJson.Deserialize(" "));
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize("{"));
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize("[]"));
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize("{\"schemaVersion\":1}"));
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize("{\"schema\":\"wrong\",\"schemaVersion\":1}"));
+    }
+
+    [Fact]
+    public void Observer_json_rejects_duplicate_nested_properties_and_unknown_enum_values()
+    {
+        var json = ObserverGrammarJson.Serialize(CreateDefinition());
+        var duplicateNested = json.Replace("\"observerId\":", "\"observerId\":\"duplicate\",\"observerId\":", StringComparison.Ordinal);
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize(duplicateNested));
+        var invalidEnum = json.Replace("\"DiagnosticOnly\"", "\"RunArbitraryCode\"", StringComparison.Ordinal);
+        Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize(invalidEnum));
+    }
+
 }
