@@ -211,6 +211,49 @@ A future adapter can translate the abstract grammar into a concrete provider rep
 
 That adapter is deliberately not part of the current alpha.
 
+## Example 8 — A versioned integer-first structure proposal
+
+The typed schema describes the permitted node kinds and contextual slots. A structure instance supplies node-instance IDs and ordered relationships. The codec emits a compact proposal that the host can validate against the exact active definition:
+
+```csharp
+var definition = new GrammarStructureDefinition(
+    9001,
+    "ConditionalControlFlow",
+    [
+        new GrammarNodeDefinition(1, "IfStatement"),
+        new GrammarNodeDefinition(2, "Expression"),
+        new GrammarNodeDefinition(3, "Block")
+    ],
+    [
+        new GrammarSlotDefinition(101, 1, "Condition", 2),
+        new GrammarSlotDefinition(102, 1, "Body", 3)
+    ],
+    version: 1);
+
+var instance = new GrammarStructureInstance(
+    definition,
+    [
+        new GrammarNodeInstance(100, 1),
+        new GrammarNodeInstance(101, 2),
+        new GrammarNodeInstance(102, 3)
+    ],
+    [
+        new GrammarRelationship(100, 101, 101),
+        new GrammarRelationship(100, 102, 102)
+    ]);
+
+var proposal = GrammarStructureProposalCodec.Serialize(instance);
+var validated = GrammarStructureProposalCodec.Deserialize(proposal, definition);
+```
+
+The compact payload uses numeric tuples and carries both the structure-definition identity/version and an independent wire-format version. The receiver must select the active definition; the codec rejects stale or mismatched definitions and invalid relationships. It does not infer semantic correctness or authorize execution.
+
+## Example 9 — Host-owned identifier continuity
+
+The quick-start console example also includes a deliberately small host-side registry. It demonstrates that a scoped name can be assigned once and reused by integer identity on a later request, while the same spelling in another scope receives a different identity.
+
+This is an illustration of the ownership boundary, not a production interning service. GrammarAi does not allocate vocabulary IDs, persist conversation state, define lexical scopes, or resolve collisions. The application or vocabulary owner must supply those policies.
+
 ---
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
