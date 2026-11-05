@@ -152,7 +152,8 @@ public sealed class GrammarStructureInstanceTests
             ]);
 
         Assert.Equal(3, instance.Relationships.Count);
-        Assert.Equal(2, instance.GetRelationships(100, 10).Count + instance.GetRelationships(102, 10).Count);
+        Assert.Equal((ulong)101, instance.GetRelationships(100, 10).Single().ChildInstanceId);
+        Assert.Equal((ulong)101, instance.GetRelationships(102, 10).Single().ChildInstanceId);
     }
 
     [Fact]
