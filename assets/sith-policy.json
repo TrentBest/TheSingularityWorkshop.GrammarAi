@@ -7,12 +7,11 @@
   ],
   "actual_branches": [
     "development",
-    "master",
-    "work/sith-policy-badge-prototype"
+    "master"
   ],
-  "branch_count": 3,
-  "status": "NON-COMPLIANT",
-  "evaluated_at": "2026-11-05T03:17:19Z",
-  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/41960626107",
-  "triggering_commit": "9cce52fcdfa8924642c098592bdc1ac01a72864d"
+  "branch_count": 2,
+  "status": "COMPLIANT",
+  "evaluated_at": "2026-11-05T03:42:20Z",
+  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/41963234433",
+  "triggering_commit": "dc914de2a4dbf0270b8f22e3bde8bc0a2a7927d2"
 }
