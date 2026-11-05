@@ -33,9 +33,11 @@ Work directly on `development`. Do not create persistent feature or handoff bran
 
 ## GrammarAi-specific boundary
 
-GrammarAi owns portable grammar structure: grammar identity, start symbol, nonterminals, and ordered productions, including references to externally owned ProtocolAi symbols. Validate the grammar's own structural invariants without silently taking ownership of external vocabulary definitions.
+GrammarAi is an AI-facing knowledge-mapping layer, not a compiler project. ProtocolAi owns stable vocabulary identity; GrammarAi owns typed structural relationships, grammar nodes, roles/slots, production composition, and structural constraints that let an AI reference known concepts compactly. The host owns identifier allocation/scope, active context, interpretation, policy, authorization, and execution.
 
-Do not describe GrammarAi as a parser generator, compiler, constrained decoder, provider grammar exporter, semantic validator, authorization layer, or command executor unless that capability is implemented and verified. Structural validity does not establish semantic correctness or authorize behavior.
+The current ProtocolAi ProtocolSymbol contract exposes ID, name, and value; it does not currently expose a first-class category field. Do not assume token categories already exist or duplicate global vocabulary metadata in GrammarAi without an explicit ownership decision. Distinguish a vocabulary item's global category from its contextual grammatical role.
+
+Do not make compiler parsing, code generation, Roslyn replacement, or source tokenization the primary definition of GrammarAi. Compiler/parser integrations may be optional adapters. A valid grammar-shaped proposal does not establish semantic correctness, safety, authorization, or permission to execute.
 
 ## Cross-package and trust boundaries
 
