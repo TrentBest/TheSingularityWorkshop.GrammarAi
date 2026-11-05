@@ -34,7 +34,7 @@ Status discipline: checked means verified in source/tests or by reproducible com
 - [ ] State that grammar owns its rules/nonterminals and references external identities without redefining them.
 - [ ] Explain current formal model precisely; do not claim parsing, compilation, constrained decoding, or provider export unless implemented.
 - [ ] Distinguish structural validity from semantic correctness, authorization, and execution permission.
-- [ ] Maintain non-goals: inference, provider clients, prompt transport, parsers, execution engines, GUI rendering, and provider-specific formats.
+- [ ] Maintain non-goals: inference, provider clients, prompt transport, compiler implementation, code generation, execution engines, GUI rendering, and provider-specific formats.
 
 ## 02 — Grammar definition and identity
 - [ ] Audit GrammarBuilder, grammar definition types, GrammarSymbol, GrammarProtocolReference, rule types, constructors, and public methods.
