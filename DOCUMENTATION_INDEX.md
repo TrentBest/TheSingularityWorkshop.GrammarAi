@@ -14,7 +14,7 @@ GrammarAi defines how symbols can be arranged into grammar productions. The gram
 | Your goal | Read |
 |---|---|
 | Understand the problem and the WHAT/HOW boundary | [README](README.md) |
-| Review implemented capabilities and the remaining grammar-domain gaps | [Domain completeness audit](docs/DOMAIN_COMPLETENESS.md) |
+| Understand the intended integer-first knowledge mapping model | [Knowledge mapping model](docs/KNOWLEDGE_MAPPING_MODEL.md) |\n| Review implemented capabilities and the remaining domain gaps | [Domain completeness audit](docs/DOMAIN_COMPLETENESS.md) |
 | Follow the textbook-style theory learning path | [GrammarAi Theory](docs/THEORY.md) |
 | Add GrammarAi to a .NET application | [Consuming GrammarAi](docs/CONSUMING.md) |
 | Understand the host/LLM exchange design and its ownership boundaries | [AI Exchange design note](docs/AI_EXCHANGE.md) |
