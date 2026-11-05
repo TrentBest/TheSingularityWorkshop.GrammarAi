@@ -170,9 +170,11 @@ Keep the ownership model clear:
 
 The existing observer grammar remains a separate, bounded domain schema. It should not be mistaken for a general-purpose grammar parser or be forced into the CFG model without a demonstrated need.
 
-## Recommended implementation sequence
+## Optional grammar-resource and parser roadmap
 
-1. **Close the domain contract:** formalism taxonomy, grammar descriptor/provenance, token model, versioning, limits, and import/export contracts.
+The following items describe a possible adjacent grammar-resource/parser ecosystem. They are not the implementation sequence or release gate for GrammarAi's core knowledge-mapping domain.
+
+1. **Define optional resource contracts:** formalism taxonomy, grammar descriptor/provenance, token model, versioning, limits, and import/export contracts.
 2. **Prove the pipeline with JSON:** import a pinned JSON grammar, tokenize, parse, produce a source-located tree, and run positive/negative conformance tests.
 3. **Prove internet grammar support with ABNF:** URI and selected HTTP syntax, with explicit byte/character behavior and unsupported ABNF constructs.
 4. **Add EBNF import and normalization:** preserve semantics and reject unsupported conversions rather than approximating silently.
