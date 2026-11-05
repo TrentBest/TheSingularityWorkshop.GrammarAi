@@ -66,7 +66,7 @@ GrammarAi does not call a model, parse generated text, authorize actions, or exe
 
 <p align="center"><a href="https://github.com/TrentBest">GitHub</a> · <a href="https://coderlegion.com/">Coder Legion</a> · <a href="https://www.patreon.com/c/TheSingularityWorkshop">Patreon</a></p>
 
-- [Typed Structural Schema](docs/STRUCTURAL_SCHEMA.md) — grammar-owned node identities, contextual slots, cardinality, and the initial If/ElseIf/Else schema.
+- [Typed Structural Schema](docs/STRUCTURAL_SCHEMA.md) — grammar-owned node identities, contextual slots, cardinality, and the validated If/ElseIf/Else knowledge graph instance model.
 
 ---
 
