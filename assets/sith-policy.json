@@ -1,0 +1,14 @@
+{
+  "repository": "TrentBest/TheSingularityWorkshop.GrammarAi",
+  "policy": "exactly-master-and-development",
+  "required_branches": [
+    "development",
+    "master"
+  ],
+  "actual_branches": [],
+  "branch_count": null,
+  "status": "UNVERIFIED",
+  "evaluated_at": null,
+  "workflow_run": null,
+  "triggering_commit": null
+}
