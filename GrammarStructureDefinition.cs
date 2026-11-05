@@ -16,9 +16,11 @@ public sealed class GrammarStructureDefinition
         ulong id,
         string name,
         IEnumerable<GrammarNodeDefinition> nodes,
-        IEnumerable<GrammarSlotDefinition> slots)
+        IEnumerable<GrammarSlotDefinition> slots,
+        uint version = 1)
     {
         if (id == 0) throw new ArgumentOutOfRangeException(nameof(id));
+        if (version == 0) throw new ArgumentOutOfRangeException(nameof(version));
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("A structure name is required.", nameof(name));
         if (name.Length > GrammarLimits.MaxNameCharacters)
             throw new ArgumentException($"A structure name cannot exceed {GrammarLimits.MaxNameCharacters} characters.", nameof(name));
@@ -48,6 +50,7 @@ public sealed class GrammarStructureDefinition
         }
 
         Id = id;
+        Version = version;
         Name = name;
         _nodes = Array.AsReadOnly(nodeValues);
         _slots = Array.AsReadOnly(slotValues);
@@ -55,6 +58,9 @@ public sealed class GrammarStructureDefinition
 
     /// <summary>Gets this structure definition's nonzero identity.</summary>
     public ulong Id { get; }
+
+    /// <summary>Gets the positive schema version used for compatibility checks.</summary>
+    public uint Version { get; }
 
     /// <summary>Gets its human-readable name.</summary>
     public string Name { get; }
