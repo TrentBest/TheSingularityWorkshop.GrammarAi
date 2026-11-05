@@ -5,6 +5,8 @@
   </a>
 </p>
 
+[![Sith Policy](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/assets/sith-policy.svg)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/sith-policy.yml)
+
 # ✳️ 00 TheSingularityWorkshop.GrammarAi
 
 This README follows the Workshop's shared [Documentation Standard](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/master/DOCUMENTATION_STANDARD.md).
