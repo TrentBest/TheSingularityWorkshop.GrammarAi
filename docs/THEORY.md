@@ -11,7 +11,7 @@ GrammarAi sits after semantic identity and before host policy. ProtocolAi establ
 
 This is a structural contract—not a claim that GrammarAi constrains a model, parses generated text, or executes a command by itself.
 
-## Textbook chapters
+## Knowledge mapping direction\n\nThe intended domain is an integer-first knowledge map, not a compiler. See [Knowledge Mapping Model](KNOWLEDGE_MAPPING_MODEL.md) for the ProtocolAi identity boundary, GrammarAi structural roles, host-owned identifier lifecycle, compact proposal exchange, and the conceptual C# control-flow example.\n\n## Textbook chapters
 
 Read these chapters in order. Each chapter introduces a concept, explains its practical consequence, and points to the source and tests that demonstrate the current implementation.
 
