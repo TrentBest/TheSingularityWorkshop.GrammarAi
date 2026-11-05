@@ -145,4 +145,63 @@ public sealed class GrammarStructureInstanceTests
 
         Assert.Equal(2, instance.Relationships.Count);
     }
+
+    [Fact]
+    public void Proposal_codec_round_trips_canonical_integer_first_structure()
+    {
+        var schema = CreateConditionalSchema();
+        var instance = new GrammarStructureInstance(
+            schema,
+            [
+                new GrammarNodeInstance(1, 1),
+                new GrammarNodeInstance(2, 4),
+                new GrammarNodeInstance(3, 5),
+                new GrammarNodeInstance(4, 2),
+                new GrammarNodeInstance(5, 4),
+                new GrammarNodeInstance(6, 5)
+            ],
+            [
+                new GrammarRelationship(1, 101, 2),
+                new GrammarRelationship(1, 102, 3),
+                new GrammarRelationship(1, 103, 4),
+                new GrammarRelationship(4, 201, 5),
+                new GrammarRelationship(4, 202, 6)
+            ]);
+
+        var json = GrammarStructureProposalCodec.Serialize(instance);
+        var decoded = GrammarStructureProposalCodec.Deserialize(json, schema);
+
+        Assert.Equal(
+            "{\\"v\\":1,\\"g\\":9001,\\"gv\\":1,\\"n\\":[[1,1],[2,4],[3,5],[4,2],[5,4],[6,5]],\\"r\\":[[1,101,2],[1,102,3],[1,103,4],[4,201,5],[4,202,6]]}",
+            json);
+        Assert.Equal(instance.Nodes, decoded.Nodes);
+        Assert.Equal(instance.Relationships, decoded.Relationships);
+        Assert.Equal(json, GrammarStructureProposalCodec.Serialize(decoded));
+    }
+
+    [Fact]
+    public void Proposal_codec_rejects_a_stale_definition_version()
+    {
+        var schema = CreateConditionalSchema();
+        var proposal = "{\\"v\\":1,\\"g\\":9001,\\"gv\\":2,\\"n\\":[],\\"r\\":[]}";
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(proposal, schema));
+    }
+
+    [Fact]
+    public void Proposal_codec_rejects_unknown_wire_versions_and_duplicate_properties()
+    {
+        var schema = CreateConditionalSchema();
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
+            "{\\"v\\":2,\\"g\\":9001,\\"gv\\":1,\\"n\\":[],\\"r\\":[]}", schema));
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
+            "{\\"v\\":1,\\"v\\":1,\\"g\\":9001,\\"gv\\":1,\\"n\\":[],\\"r\\":[]}", schema));
+    }
+
+    [Fact]
+    public void Proposal_codec_rejects_invalid_structure_after_decoding()
+    {
+        var schema = CreateConditionalSchema();
+        var proposal = "{\\"v\\":1,\\"g\\":9001,\\"gv\\":1,\\"n\\":[[1,1],[2,5],[3,5]],\\"r\\":[[1,101,2],[1,102,3]]}";
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(proposal, schema));
+    }
 }
