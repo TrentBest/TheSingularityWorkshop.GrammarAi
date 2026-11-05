@@ -5,13 +5,15 @@
 
 **Audit scope:** current `development` implementation and documentation  
 **Current package version:** `0.1.0-alpha.2`  
-**Status:** foundational production model implemented; AI-facing typed knowledge mapping remains incomplete.
+**Status:** integer-first typed structural mapping and the first versioned proposal codec are implemented; domain-specific maps and host integration remain in progress.
 
 ## Executive finding
 
-GrammarAi's intended purpose is an integer-first knowledge map, not a compiler or general-purpose source parser. ProtocolAi supplies stable vocabulary identities; GrammarAi defines how those identities and grammar-owned structural concepts relate; the host supplies context, identifier lifecycle, interpretation, and policy.
+GrammarAi's intended purpose is an AI-facing knowledge-mapping system, not a compiler or general-purpose source parser. ProtocolAi owns stable vocabulary identities; GrammarAi owns typed structural node kinds, contextual roles/slots, composition, and structural validation; the host owns identifier allocation, scope, active context, interpretation, trust, policy, and execution. The LLM proposes structures; proposals remain untrusted until validated by the host.
 
-The current implementation provides grammar identity, nonterminals, ordered productions, alternatives, epsilon, recursion, structural validation, reachability, and host-resolved ProtocolAi references. It does not yet provide first-class typed node kinds, named roles/slots, cardinality constraints, mapping versioning, a canonical compact proposal codec, or a host example demonstrating identifier reuse across requests.
+The implementation now provides both the existing production-grammar foundation and a typed graph model: immutable node/slot definitions, required/optional/repeated cardinality, ordered graph relationships, structural validation, a positive schema version, and a deterministic integer-first proposal codec with an independent wire version. The QuickStart demonstrates codec round-tripping and a minimal host-owned scoped identity registry. That registry is illustrative, not a production identity service.
+
+Important cross-repository finding: ProtocolAi's current ProtocolSymbol contract exposes ID, name, and value, but no first-class category field. Ownership of global vocabulary categories remains an explicit decision; contextual grammatical roles are already represented by GrammarAi slots and must not be confused with global categories.
 
 Important cross-repository finding: ProtocolAi's current ProtocolSymbol contract exposes ID, name, and value, but no first-class category field. Category ownership must be decided explicitly; global vocabulary categories and contextual grammatical roles are different concepts.
 
@@ -33,7 +35,16 @@ This audit deliberately separates implemented behavior from capabilities that ne
 | Reachability analysis | Implemented | `FindUnreachableNonTerminals` |
 | External terminal references | Implemented | `GrammarProtocolReference` |
 | Host-supplied external-link discovery | Implemented | `FindUnresolvedProtocolReferences` |
-| Deterministic description | Implemented | `Describe` |
+| Deterministic description | Implemented | `Describe` (diagnostic only; not wire format) |
+| Typed node-kind definitions | Implemented | `GrammarNodeDefinition` |
+| Contextual typed slots and cardinality | Implemented | `GrammarSlotDefinition` |
+| Versioned structural schema | Implemented | `GrammarStructureDefinition.Version` |
+| Integer-addressed graph instances | Implemented | `GrammarNodeInstance`, `GrammarRelationship`, `GrammarStructureInstance` |
+| Ordered relationships, shared nodes, and cycles | Implemented | `GrammarStructureInstance` validation and tests |
+| Canonical integer-first proposal codec | Implemented | `GrammarStructureProposalCodec` |
+| Wire and schema compatibility checks | Implemented | Separate wire version and definition ID/version validation |
+| Bounded proposal input and graph size | Implemented | `GrammarLimits` |
+| Host-owned identifier reuse example | Illustrative example | `examples/GrammarAi.QuickStart/Program.cs`; not a production registry |
 | Observer condition/gate-intent schema | Implemented as a separate bounded model | `ObserverGrammarDefinition` and versioned JSON codec |
 | Lexical/token grammar | Not implemented | No token recognizer or lexical rule model |
 | Literal terminals / token spellings | Not implemented in the generic model | Terminals are ProtocolAi references |
@@ -98,7 +109,16 @@ The C# grammar can recognize syntactic structure; it cannot replace Roslyn or cl
 
 The recommended first delivery is a separately versioned C# grammar resource/package with a documented language version, provenance, supported subset, and conformance corpus. A later Roslyn adapter can provide compiler-grade syntax and semantic services without making the grammar core depend on Roslyn.
 
-## Domain gaps to close
+## Remaining knowledge-mapping work
+
+1. Resolve global vocabulary category metadata ownership with ProtocolAi without duplicating or confusing GrammarAi's contextual slot roles.
+2. Define compatibility and migration policy between schema versions; the current codec rejects mismatches rather than migrating them.
+3. Build a host integration example around real ProtocolAi identity allocation, lexical/application scope, persistence, and cross-request context. The current QuickStart is deliberately a small illustrative registry only.
+4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice.
+5. Define a stable root/entry-point and graph-profile policy only where a consuming domain requires one; the core graph model intentionally allows shared nodes and cycles.
+6. Expand proposal diagnostics and adversarial tests while keeping semantic validation, authorization, and execution in the host.
+
+## Optional grammar-resource and parser ecosystem
 
 ### A. Grammar identity and provenance
 
@@ -162,7 +182,9 @@ The existing observer grammar remains a separate, bounded domain schema. It shou
 
 ## Completion rule
 
-GrammarAi must not be called domain-complete merely because it can store productions. Domain completion requires a documented formalism and lexical contract, usable grammar acquisition/import, versioned grammar resources, parsing or a clearly separated parser capability, conformance evidence, diagnostics, and precise boundaries around semantic validation and execution.
+GrammarAi's core knowledge-mapping domain is complete when its identity ownership, typed structural composition, versioned deterministic proposal contract, bounded structural validation, host integration boundary, and representative domain maps are documented and tested. A structurally valid proposal is not proof of semantic correctness, authorization, or executability.
+
+Lexical grammars, importers, parsers, source diagnostics, Roslyn, ANTLR, and tree-sitter integrations are optional adjacent capabilities or separate adapters. They may be valuable resources, but they are **not** prerequisites for the core AI-facing knowledge-mapping domain and must not redefine GrammarAi as a compiler project.
 
 ---
 
