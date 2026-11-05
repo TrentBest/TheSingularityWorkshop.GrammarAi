@@ -79,7 +79,7 @@ Those concerns remain separate contracts. In particular, a structurally valid sc
 
 ## Verification
 
-The GrammarStructureDefinitionTests exercise the If/ElseIf/Else schema, occurrence bounds, unknown references, duplicate identities, and immutable snapshots. Repository CI is the execution evidence for these tests.
+The GrammarStructureDefinitionTests exercise the If/ElseIf/Else schema, occurrence bounds, unknown references, duplicate identities, and immutable snapshots. GrammarStructureInstanceTests exercise a populated If/ElseIf/Else graph, ordered repeated branches, omitted optional else, required-slot enforcement, wrong target kinds, slot ownership, endpoint/identity validation, and the deliberately graph-shaped semantics. Both collections are bounded by GrammarLimits.MaxStructureInstances and GrammarLimits.MaxStructureRelationships. Repository CI is the execution evidence for these tests.
 
 ---
 
