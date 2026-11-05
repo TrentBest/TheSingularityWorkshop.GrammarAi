@@ -140,10 +140,19 @@ public sealed class GrammarStructureInstanceTests
 
         var instance = new GrammarStructureInstance(
             schema,
-            [new GrammarNodeInstance(100, 1), new GrammarNodeInstance(101, 2)],
-            [new GrammarRelationship(100, 10, 101), new GrammarRelationship(101, 11, 100)]);
+            [
+                new GrammarNodeInstance(100, 1),
+                new GrammarNodeInstance(101, 2),
+                new GrammarNodeInstance(102, 1)
+            ],
+            [
+                new GrammarRelationship(100, 10, 101),
+                new GrammarRelationship(102, 10, 101),
+                new GrammarRelationship(101, 11, 100)
+            ]);
 
-        Assert.Equal(2, instance.Relationships.Count);
+        Assert.Equal(3, instance.Relationships.Count);
+        Assert.Equal(2, instance.GetRelationships(100, 10).Count + instance.GetRelationships(102, 10).Count);
     }
 
     [Fact]
