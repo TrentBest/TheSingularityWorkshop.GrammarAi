@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="104" viewBox="0 0 440 104" role="img" aria-labelledby="title desc">
+  <title id="title">Sith Policy: awaiting first evaluation</title>
+  <desc id="desc">The branch inventory has not yet been evaluated.</desc>
+  <rect x="1" y="1" width="438" height="102" rx="14" fill="#111827" stroke="#f5b942" stroke-width="1.5"/>
+  <circle cx="52" cy="52" r="32" fill="#0b1020" stroke="#f5b942" stroke-width="2"/>
+  <path d="M39 30 L65 74 M65 30 L39 74" stroke="#f5b942" stroke-width="4" stroke-linecap="round"/>
+  <path d="M52 36 L57 47 L69 52 L57 57 L52 69 L47 57 L35 52 L47 47 Z" fill="#f8fafc"/>
+  <text x="108" y="34" fill="#f8fafc" font-family="Segoe UI,Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="2">THE SINGULARITY WORKSHOP</text>
+  <text x="108" y="57" fill="#f5b942" font-family="Segoe UI,Arial,sans-serif" font-size="17" font-weight="800">AWAITING EVALUATION</text>
+  <text x="108" y="78" fill="#cbd5e1" font-family="Segoe UI,Arial,sans-serif" font-size="12">branch inventory not yet verified</text>
+  <text x="420" y="94" fill="#64748b" text-anchor="end" font-family="Segoe UI,Arial,sans-serif" font-size="8">SITH POLICY · LIVE EVALUATION</text>
+</svg>
