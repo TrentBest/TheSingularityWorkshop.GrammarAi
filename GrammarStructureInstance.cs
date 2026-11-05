@@ -113,7 +113,7 @@ public sealed class GrammarStructureInstance
             if (child.NodeDefinitionId != slot.TargetNodeId)
                 throw new ArgumentException($"Slot '{slot.Id}' requires target node kind '{slot.TargetNodeId}', not '{child.NodeDefinitionId}'.", nameof(relationships));
 
-            var key = (relationship.ParentInstanceId, relationship.SlotId);
+            (ulong ParentId, ulong SlotId) key = (relationship.ParentInstanceId, relationship.SlotId);
             occurrenceCounts.TryGetValue(key, out var count);
             count++;
             if (slot.MaximumOccurrences.HasValue && count > slot.MaximumOccurrences.Value)
