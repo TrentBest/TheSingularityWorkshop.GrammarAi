@@ -5,6 +5,7 @@
   </a>
 </p>
 
+[![Sith Policy](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/assets/sith-policy.svg)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/sith-policy.yml)
 
 # TheSingularityWorkshop.GrammarAi
 
