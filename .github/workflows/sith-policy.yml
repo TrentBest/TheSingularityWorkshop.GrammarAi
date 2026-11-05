@@ -101,7 +101,7 @@ jobs:
           esac
 
           evaluated_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
-          branch_json="$(printf '%s\\n' "${branches[@]:-}" | jq -R 'select(length > 0)' | jq -s '.')"
+          branch_json="$(printf '%s\n' "${branches[@]:-}" | jq -R 'select(length > 0)' | jq -s '.')"
           branch_count_json="$(if [[ "$branch_count" == "unknown" ]]; then echo null; else echo "$branch_count"; fi)"
           jq -n \
             --arg repository "$GH_REPO" \
@@ -164,13 +164,13 @@ jobs:
           {
             echo "## Sith Policy: $status"
             echo
-            echo "- Required branches: `master`, `development`"
+            printf '%s\n' '- Required branches: `master`, `development`'
             echo "- Actual branch count: $branch_count"
             echo "- Actual branches:"
             if (("${#branches[@]}" == 0)); then
               echo "  - unavailable"
             else
-              for item in "${branches[@]}"; do echo "  - `$item`"; done
+              for item in "${branches[@]}"; do printf '  - `%s`\n' "$item"; done
             fi
             echo "- Evaluated: $evaluated_at"
           } >> "$GITHUB_STEP_SUMMARY"
