@@ -15,4 +15,6 @@ public static class GrammarLimits
     public const int MaxStructureInstances = 65_536;
     /// <summary>Maximum relationships in one instantiated structure.</summary>
     public const int MaxStructureRelationships = 65_536;
+    /// <summary>Maximum serialized structure-proposal size, in UTF-16 characters.</summary>
+    public const int MaxProposalCharacters = 4_194_304;
 }
