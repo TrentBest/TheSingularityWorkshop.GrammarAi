@@ -11,4 +11,8 @@ public static class GrammarLimits
     public const int MaxTotalSymbols = 65_536;
     /// <summary>Maximum grammar name length, in UTF-16 characters.</summary>
     public const int MaxNameCharacters = 256;
+    /// <summary>Maximum node instances in one instantiated structure.</summary>
+    public const int MaxStructureInstances = 65_536;
+    /// <summary>Maximum relationships in one instantiated structure.</summary>
+    public const int MaxStructureRelationships = 65_536;
 }
