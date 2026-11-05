@@ -37,14 +37,15 @@ public sealed class GrammarStructureDefinitionTests
     }
 
     [Fact]
-    public void Node_and_slot_identity_spaces_are_grammar_owned_and_distinct_from_protocol_references()
+    public void Structural_node_ids_and_protocol_symbol_ids_are_separate_typed_values()
     {
         var node = new GrammarNodeDefinition(2001, "Expression");
         var terminal = GrammarSymbol.Terminal(new GrammarProtocolReference(1001, 2001));
 
         Assert.Equal((ulong)2001, node.Id);
         Assert.Equal((ulong)2001, terminal.Id);
-        Assert.NotEqual(node.GetType(), terminal.GetType());
+        Assert.IsType<GrammarNodeDefinition>(node);
+        Assert.IsType<GrammarSymbol>(terminal);
     }
 
     [Fact]
