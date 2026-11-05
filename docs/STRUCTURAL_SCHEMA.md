@@ -82,7 +82,6 @@ This addition does not yet provide:
 - semantic interpretation or a host-specific root/entry-point policy;
 - automatic migration between different schema versions;
 - ProtocolAi category metadata;
-- host identifier interning, variable scope, or conversation memory;
 - semantic validation, authorization, or execution.
 
 Those concerns remain separate contracts. In particular, a structurally valid schema or future proposal does not authorize an operation.
