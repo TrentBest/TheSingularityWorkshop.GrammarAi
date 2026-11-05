@@ -58,19 +58,29 @@ This expresses an ordered sequence of zero or more ElseIfClause relationships an
 
 ## Current implementation
 
-The public API currently includes:
-- GrammarNodeDefinition
-- GrammarSlotDefinition
-- GrammarStructureDefinition
+The public API includes:
+- GrammarNodeDefinition and GrammarSlotDefinition for grammar-owned kind and contextual-role identities;
+- GrammarStructureDefinition for immutable node/slot schemas, including a positive definition Version;
+- GrammarNodeInstance and GrammarRelationship for integer-addressed graph instances;
+- GrammarStructureInstance for immutable graph validation;
+- GrammarStructureProposalCodec for the compact, versioned JSON exchange format.
 
-GrammarStructureDefinition is immutable and validates its node/slot references. This is a schema definition, not yet a proposal-instance model or compact wire codec.
+A proposal carries the definition ID and version. The host selects the active definition and passes it to Deserialize; a mismatch is rejected rather than silently interpreted against a different map. The wire version is separately versioned from the schema version. Names are omitted from the payload because the receiver resolves integer IDs through the selected definition.
+
+The canonical compact shape is:
+
+~~~json
+{"v":1,"g":9001,"gv":1,"n":[[100,1],[101,4],[102,5]],"r":[[100,101,101],[100,102,102]]}
+~~~
+
+The n tuples are [instance ID, node-kind ID]. The r tuples are [parent instance ID, slot ID, child instance ID]. Tuple and relationship order are preserved. The codec rejects unknown wire versions, mismatched definition ID/version, duplicate or unexpected properties, malformed tuples, oversized input, and structurally invalid graphs. Serialization is deterministic for the same validated instance.
 
 ## Still outside this increment
 
 This addition does not yet provide:
-- node instances or an object-graph builder;
-- a canonical serialized proposal format;
-- grammar/mapping version negotiation;
+- a host identifier allocator, scope registry, or cross-request interning service;
+- semantic interpretation or a host-specific root/entry-point policy;
+- automatic migration between different schema versions;
 - ProtocolAi category metadata;
 - host identifier interning, variable scope, or conversation memory;
 - semantic validation, authorization, or execution.
@@ -79,7 +89,7 @@ Those concerns remain separate contracts. In particular, a structurally valid sc
 
 ## Verification
 
-The GrammarStructureDefinitionTests exercise the If/ElseIf/Else schema, occurrence bounds, unknown references, duplicate identities, and immutable snapshots. GrammarStructureInstanceTests exercise a populated If/ElseIf/Else graph, ordered repeated branches, omitted optional else, required-slot enforcement, wrong target kinds, slot ownership, endpoint/identity validation, and the deliberately graph-shaped semantics. Both collections are bounded by GrammarLimits.MaxStructureInstances and GrammarLimits.MaxStructureRelationships. Repository CI is the execution evidence for these tests.
+The GrammarStructureDefinitionTests exercise the If/ElseIf/Else schema, occurrence bounds, unknown references, duplicate identities, and immutable snapshots. GrammarStructureInstanceTests exercise a populated If/ElseIf/Else graph, ordered repeated branches, omitted optional else, required-slot enforcement, wrong target kinds, slot ownership, endpoint/identity validation, graph semantics, deterministic codec round trips, stale schema rejection, wire-version rejection, duplicate-property rejection, and structural validation after decoding. Instance collections are bounded by GrammarLimits.MaxStructureInstances and GrammarLimits.MaxStructureRelationships; serialized proposals are bounded by GrammarLimits.MaxProposalCharacters. Repository CI is the execution evidence for these tests.
 
 ---
 
