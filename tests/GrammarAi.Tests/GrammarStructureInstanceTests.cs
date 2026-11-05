@@ -172,7 +172,7 @@ public sealed class GrammarStructureInstanceTests
         var decoded = GrammarStructureProposalCodec.Deserialize(json, schema);
 
         Assert.Equal(
-            "{\\"v\\":1,\\"g\\":9001,\\"gv\\":1,\\"n\\":[[1,1],[2,4],[3,5],[4,2],[5,4],[6,5]],\\"r\\":[[1,101,2],[1,102,3],[1,103,4],[4,201,5],[4,202,6]]}",
+            "{\"v\":1,\"g\":9001,\"gv\":1,\"n\":[[1,1],[2,4],[3,5],[4,2],[5,4],[6,5]],\"r\":[[1,101,2],[1,102,3],[1,103,4],[4,201,5],[4,202,6]]}",
             json);
         Assert.Equal(instance.Nodes, decoded.Nodes);
         Assert.Equal(instance.Relationships, decoded.Relationships);
@@ -183,7 +183,7 @@ public sealed class GrammarStructureInstanceTests
     public void Proposal_codec_rejects_a_stale_definition_version()
     {
         var schema = CreateConditionalSchema();
-        var proposal = "{\\"v\\":1,\\"g\\":9001,\\"gv\\":2,\\"n\\":[],\\"r\\":[]}";
+        var proposal = "{\"v\":1,\"g\":9001,\"gv\":2,\"n\":[],\"r\":[]}";
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(proposal, schema));
     }
 
@@ -192,16 +192,16 @@ public sealed class GrammarStructureInstanceTests
     {
         var schema = CreateConditionalSchema();
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
-            "{\\"v\\":2,\\"g\\":9001,\\"gv\\":1,\\"n\\":[],\\"r\\":[]}", schema));
+            "{\"v\":2,\"g\":9001,\"gv\":1,\"n\":[],\"r\":[]}", schema));
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
-            "{\\"v\\":1,\\"v\\":1,\\"g\\":9001,\\"gv\\":1,\\"n\\":[],\\"r\\":[]}", schema));
+            "{\"v\":1,\"v\":1,\"g\":9001,\"gv\":1,\"n\":[],\"r\":[]}", schema));
     }
 
     [Fact]
     public void Proposal_codec_rejects_invalid_structure_after_decoding()
     {
         var schema = CreateConditionalSchema();
-        var proposal = "{\\"v\\":1,\\"g\\":9001,\\"gv\\":1,\\"n\\":[[1,1],[2,5],[3,5]],\\"r\\":[[1,101,2],[1,102,3]]}";
+        var proposal = "{\"v\":1,\"g\":9001,\"gv\":1,\"n\":[[1,1],[2,5],[3,5]],\"r\":[[1,101,2],[1,102,3]]}";
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(proposal, schema));
     }
 }
