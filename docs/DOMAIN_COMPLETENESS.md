@@ -5,13 +5,17 @@
 
 **Audit scope:** current `development` implementation and documentation  
 **Current package version:** `0.1.0-alpha.2`  
-**Status:** structural grammar foundation implemented; general-purpose language grammar and parsing domain incomplete.
+**Status:** foundational production model implemented; AI-facing typed knowledge mapping remains incomplete.
 
 ## Executive finding
 
-GrammarAi currently models a bounded context-free-grammar-like production structure. It does not currently ship a C# grammar, a catalogue of common language grammars, a lexer, a parser, a parse tree, a grammar importer, or a provider-specific constrained-output adapter.
+GrammarAi's intended purpose is an integer-first knowledge map, not a compiler or general-purpose source parser. ProtocolAi supplies stable vocabulary identities; GrammarAi defines how those identities and grammar-owned structural concepts relate; the host supplies context, identifier lifecycle, interpretation, and policy.
 
-The existing model is useful, but it is not yet a complete grammar system. A grammar definition is not itself a way to parse source text. The current `GrammarSymbol` model also represents terminals as references to externally owned ProtocolAi identities; it does not define literal token spellings or lexical recognition rules.
+The current implementation provides grammar identity, nonterminals, ordered productions, alternatives, epsilon, recursion, structural validation, reachability, and host-resolved ProtocolAi references. It does not yet provide first-class typed node kinds, named roles/slots, cardinality constraints, mapping versioning, a canonical compact proposal codec, or a host example demonstrating identifier reuse across requests.
+
+Important cross-repository finding: ProtocolAi's current ProtocolSymbol contract exposes ID, name, and value, but no first-class category field. Category ownership must be decided explicitly; global vocabulary categories and contextual grammatical roles are different concepts.
+
+See the [Knowledge Mapping Model](KNOWLEDGE_MAPPING_MODEL.md) for the intended architecture and conceptual C# control-flow mapping. Compiler/parser integrations may be useful optional adapters, but they are not the definition of GrammarAi.
 
 This audit deliberately separates implemented behavior from capabilities that need design and implementation.
 
