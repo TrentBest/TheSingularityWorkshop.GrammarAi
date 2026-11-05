@@ -11,8 +11,8 @@ The goal is to let an AI refer to known concepts and their permitted relationshi
 
 | Layer | Owns | Does not own |
 |---|---|---|
-| ProtocolAi | Vocabulary identity: protocol IDs, symbol IDs, names, and mapped values | Grammar productions or application execution |
-| GrammarAi | Structural categories, nonterminals, productions, ordering, composition, and grammar validation | The meaning/identity of external vocabulary symbols or host authorization |
+| ProtocolAi | Vocabulary identity: protocol IDs, symbol IDs, names, values, and globally shared vocabulary metadata when defined | Grammar productions or application execution |
+| GrammarAi | Grammar-owned node kinds, contextual roles/slots, nonterminals, productions, ordering, composition, and structural validation | Global vocabulary identity/category ownership or host authorization |
 | Host/application | Registry, context, prompt construction, identifier lifecycle, validation policy, and interpretation | The reusable grammar definition itself |
 | LLM | Selects and composes mapped structures; proposes new identifiers when permitted | Authority to execute a proposal |
 
@@ -33,9 +33,9 @@ These approaches are not equivalent. The first classifies a vocabulary item glob
 
 ## 3. Grammar as a typed relationship map
 
-The existing production model gives us a useful foundation: grammar-owned nonterminal IDs; ordered production rules; alternative productions for the same left-hand side; ordered symbols within each production; protocol-qualified external terminal references; epsilon and recursive composition.
+The existing production model provides grammar-owned nonterminal IDs; ordered production rules; alternative productions for the same left-hand side; ordered symbols within each production; protocol-qualified external terminal references; epsilon and recursive composition.
 
-For the intended AI mapping, the next conceptual step is to make structural roles legible and compact. A production should ultimately express relationships such as:
+The typed structural model now adds grammar-owned node-kind IDs, contextual slot IDs, target-kind constraints, cardinality, and ordered graph relationships. A schema can express relationships such as:
 
 - this node is an IfStatement;
 - it has one required condition/expression slot;
@@ -49,7 +49,7 @@ This is more expressive than merely listing C# punctuation tokens. It maps the c
 
 ## 4. Worked example: if / else-if / else
 
-The following is a conceptual mapping, not a claim that the current public API already exposes these exact node types or field names.
+The following illustrates the implemented structural model. The example node and slot IDs are local to this illustrative schema; applications define and version their own maps.
 
 Source-like input:
 
@@ -94,7 +94,7 @@ A compact conceptual identity representation might look like:
                   [Body]      -> [BlockNode: invocation#DoFallback]
 ~~~
 
-The exact wire encoding is deliberately not specified here. A readable sketch is not a stable serialization contract.
+The canonical wire contract is now implemented by GrammarStructureProposalCodec. It carries a wire version, structure-definition ID/version, node tuples, and relationship tuples; see [Typed Structural Schema](STRUCTURAL_SCHEMA.md) for the exact format.
 
 The important properties are:
 - node kinds and slot roles have stable identities;
@@ -149,22 +149,23 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 | Gap | Why it matters | Direction |
 |---|---|---|
 | First-class symbol categories/roles | Current ProtocolAi symbols expose ID/name/value only | Decide global vocabulary category versus grammar-contextual role |
-| Typed grammar nodes and slots | Existing nonterminals/productions are generic | Model node kinds, named roles, cardinality, and ordering |
-| Optional/repeated relationships | Ordered productions alone do not clearly express semantic slot cardinality | Add explicit structural constraints without losing production semantics |
-| Stable grammar and mapping versions | Prompt and response must agree on the same map | Version definitions and reject stale references |
-| Compact deterministic exchange | Description text is diagnostic, not a wire contract | Define canonical integer-first serialization separately |
-| Identifier lifecycle and scope | New names must persist across requests without conflating scopes | Host-owned interning, scope, and context manifest |
-| Structural proposal validation | Model output is untrusted | Validate IDs, slots, cardinality, order, references, and limits |
+| Category ownership | ProtocolAi currently exposes ID/name/value but no first-class category field | Resolve global vocabulary metadata ownership versus grammar-contextual roles; do not conflate them |
+| Typed grammar nodes and slots | Implemented as grammar-owned node kinds and contextual slots | Extend the map with domain-specific structural definitions |
+| Optional/repeated relationships | Implemented through slot cardinality and ordered graph relationships | Preserve ordering and constraints in future domain maps |
+| Stable grammar and mapping versions | Definition ID/version and independent wire version are implemented | Define compatibility and explicit migration policy between versions |
+| Compact deterministic exchange | Implemented by GrammarStructureProposalCodec | Keep canonical encoding stable within a wire version |
+| Identifier lifecycle and scope | Example demonstrates host-owned scoped reuse; no production registry service is included | Host owns persistence, collision handling, scope, and context manifest |
+| Structural proposal validation | Implemented for identity, slots, cardinality, order, definition version, and resource limits | Add host-specific scope and policy validation outside GrammarAi |
 | C# mapping resource | Gives a practical first language domain | Build a layered, version-pinned mapping from relevant constructs |
 | Cross-request continuity | Later turns must reuse known identities | Host supplies the active mapping/context on each request |
 
 ## 9. Recommended implementation sequence
 
-1. Specify the identity boundary: inspect ProtocolAi's current symbol contract and decide where categories live. Do not silently add categories to GrammarAi if they are globally owned vocabulary metadata.
-2. Specify typed structural roles: define node kinds, slots, required/optional/repeated cardinality, and order.
-3. Specify the compact proposal contract: define stable IDs, grammar version, protocol references, unknown-ID handling, and canonical encoding.
-4. Implement and test a small control-flow map: IfStatement, ElseIfClause, ElseClause, Condition, and Body.
-5. Add host-side identifier/context examples: demonstrate first introduction of a variable and reuse by integer identity on the next exchange.
+1. **Completed:** preserve ProtocolAi vocabulary identity separately from GrammarAi node-kind, slot, and instance identities. Category ownership remains an explicit cross-repository decision.
+2. **Completed:** implement typed structural roles, required/optional/repeated cardinality, and ordered graph relationships.
+3. **Completed:** implement a compact deterministic proposal contract with separate definition and wire versions.
+4. **Completed first vertical slice:** define and test IfStatement, ElseIfClause, ElseClause, Condition, and Body.
+5. **Example added:** demonstrate host-owned scoped identifier reuse across requests. This is illustrative; production persistence and allocation remain host responsibilities.
 6. Expand the C# mapping by useful construct families; do not attempt a full compiler grammar before the mapping contract is proven.
 7. Add other common domains using the same reusable structural model: JSON, HTTP/URI, SQL dialects, Python, JavaScript/TypeScript, XML, YAML, and domain-specific command formats.
 
@@ -180,7 +181,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 
 ## Verification status
 
-This document defines the intended knowledge-mapping direction. The existing public implementation remains the smaller structural grammar foundation. The conceptual C# control-flow sketch is not yet an implemented API or serialized contract.
+The typed structural schema, graph instance model, versioned integer-first proposal codec, and scoped host-registry example are implemented and covered by repository CI. The If/ElseIf/Else mapping is a focused structural vertical slice, not a complete C# language map. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
 
 ---
 
