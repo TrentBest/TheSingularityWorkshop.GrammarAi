@@ -5,8 +5,6 @@
   </a>
 </p>
 
-[![Sith Policy](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/assets/sith-policy.svg)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/sith-policy.yml)
-
 # ✳️ 00 TheSingularityWorkshop.GrammarAi
 
 This README follows the Workshop's shared [Documentation Standard](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/blob/master/DOCUMENTATION_STANDARD.md).
@@ -16,6 +14,7 @@ This README follows the Workshop's shared [Documentation Standard](https://githu
 [![NuGet downloads](https://img.shields.io/nuget/dt/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
 [![Build](https://img.shields.io/github/actions/workflow/status/TrentBest/TheSingularityWorkshop.GrammarAi/build.yml?branch=master&style=flat-square&logo=github)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/build.yml)
 [![Code Coverage](https://img.shields.io/codecov/c/github/TrentBest/TheSingularityWorkshop.GrammarAi?style=flat-square)](https://codecov.io/gh/TrentBest/TheSingularityWorkshop.GrammarAi)
+[![Sith Policy](https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/assets/sith-policy.svg)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/sith-policy.yml)
 
 **The structure layer for self-defining, integer-backed AI protocols.**
 
@@ -836,7 +835,6 @@ Everything else composes around it rather than blurring it.
   <em>The Singularity Workshop — Tools for the curious, the bold, and the systemically inclined.</em><br>
   <strong>Because state shouldn't be a mess.</strong>
 </p>
-
 
 ## ProtocolAi integration in the Workshop
 
