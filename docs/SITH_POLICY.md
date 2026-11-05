@@ -5,7 +5,17 @@ The Workshop's permanent-branch policy is intentionally simple and exact:
 - `master` — release-matching branch
 - `development` — active development and dependency source
 
-A repository is **COMPLIANT** only when its complete GitHub branch inventory contains exactly those two branch names. Protected and unprotected branches both count. No additional permanent branches are permitted.
+A repository is **COMPLIANT** only when its complete GitHub branch inventory contains exactly those two branch names. Protected and unprotected branches both count. No additional branches are permitted.
+
+## The living badge
+
+The badge tells a tiny visual story:
+
+- **COMPLIANT:** the Sith Lord and apprentice appear in their training ground, locked in an endless lightsaber duel. Neither wins; the training never ends.
+- **NON-COMPLIANT:** the training ground is empty. The duelists are absent because the repository has violated the policy.
+- **UNVERIFIED:** the training ground is veiled/obscured. We do not show the duel when the branch inventory could not be verified.
+
+The visual state is generated from the same evaluation that writes the machine-readable evidence. The animation is decorative; the status text remains explicit, and reduced-motion preferences disable movement where supported.
 
 ## Evaluator behavior
 
@@ -24,8 +34,6 @@ The workflow runs after pushes to any branch, on a daily reconciliation schedule
 - `COMPLIANT`: exactly `master` and `development` exist.
 - `NON-COMPLIANT`: the inventory is readable but does not exactly match the required set.
 - `UNVERIFIED`: GitHub could not provide a complete inventory.
-
-The SVG includes animation as decoration only; its text and color communicate the status without motion. Reduced-motion preferences disable animation where supported.
 
 ## Scope
 
