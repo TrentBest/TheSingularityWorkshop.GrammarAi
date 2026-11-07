@@ -258,7 +258,7 @@ public sealed class GrammarStructureInstanceTests
     private sealed class MultiCategoryResolver : IGrammarExternalReferenceResolver
     {
         public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) =>
-            reference.ProtocolId is 900 or 901 && reference.SymbolId == 42
+            (reference.ProtocolId is 900 or 901) && reference.SymbolId == 42
                 ? GrammarExternalReferenceStatus.ResolvedAndExposed
                 : GrammarExternalReferenceStatus.UnknownSymbol;
     }
