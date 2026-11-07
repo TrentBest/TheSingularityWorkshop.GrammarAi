@@ -7,77 +7,46 @@
 
 # Branch Reconciliation Ledger
 
-**Review date:** 2026-10-22 UTC  
-**Scope:** `master` versus `development` and the extant feature/documentation branches  
-**Disposition:** Audit only. No merge, cherry-pick, reset, PR closure, or branch deletion has been performed.
+**Review date:** 2026-11-07 UTC  
+**Scope:** permanent branches only  
+**Disposition:** audit only. No merge, reset, force-push, or branch deletion has been performed.
 
-## Current branch evidence
+## Live branch evidence
 
-- `development`: `ab1b830ecb9b209bea5a002acb866aa607c60874`
-- `master`: `e7bc7bc451fc39bde764fa3cc428d8e0f314258e`
-- GitHub comparison: `development` is 53 commits ahead and 4 commits behind `master`.
-- Latest CI for the current development head: [run #39717089392](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39717089392) — passed.
+- `master`: `c336e5271c87e8e3be517d4cf695a540921ffd07`
+- `development`: `2fa7d5e9056dca0f46f1bc190ecdd4d097fbb718`
+- GitHub comparison: development is **223 commits ahead** and **21 commits behind** master.
+- Merge base: `0455d9d180b10b86bce5ab13b5aa6ee0a133b60a`.
+- Live branch inventory: exactly `master` and `development`.
+- Live open pull requests: zero.
 
-## Work found only on master
+The two-branch policy is compliant, but the branch histories are not reconciled. The 21 commits on master must be inspected and intentionally preserved or superseded before any fast-forward/merge plan is proposed. Do not infer that the large ahead count makes the histories safe to combine.
 
-| Commit | Change | Reconciliation treatment |
-|---|---|---|
-| `3be72d91f9c8` | Link ProtocolAi domain roadmap and examples | Preserve the cross-package relationship, but verify links and avoid implying GrammarAi owns ProtocolAi behavior. |
-| `4d8988a8b1be` | Add shared Workshop moniker | Preserve the moniker and accessible image alternative in the final README. |
-| `c6f6bec42de5` | Standardize README identity heading | Preserve the standard identity heading. |
-| `e7bc7bc451fc` | Link shared Workshop documentation standard | Preserve the link, pointing at the canonical FSM_COS `master` documentation standard. |
+## Development work represented by the current head
 
-The master README is 849 lines; development's README is 874 lines. The differences are not merely line-count changes: inspect content before deciding what to carry forward.
+- Integer-first production grammar and external ProtocolAi terminal references.
+- Typed structural node kinds, contextual slots, graph instances, occurrence validation, and bounded deterministic proposal encoding.
+- Observer-condition and gate-transition-intent schema.
+- External category slots with qualified ProtocolAi references, host-supplied resolution, tagged v2 proposal tuples, and legacy v1 nested-node read compatibility.
+- Expanded domain, schema, AI exchange, observer, and ecosystem integration documentation.
 
-## Feature branches and open pull requests
+## Verification and workflow note
 
-These branches remain intact:
+The Package GrammarAI workflow passed for the external-category implementation increment before the final legacy-compatibility tests were added. The latest verification run for the current head must be checked in Actions before treating the newest test commit as verified.
 
-- `chore/standardize-ci-grammar-ai` — open draft PR [#6](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/pull/6).
-- `docs/grammar-ai-progressive-readme` — existing README alternative; compare before retiring.
-- `docs/readme-standard` — open PR [#7](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/pull/7).
-- `feature/ai-exchange-foundation` — open PR [#1](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/pull/1). Unique AI Exchange design work has been preserved in `docs/AI_EXCHANGE.md` and `docs/images/ai-exchange-stack.svg` on development, with an explicit statement that orchestration, provider adapters, and response parsing are not shipped GrammarAi APIs.
-- `fix/restore-nuget-trusted-publisher` — review the history for any still-useful workflow fix before disposition.
-- `release/alpha2-ci-theory` — review unique theory/release notes before disposition.
+The Sith Policy workflow originally attempted to push a development evaluation's badge evidence to master. That push was rejected as non-fast-forward and did not update master. The workflow was corrected to write evidence to the permanent branch being evaluated for push events; schedule/manual evaluations use the default branch. Confirm the corrected run before treating the workflow repair as verified.
 
-No PR has been merged or closed as part of this audit.
+## Remaining reconciliation work
 
-## Release-critical differences
+- [ ] Inspect all 21 master-only commits and preserve any unique README, workflow, package, or documentation improvements.
+- [ ] Confirm current Package GrammarAI and Sith Policy runs.
+- [ ] Verify the v1 decoder compatibility tests and external-category v2 tests on the current head.
+- [ ] Audit the complete public API and package contents.
+- [ ] Reconcile version/readme/release notes only after the public contract is stable.
+- [ ] Re-run the complete workflow on the exact candidate.
+- [ ] Obtain explicit repository-owner approval before merging, resetting, or deleting anything.
 
-- Both branches declare `0.1.0-alpha.2` and target .NET 8.
-- Development's workflow pins NuGet Trusted Publishing to an immutable commit SHA; master uses a mutable version tag. Preserve the safer development workflow.
-- Both workflows currently hard-disable NuGet publication.
-- Development has no CS1591 suppression in the project file; master does. Treat resulting XML-documentation warnings as work to resolve rather than restoring the suppression without review.
-- The AI Exchange diagram is design direction, not runtime evidence or a current API diagram.
+**The permanent branch count is compliant. Branch reconciliation is not complete. No release or publication is authorized by this ledger.**
 
-## Required before declaring branch reconciliation complete
-
-- [ ] Review master-only README material and preserve verified examples/cross-links.
-- [ ] Inspect every listed feature branch for unique source, tests, docs, or workflow improvements.
-- [ ] Review PRs #6, #7, and #1 without merging them as part of this audit.
-- [ ] Verify grammar invariants, protocol-reference semantics, package contents, and failure cases against tests.
-- [ ] Re-run CI on the exact reconciled candidate.
-- [ ] Obtain repository-owner approval before merging or deleting any branch.
-
-**This ledger is not authorization to delete any branch or close any PR.**
-
----
-
-<p align="center">
-  <a href="https://github.com/TrentBest">
-    <img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200">
-  </a>
-</p>
-
-<p align="center">
-  <a href="https://github.com/TrentBest">GitHub</a> ·
-  <a href="https://coderlegion.com/">Coder Legion</a> ·
-  <a href="https://www.patreon.com/c/TheSingularityWorkshop">Patreon</a> ·
-  <a href="https://www.paypal.com/donate/?hosted_button_id=3Z7263LCQMV9J">PayPal</a>
-  <br>
-  <a href="https://github.com/TrentBest/FSM_API">FSM_API</a> ·
-  <a href="https://github.com/TrentBest/TheSingularityWorkshop.FSM_Serialization">FSM_Serialization</a> ·
-  <a href="https://github.com/TrentBest/WebPage">WebPage</a>
-</p>
-
-<p align="center"><em>The Singularity Workshop — Tools for the curious, the bold, and the systemically inclined.</em><br><strong>Because state shouldn't be a mess.</strong><br><em>And because static boundaries are invitations to cause trouble.</em></p>
+<!-- THE SINGULARITY WORKSHOP FOOTER -->
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
