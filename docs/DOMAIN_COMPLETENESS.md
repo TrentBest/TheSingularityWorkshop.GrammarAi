@@ -11,7 +11,7 @@
 
 GrammarAi's intended purpose is an AI-facing knowledge-mapping system, not a compiler or general-purpose source parser. ProtocolAi owns stable vocabulary identities; GrammarAi owns typed structural node kinds, contextual roles/slots, composition, and structural validation; the host owns identifier allocation, scope, active context, interpretation, trust, policy, and execution. The LLM proposes structures; proposals remain untrusted until validated by the host.
 
-The implementation now provides both the existing production-grammar foundation and a typed graph model: immutable node/slot definitions, required/optional/repeated cardinality, ordered graph relationships, structural validation, a positive schema version, and a deterministic integer-first proposal codec with an independent wire version. The QuickStart demonstrates codec round-tripping and a minimal host-owned scoped identity registry. That registry is illustrative, not a production identity service.
+The implementation provides the existing production-grammar foundation and a typed graph model: immutable node/slot definitions, required/optional/repeated cardinality, ordered graph relationships, structural validation, and deterministic integer-first proposal exchange. Slots now explicitly target either GrammarAi node kinds or opaque ProtocolAi categories; relationships carry either a child instance or a qualified external protocol/member reference. The codec emits tagged v2 tuples and continues to read legacy v1 nested-node proposals. External values fail closed without a host-supplied resolver bound to the exact request catalog/capability snapshot. The QuickStart's identifier registry remains illustrative, not a production identity service.
 
 Important cross-repository finding: ProtocolAi's current ProtocolSymbol contract exposes ID, name, and value, but no first-class category field. Ownership of global vocabulary categories remains an explicit decision; contextual grammatical roles are already represented by GrammarAi slots and must not be confused with global categories.
 
@@ -41,10 +41,10 @@ This audit deliberately separates implemented behavior from capabilities that ne
 | Versioned structural schema | Implemented | `GrammarStructureDefinition.Version` |
 | Integer-addressed graph instances | Implemented | `GrammarNodeInstance`, `GrammarRelationship`, `GrammarStructureInstance` |
 | Ordered relationships, shared nodes, and cycles | Implemented | `GrammarStructureInstance` validation and tests |
-| Canonical integer-first proposal codec | Implemented | `GrammarStructureProposalCodec` |
+| Canonical integer-first proposal codec | Implemented | `GrammarStructureProposalCodec`; canonical tagged v2 output and legacy v1 nested-node input |
 | Wire and schema compatibility checks | Implemented | Separate wire version and definition ID/version validation |
 | Bounded proposal input and graph size | Implemented | `GrammarLimits` |
-| Host-owned identifier reuse example | Illustrative example | `examples/GrammarAi.QuickStart/Program.cs`; not a production registry |
+| External category slot targets and qualified external values | Implemented | `GrammarSlotTarget`, `GrammarRelationship`, `IGrammarExternalReferenceResolver`; membership/exposure remains host supplied |\n| Host-owned identifier reuse example | Illustrative example | `examples/GrammarAi.QuickStart/Program.cs`; not a production registry |
 | Observer condition/gate-intent schema | Implemented as a separate bounded model | `ObserverGrammarDefinition` and versioned JSON codec |
 | Lexical/token grammar | Not implemented | No token recognizer or lexical rule model |
 | Literal terminals / token spellings | Not implemented in the generic model | Terminals are ProtocolAi references |
@@ -111,7 +111,7 @@ The recommended first delivery is a separately versioned C# grammar resource/pac
 
 ## Remaining knowledge-mapping work
 
-1. Resolve global vocabulary category metadata ownership with ProtocolAi without duplicating or confusing GrammarAi's contextual slot roles.
+1. Continue coordinating category metadata with ProtocolAi. GrammarAi now consumes opaque category/member identities; ProtocolAi remains the identity owner and no category metadata is duplicated here.
 2. Define compatibility and migration policy between schema versions; the current codec rejects mismatches rather than migrating them.
 3. Build a host integration example around real ProtocolAi identity allocation, lexical/application scope, persistence, and cross-request context. The current QuickStart is deliberately a small illustrative registry only.
 4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice.
