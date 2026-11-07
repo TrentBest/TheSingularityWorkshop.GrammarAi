@@ -214,4 +214,53 @@ public sealed class GrammarStructureInstanceTests
         var proposal = "{\"v\":1,\"g\":9001,\"gv\":1,\"n\":[[1,1],[2,5],[3,5]],\"r\":[[1,101,2],[1,102,3]]}";
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(proposal, schema));
     }
+    [Fact]
+    public void Proposal_codec_continues_to_read_legacy_v1_nested_relationships()
+    {
+        var schema = CreateConditionalSchema();
+        const string legacy = "{\"v\":1,\"g\":9001,\"gv\":1,\"n\":[[1,1],[2,4],[3,5]],\"r\":[[1,101,2],[1,102,3]]}";
+        var decoded = GrammarStructureProposalCodec.Deserialize(legacy, schema);
+        Assert.Equal(new ulong[] { 2 }, decoded.GetRelationships(1, 101).Select(x => x.ChildInstanceId));
+        Assert.StartsWith("{\"v\":2,", GrammarStructureProposalCodec.Serialize(decoded));
+    }
+
+    [Fact]
+    public void External_member_ids_are_qualified_by_category_identity()
+    {
+        var schema = new GrammarStructureDefinition(
+            702, "QualifiedValues",
+            [new GrammarNodeDefinition(1, "Request")],
+            [
+                new GrammarSlotDefinition(10, 1, "Repository", GrammarSlotTarget.ExternalProtocolCategory(900), 0, null),
+                new GrammarSlotDefinition(11, 1, "Trigger", GrammarSlotTarget.ExternalProtocolCategory(901), 0, null)
+            ]);
+        var resolver = new MultiCategoryResolver();
+        var instance = new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42)),
+                new GrammarRelationship(100, 11, new GrammarProtocolReference(901, 42))
+            ],
+            resolver);
+        Assert.Equal((ulong)900, instance.Relationships[0].ExternalReference!.Value.ProtocolId);
+        Assert.Equal((ulong)901, instance.Relationships[1].ExternalReference!.Value.ProtocolId);
+    }
+
+    [Fact]
+    public void Proposal_codec_rejects_unknown_v2_relationship_tags()
+    {
+        var schema = CreateConditionalSchema();
+        const string invalid = "{\"v\":2,\"g\":9001,\"gv\":1,\"n\":[[1,1],[2,4],[3,5]],\"r\":[[1,101,9,2],[1,102,0,3]]}";
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(invalid, schema));
+    }
+
+    private sealed class MultiCategoryResolver : IGrammarExternalReferenceResolver
+    {
+        public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) =>
+            reference.ProtocolId is 900 or 901 && reference.SymbolId == 42
+                ? GrammarExternalReferenceStatus.ResolvedAndExposed
+                : GrammarExternalReferenceStatus.UnknownSymbol;
+    }
+
 }
