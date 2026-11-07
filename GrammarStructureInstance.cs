@@ -39,17 +39,28 @@ public sealed record GrammarRelationship
         if (childInstanceId == 0) throw new ArgumentOutOfRangeException(nameof(childInstanceId));
         ParentInstanceId = parentInstanceId;
         SlotId = slotId;
-        ChildInstanceId = childInstanceId;
+        ChildInstanceIdValue = childInstanceId;
     }
 
-    /// <summary>Gets the parent node-instance identity.</summary>
+    public GrammarRelationship(ulong parentInstanceId, ulong slotId, GrammarProtocolReference externalReference)
+    {
+        if (parentInstanceId == 0) throw new ArgumentOutOfRangeException(nameof(parentInstanceId));
+        if (slotId == 0) throw new ArgumentOutOfRangeException(nameof(slotId));
+        if (externalReference.ProtocolId == 0 || externalReference.SymbolId == 0)
+            throw new ArgumentOutOfRangeException(nameof(externalReference));
+        ParentInstanceId = parentInstanceId;
+        SlotId = slotId;
+        ExternalReference = externalReference;
+    }
+
     public ulong ParentInstanceId { get; }
-
-    /// <summary>Gets the contextual slot identity declared by the parent's node kind.</summary>
     public ulong SlotId { get; }
-
-    /// <summary>Gets the child node-instance identity.</summary>
-    public ulong ChildInstanceId { get; }
+    /// <summary>Gets the child node identity; throws when this relationship carries an external value.</summary>
+    public ulong ChildInstanceId => ChildInstanceIdValue ??
+        throw new InvalidOperationException("This relationship carries an external protocol reference, not a child node.");
+    public GrammarProtocolReference? ExternalReference { get; }
+    public bool IsExternal => ExternalReference.HasValue;
+    private ulong? ChildInstanceIdValue { get; }
 }
 
 /// <summary>
@@ -70,7 +81,8 @@ public sealed class GrammarStructureInstance
     public GrammarStructureInstance(
         GrammarStructureDefinition definition,
         IEnumerable<GrammarNodeInstance> nodes,
-        IEnumerable<GrammarRelationship> relationships)
+        IEnumerable<GrammarRelationship> relationships,
+        IGrammarExternalReferenceResolver? externalReferenceResolver = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(nodes);
@@ -104,14 +116,33 @@ public sealed class GrammarStructureInstance
         {
             if (!nodesById.TryGetValue(relationship.ParentInstanceId, out var parent))
                 throw new ArgumentException($"Relationship references unknown parent instance '{relationship.ParentInstanceId}'.", nameof(relationships));
-            if (!nodesById.TryGetValue(relationship.ChildInstanceId, out var child))
-                throw new ArgumentException($"Relationship references unknown child instance '{relationship.ChildInstanceId}'.", nameof(relationships));
             if (!slotDefinitions.TryGetValue(relationship.SlotId, out var slot))
                 throw new ArgumentException($"Relationship references unknown slot '{relationship.SlotId}'.", nameof(relationships));
             if (parent.NodeDefinitionId != slot.OwnerNodeId)
                 throw new ArgumentException($"Slot '{slot.Id}' does not belong to parent node kind '{parent.NodeDefinitionId}'.", nameof(relationships));
-            if (child.NodeDefinitionId != slot.TargetNodeId)
-                throw new ArgumentException($"Slot '{slot.Id}' requires target node kind '{slot.TargetNodeId}', not '{child.NodeDefinitionId}'.", nameof(relationships));
+
+            if (slot.Target.Kind == GrammarSlotTargetKind.Node)
+            {
+                if (relationship.IsExternal)
+                    throw new ArgumentException($"Slot '{slot.Id}' requires a node value, not an external reference.", nameof(relationships));
+                if (!nodesById.TryGetValue(relationship.ChildInstanceId, out var child))
+                    throw new ArgumentException($"Relationship references unknown child instance '{relationship.ChildInstanceId}'.", nameof(relationships));
+                if (child.NodeDefinitionId != slot.Target.Id)
+                    throw new ArgumentException($"Slot '{slot.Id}' requires target node kind '{slot.Target.Id}', not '{child.NodeDefinitionId}'.", nameof(relationships));
+            }
+            else
+            {
+                if (!relationship.ExternalReference.HasValue)
+                    throw new ArgumentException($"Slot '{slot.Id}' requires an external protocol reference, not a child node.", nameof(relationships));
+                var reference = relationship.ExternalReference.Value;
+                if (reference.ProtocolId != slot.Target.Id)
+                    throw new ArgumentException($"Slot '{slot.Id}' requires protocol category '{slot.Target.Id}', not '{reference.ProtocolId}'.", nameof(relationships));
+                if (externalReferenceResolver is null)
+                    throw new ArgumentException("An external-reference resolver is required for external category values.", nameof(externalReferenceResolver));
+                var status = externalReferenceResolver.Resolve(reference);
+                if (status != GrammarExternalReferenceStatus.ResolvedAndExposed)
+                    throw new ArgumentException($"External reference '{reference.ProtocolId}:{reference.SymbolId}' is not resolved and exposed ({status}).", nameof(relationships));
+            }
 
             (ulong ParentId, ulong SlotId) key = (relationship.ParentInstanceId, relationship.SlotId);
             occurrenceCounts.TryGetValue(key, out var count);
