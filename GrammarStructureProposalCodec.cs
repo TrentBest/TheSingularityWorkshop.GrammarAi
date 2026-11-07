@@ -3,26 +3,20 @@ using System.Text.Json;
 
 namespace TheSingularityWorkshop.GrammarAi;
 
-/// <summary>
-/// Encodes and validates the compact integer-first wire representation of a structure instance.
-/// </summary>
+/// <summary>Encodes bounded, deterministic integer-first structural proposals.</summary>
 /// <remarks>
-/// Wire shape: {"v":1,"g":9001,"gv":1,"n":[[instanceId,nodeKindId]],"r":[[parentId,slotId,childId]]}.
-/// Property and tuple order are canonical. Diagnostic names are intentionally omitted; the receiver
-/// resolves IDs through the exact versioned definition already active in its host context.
-/// The codec validates structure only. It does not allocate IDs, resolve scope, establish trust,
-/// interpret meaning, authorize actions, or execute anything.
+/// v1 relationships are [parent,slot,child]. v2 relationships are tagged:
+/// [parent,slot,0,child] for a node, [parent,slot,1,protocolId,symbolId] for an external value.
+/// External values are checked against a host-supplied resolver bound to the request's catalog snapshot.
 /// </remarks>
 public static class GrammarStructureProposalCodec
 {
-    /// <summary>The current wire-format version. This is independent of a structure definition's version.</summary>
-    public const uint CurrentWireVersion = 1;
+    public const uint CurrentWireVersion = 2;
+    private const uint LegacyWireVersion = 1;
 
-    /// <summary>Serializes a validated structure instance to canonical compact JSON.</summary>
     public static string Serialize(GrammarStructureInstance instance)
     {
         ArgumentNullException.ThrowIfNull(instance);
-
         using var stream = new MemoryStream();
         using (var writer = new Utf8JsonWriter(stream, new JsonWriterOptions { Indented = false }))
         {
@@ -30,7 +24,6 @@ public static class GrammarStructureProposalCodec
             writer.WriteNumber("v", CurrentWireVersion);
             writer.WriteNumber("g", instance.Definition.Id);
             writer.WriteNumber("gv", instance.Definition.Version);
-
             writer.WriteStartArray("n");
             foreach (var node in instance.Nodes)
             {
@@ -40,31 +33,39 @@ public static class GrammarStructureProposalCodec
                 writer.WriteEndArray();
             }
             writer.WriteEndArray();
-
             writer.WriteStartArray("r");
             foreach (var relationship in instance.Relationships)
             {
                 writer.WriteStartArray();
                 writer.WriteNumberValue(relationship.ParentInstanceId);
                 writer.WriteNumberValue(relationship.SlotId);
-                writer.WriteNumberValue(relationship.ChildInstanceId);
+                if (relationship.IsExternal)
+                {
+                    var reference = relationship.ExternalReference!.Value;
+                    writer.WriteNumberValue(1);
+                    writer.WriteNumberValue(reference.ProtocolId);
+                    writer.WriteNumberValue(reference.SymbolId);
+                }
+                else
+                {
+                    writer.WriteNumberValue(0);
+                    writer.WriteNumberValue(relationship.ChildInstanceId);
+                }
                 writer.WriteEndArray();
             }
             writer.WriteEndArray();
             writer.WriteEndObject();
         }
-
         var json = Encoding.UTF8.GetString(stream.ToArray());
         if (json.Length > GrammarLimits.MaxProposalCharacters)
             throw new ArgumentException($"Serialized proposal exceeds {GrammarLimits.MaxProposalCharacters} characters.", nameof(instance));
         return json;
     }
 
-    /// <summary>
-    /// Deserializes a proposal against the caller-selected active definition and returns a validated graph.
-    /// </summary>
-    /// <exception cref="ArgumentException">The wire data is malformed, oversized, incompatible, or structurally invalid.</exception>
-    public static GrammarStructureInstance Deserialize(string json, GrammarStructureDefinition definition)
+    public static GrammarStructureInstance Deserialize(
+        string json,
+        GrammarStructureDefinition definition,
+        IGrammarExternalReferenceResolver? externalReferenceResolver = null)
     {
         ArgumentNullException.ThrowIfNull(json);
         ArgumentNullException.ThrowIfNull(definition);
@@ -77,27 +78,20 @@ public static class GrammarStructureProposalCodec
             var root = document.RootElement;
             if (root.ValueKind != JsonValueKind.Object)
                 throw new ArgumentException("A proposal must be a JSON object.", nameof(json));
-
             var propertyNames = new HashSet<string>(StringComparer.Ordinal);
             foreach (var property in root.EnumerateObject())
-            {
                 if (!propertyNames.Add(property.Name))
                     throw new ArgumentException($"Duplicate proposal property '{property.Name}'.", nameof(json));
-            }
-            if (propertyNames.Count != 5 ||
-                !propertyNames.SetEquals(["v", "g", "gv", "n", "r"]))
+            if (propertyNames.Count != 5 || !propertyNames.SetEquals(["v", "g", "gv", "n", "r"]))
                 throw new ArgumentException("A proposal must contain exactly v, g, gv, n, and r properties.", nameof(json));
 
             var wireVersion = root.GetProperty("v").GetUInt32();
-            if (wireVersion != CurrentWireVersion)
+            if (wireVersion is not (LegacyWireVersion or CurrentWireVersion))
                 throw new ArgumentException($"Unsupported proposal wire version '{wireVersion}'.", nameof(json));
-
             var grammarId = root.GetProperty("g").GetUInt64();
             var grammarVersion = root.GetProperty("gv").GetUInt32();
             if (grammarId != definition.Id || grammarVersion != definition.Version)
-                throw new ArgumentException(
-                    $"Proposal definition {grammarId}@{grammarVersion} does not match active definition {definition.Id}@{definition.Version}.",
-                    nameof(json));
+                throw new ArgumentException($"Proposal definition {grammarId}@{grammarVersion} does not match active definition {definition.Id}@{definition.Version}.", nameof(json));
 
             var nodeArray = root.GetProperty("n");
             var relationshipArray = root.GetProperty("r");
@@ -119,13 +113,31 @@ public static class GrammarStructureProposalCodec
             var relationships = new List<GrammarRelationship>(relationshipArray.GetArrayLength());
             foreach (var item in relationshipArray.EnumerateArray())
             {
-                if (item.ValueKind != JsonValueKind.Array || item.GetArrayLength() != 3)
-                    throw new ArgumentException("Each r entry must be a three-integer tuple.", nameof(json));
-                relationships.Add(new GrammarRelationship(
-                    item[0].GetUInt64(), item[1].GetUInt64(), item[2].GetUInt64()));
+                if (item.ValueKind != JsonValueKind.Array)
+                    throw new ArgumentException("Each r entry must be an array tuple.", nameof(json));
+                if (wireVersion == LegacyWireVersion)
+                {
+                    if (item.GetArrayLength() != 3)
+                        throw new ArgumentException("Each v1 r entry must be a three-integer tuple.", nameof(json));
+                    relationships.Add(new GrammarRelationship(item[0].GetUInt64(), item[1].GetUInt64(), item[2].GetUInt64()));
+                    continue;
+                }
+
+                if (item.GetArrayLength() < 4)
+                    throw new ArgumentException("Each v2 r entry must contain a value tag and value.", nameof(json));
+                var tag = item[2].GetByte();
+                if (tag == 0 && item.GetArrayLength() == 4)
+                    relationships.Add(new GrammarRelationship(item[0].GetUInt64(), item[1].GetUInt64(), item[3].GetUInt64()));
+                else if (tag == 1 && item.GetArrayLength() == 5)
+                    relationships.Add(new GrammarRelationship(item[0].GetUInt64(), item[1].GetUInt64(),
+                        new GrammarProtocolReference(item[3].GetUInt64(), item[4].GetUInt64())));
+                else
+                    throw new ArgumentException("Each v2 relationship must be a valid tagged node or external-reference tuple.", nameof(json));
             }
 
-            return new GrammarStructureInstance(definition, nodes, relationships);
+            if (wireVersion == LegacyWireVersion && definition.Slots.Any(slot => slot.Target.Kind != GrammarSlotTargetKind.Node))
+                throw new ArgumentException("A v1 proposal cannot represent external-category slot values.", nameof(json));
+            return new GrammarStructureInstance(definition, nodes, relationships, externalReferenceResolver);
         }
         catch (JsonException exception)
         {
