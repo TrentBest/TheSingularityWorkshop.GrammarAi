@@ -33,6 +33,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
           DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          EVALUATED_BRANCH: ${{ github.ref_name }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           set -euo pipefail
           mkdir -p assets
@@ -157,14 +159,16 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           event_deleted="$(jq -r '.deleted // false' "$GITHUB_EVENT_PATH")"
-          if [[ "$GITHUB_REF" == "refs/heads/$DEFAULT_BRANCH" || "$GITHUB_REF" == "refs/heads/development" || "$GITHUB_EVENT_NAME" == "delete" || "$event_deleted" == "true" ]]; then
+          target_branch="$DEFAULT_BRANCH"
+          if [[ "$EVENT_NAME" == "push" && ( "$EVALUATED_BRANCH" == "master" || "$EVALUATED_BRANCH" == "development" ) ]]; then
+            target_branch="$EVALUATED_BRANCH"
+          fi
+          if [[ "$EVENT_NAME" == "push" || "$EVENT_NAME" == "delete" || "$event_deleted" == "true" || "$EVENT_NAME" == "schedule" || "$EVENT_NAME" == "workflow_dispatch" ]]; then
             git add assets/sith-policy.svg assets/sith-policy.json
             if ! git diff --cached --quiet; then
               git commit -m "chore: refresh Sith policy evidence"
-              git push origin "HEAD:$DEFAULT_BRANCH"
+              git push origin "HEAD:$target_branch"
             fi
-          else
-            echo "Badge publication is reserved for default-branch evaluations."
           fi
 
           {
