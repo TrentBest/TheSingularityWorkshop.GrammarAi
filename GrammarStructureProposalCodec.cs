@@ -135,8 +135,6 @@ public static class GrammarStructureProposalCodec
                     throw new ArgumentException("Each v2 relationship must be a valid tagged node or external-reference tuple.", nameof(json));
             }
 
-            if (wireVersion == LegacyWireVersion && definition.Slots.Any(slot => slot.Target.Kind != GrammarSlotTargetKind.Node))
-                throw new ArgumentException("A v1 proposal cannot represent external-category slot values.", nameof(json));
             return new GrammarStructureInstance(definition, nodes, relationships, externalReferenceResolver);
         }
         catch (JsonException exception)
