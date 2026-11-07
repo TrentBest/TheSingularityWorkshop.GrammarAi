@@ -45,8 +45,8 @@ public sealed class GrammarStructureDefinition
         {
             if (!nodeIds.Contains(slot.OwnerNodeId))
                 throw new ArgumentException($"Slot '{slot.Id}' references unknown owner node '{slot.OwnerNodeId}'.", nameof(slots));
-            if (!nodeIds.Contains(slot.TargetNodeId))
-                throw new ArgumentException($"Slot '{slot.Id}' references unknown target node '{slot.TargetNodeId}'.", nameof(slots));
+            if (slot.Target.Kind == GrammarSlotTargetKind.Node && !nodeIds.Contains(slot.Target.Id))
+                throw new ArgumentException($"Slot '{slot.Id}' references unknown target node '{slot.Target.Id}'.", nameof(slots));
         }
 
         Id = id;
