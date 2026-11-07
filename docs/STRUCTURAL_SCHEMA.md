@@ -26,7 +26,7 @@ A slot definition declares:
 - its own ID;
 - the owning node kind;
 - a contextual role name;
-- the permitted target node kind;
+- exactly one target: a GrammarAi node kind or an externally owned ProtocolAi category;
 - minimum occurrences;
 - maximum occurrences, where null means unbounded.
 
@@ -38,7 +38,7 @@ A slot definition declares:
 | 1 | null | one or more children |
 | N | M | bounded repeated children |
 
-The structure definition validates unique node and slot IDs and ensures that every slot owner and target references a node in the same definition. It preserves declaration order and exposes GetSlots(ownerNodeId).
+The structure definition validates unique node and slot IDs and ensures every owner references a node in the same definition. Node targets must reference a declared node kind; external-category targets remain opaque ProtocolAi identities and are not resolved by GrammarAi. It preserves declaration order and exposes GetSlots(ownerNodeId).
 
 ## Worked control-flow schema
 
@@ -70,10 +70,10 @@ A proposal carries the definition ID and version. The host selects the active de
 The canonical compact shape is:
 
 ~~~json
-{"v":1,"g":9001,"gv":1,"n":[[100,1],[101,4],[102,5]],"r":[[100,101,101],[100,102,102]]}
+{"v":2,"g":9001,"gv":2,"n":[[100,1],[101,4],[102,5]],"r":[[100,101,0,101],[100,102,0,102]]}
 ~~~
 
-The n tuples are [instance ID, node-kind ID]. The r tuples are [parent instance ID, slot ID, child instance ID]. Tuple and relationship order are preserved. The codec rejects unknown wire versions, mismatched definition ID/version, duplicate or unexpected properties, malformed tuples, oversized input, and structurally invalid graphs. Serialization is deterministic for the same validated instance.
+The n tuples are [instance ID, node-kind ID]. In v2, r tuples are tagged: [parent, slot, 0, child instance] for a nested node, or [parent, slot, 1, protocol/category ID, member symbol ID] for an external vocabulary value. v1 [parent, slot, child] tuples remain readable; the serializer emits canonical v2. External values require an IGrammarExternalReferenceResolver supplied by the host and bound to the exact catalog/capability snapshot used for the model request. Resolver outcomes distinguish resolved-and-exposed, unknown protocol, unknown symbol, and not exposed. The resolver is not a global GrammarAi registry. Tuple and relationship order are preserved. The codec rejects unknown wire versions/tags, mismatched definition ID/version, duplicate or unexpected properties, malformed tuples, oversized input, and structurally invalid graphs. Serialization is deterministic for the same validated instance.
 
 ## Still outside this increment
 
@@ -81,7 +81,7 @@ This addition does not yet provide:
 - a host identifier allocator, scope registry, or cross-request interning service;
 - semantic interpretation or a host-specific root/entry-point policy;
 - automatic migration between different schema versions;
-- ProtocolAi category metadata;
+- ProtocolAi category metadata or a ProtocolAi dependency; GrammarAi accepts opaque category/member IDs and delegates membership/exposure checks to the host resolver;
 - semantic validation, authorization, or execution.
 
 Those concerns remain separate contracts. In particular, a structurally valid schema or future proposal does not authorize an operation.
