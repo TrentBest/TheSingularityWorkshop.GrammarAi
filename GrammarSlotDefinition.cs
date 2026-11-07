@@ -1,21 +1,21 @@
 namespace TheSingularityWorkshop.GrammarAi;
 
-/// <summary>
-/// Defines a typed relationship from one grammar node to another, including occurrence constraints.
-/// </summary>
+/// <summary>Defines a typed relationship from one grammar node to a node or external category.</summary>
 public sealed record GrammarSlotDefinition
 {
-    public GrammarSlotDefinition(
-        ulong id,
-        ulong ownerNodeId,
-        string name,
-        ulong targetNodeId,
-        int minimumOccurrences = 1,
-        int? maximumOccurrences = 1)
+    /// <summary>Source-compatible constructor for a nested GrammarAi node target.</summary>
+    public GrammarSlotDefinition(ulong id, ulong ownerNodeId, string name, ulong targetNodeId,
+        int minimumOccurrences = 1, int? maximumOccurrences = 1)
+        : this(id, ownerNodeId, name, GrammarSlotTarget.Node(targetNodeId), minimumOccurrences, maximumOccurrences) { }
+
+    public GrammarSlotDefinition(ulong id, ulong ownerNodeId, string name, GrammarSlotTarget target,
+        int minimumOccurrences = 1, int? maximumOccurrences = 1)
     {
         if (id == 0) throw new ArgumentOutOfRangeException(nameof(id));
         if (ownerNodeId == 0) throw new ArgumentOutOfRangeException(nameof(ownerNodeId));
-        if (targetNodeId == 0) throw new ArgumentOutOfRangeException(nameof(targetNodeId));
+        if (target.Id == 0) throw new ArgumentOutOfRangeException(nameof(target));
+        if (target.Kind is not (GrammarSlotTargetKind.Node or GrammarSlotTargetKind.ExternalProtocolCategory))
+            throw new ArgumentOutOfRangeException(nameof(target));
         if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("A slot name is required.", nameof(name));
         if (name.Length > GrammarLimits.MaxNameCharacters)
             throw new ArgumentException($"A slot name cannot exceed {GrammarLimits.MaxNameCharacters} characters.", nameof(name));
@@ -27,26 +27,22 @@ public sealed record GrammarSlotDefinition
         Id = id;
         OwnerNodeId = ownerNodeId;
         Name = name;
-        TargetNodeId = targetNodeId;
+        Target = target;
         MinimumOccurrences = minimumOccurrences;
         MaximumOccurrences = maximumOccurrences;
     }
 
-    /// <summary>Gets the nonzero identity of this slot within its structure definition.</summary>
     public ulong Id { get; }
-
-    /// <summary>Gets the grammar node kind that owns this relationship.</summary>
     public ulong OwnerNodeId { get; }
-
-    /// <summary>Gets the contextual role name, such as Condition or Body.</summary>
     public string Name { get; }
-
-    /// <summary>Gets the grammar node kind permitted as the target.</summary>
-    public ulong TargetNodeId { get; }
-
-    /// <summary>Gets the minimum number of target nodes required in this slot.</summary>
+    public GrammarSlotTarget Target { get; }
+    /// <summary>Gets the node target for legacy callers; throws for an external-category slot.</summary>
+    public ulong TargetNodeId => Target.Kind == GrammarSlotTargetKind.Node
+        ? Target.Id
+        : throw new InvalidOperationException("This slot targets an external ProtocolAi category.");
+    public ulong TargetProtocolCategoryId => Target.Kind == GrammarSlotTargetKind.ExternalProtocolCategory
+        ? Target.Id
+        : throw new InvalidOperationException("This slot targets a GrammarAi node kind.");
     public int MinimumOccurrences { get; }
-
-    /// <summary>Gets the maximum number of target nodes; null means unbounded.</summary>
     public int? MaximumOccurrences { get; }
 }
