@@ -98,10 +98,15 @@ sealed class HostCatalogSnapshot : IGrammarExternalReferenceResolver
 
     public string SnapshotId { get; }
 
-    public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) =>
-        _exposedReferences.Contains(reference)
-            ? GrammarExternalReferenceStatus.ResolvedAndExposed
-            : GrammarExternalReferenceStatus.UnknownSymbol;
+    public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference)
+    {
+        if (_exposedReferences.Contains(reference))
+            return GrammarExternalReferenceStatus.ResolvedAndExposed;
+
+        return _exposedReferences.Any(candidate => candidate.ProtocolId == reference.ProtocolId)
+            ? GrammarExternalReferenceStatus.UnknownSymbol
+            : GrammarExternalReferenceStatus.UnknownProtocol;
+    }
 }
 
 /// <summary>Host-owned request provenance; deliberately not part of the GrammarAi proposal.</summary>
