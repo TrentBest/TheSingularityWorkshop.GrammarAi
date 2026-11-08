@@ -11,7 +11,7 @@
   ],
   "branch_count": 2,
   "status": "COMPLIANT",
-  "evaluated_at": "2026-11-08T04:30:37Z",
-  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/42447078680",
-  "triggering_commit": "c71429a9d8372a07b4e15d601e1aee132b76169c"
+  "evaluated_at": "2026-11-08T04:41:05Z",
+  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/42447788164",
+  "triggering_commit": "0195416248d7b7a757e19ec86fb4480cad4cc060"
 }
