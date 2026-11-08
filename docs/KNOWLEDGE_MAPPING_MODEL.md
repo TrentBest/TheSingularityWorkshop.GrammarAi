@@ -93,6 +93,8 @@ The canonical wire contract is now implemented by GrammarStructureProposalCodec.
 
 The v2 relationship tags distinguish nested GrammarAi nodes from external ProtocolAi values. External references are accepted only when a host-supplied IGrammarExternalReferenceResolver.Resolve(GrammarProtocolReference) returns ResolvedAndExposed; UnknownProtocol, UnknownSymbol, and NotExposed are rejected. The host binds that resolver to the exact catalog/capability snapshot used for the model request. The snapshot identifier remains in the host envelope, not in GrammarAi state. The codec reads legacy v1 nested-node payloads and emits canonical v2. Old v1 readers cannot consume v2, so the host must negotiate the wire version.
 
+The QuickStart now instantiates the complete conditional shape rather than only an if node: one required condition and body, an ordered repeated ElseIf slot, and an optional single Else slot. It serializes and validates that graph, then separately demonstrates host-scoped identifier reuse and a snapshot-bound external ProtocolAi reference. These examples are illustrative host adapters, not a production registry or language-wide C# map.
+
 The important properties are:
 - node kinds and slot roles have stable identities;
 - relationships are explicit and typed;
