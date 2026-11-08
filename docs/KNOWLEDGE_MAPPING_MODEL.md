@@ -146,7 +146,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 | Gap | Why it matters | Direction |
 |---|---|---|
 | External category references | GrammarAi stores qualified opaque category/member IDs; the host resolver validates membership and exposure | Keep global category identity in ProtocolAi and contextual slot role in GrammarAi |
-| Category ownership | ProtocolAi currently exposes ID/name/value but no first-class category field | Resolve global vocabulary metadata ownership versus grammar-contextual roles; do not conflate them |
+| Cross-repository category metadata | GrammarAi consumes opaque category/member IDs; ProtocolAi remains the identity owner | Coordinate the concrete ProtocolAi category metadata contract; GrammarAi must not duplicate it |
 | Typed grammar nodes and slots | Implemented as grammar-owned node kinds and contextual slots | Extend the map with domain-specific structural definitions |
 | Optional/repeated relationships | Implemented through slot cardinality and ordered graph relationships | Preserve ordering and constraints in future domain maps |
 | Stable grammar and mapping versions | Definition ID/version and independent wire version are implemented | Define compatibility and explicit migration policy between versions |
@@ -158,7 +158,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 
 ## 9. Recommended implementation sequence
 
-1. **Completed:** preserve ProtocolAi vocabulary identity separately from GrammarAi node-kind, slot, and instance identities. Category ownership remains an explicit cross-repository decision.
+1. **Completed:** preserve ProtocolAi vocabulary/category/member identity separately from GrammarAi node-kind, slot, and instance identities. GrammarAi consumes opaque qualified references; the host resolver validates them against the request snapshot. Any richer global category metadata remains ProtocolAi-owned.
 2. **Completed:** implement typed structural roles, required/optional/repeated cardinality, and ordered graph relationships.
 3. **Completed:** implement a compact deterministic proposal contract with separate definition and wire versions.
 4. **Completed first vertical slice:** define and test IfStatement, ElseIfClause, ElseClause, Condition, and Body.
