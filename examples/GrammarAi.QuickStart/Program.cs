@@ -78,3 +78,34 @@ sealed class HostIdentifierRegistry
         return identity;
     }
 }
+
+ 
+/// <summary>
+/// Illustrative immutable catalog snapshot selected by the host for one model request.
+/// A production implementation should bind this resolver to its actual catalog and capability snapshot.
+/// </summary>
+sealed class HostCatalogSnapshot : IGrammarExternalReferenceResolver
+{
+    private readonly HashSet<GrammarProtocolReference> _exposedReferences;
+
+    public HostCatalogSnapshot(string snapshotId, IEnumerable<GrammarProtocolReference> exposedReferences)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(snapshotId);
+        ArgumentNullException.ThrowIfNull(exposedReferences);
+        SnapshotId = snapshotId;
+        _exposedReferences = exposedReferences.ToHashSet();
+    }
+
+    public string SnapshotId { get; }
+
+    public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) =>
+        _exposedReferences.Contains(reference)
+            ? GrammarExternalReferenceStatus.ResolvedAndExposed
+            : GrammarExternalReferenceStatus.UnknownSymbol;
+}
+
+/// <summary>Host-owned request provenance; deliberately not part of the GrammarAi proposal.</summary>
+sealed record HostExchangeEnvelope(
+    string RequestId,
+    string CatalogSnapshotId,
+    string StructureProposal);
