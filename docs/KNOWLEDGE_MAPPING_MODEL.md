@@ -12,7 +12,7 @@ The goal is to let an AI refer to known concepts and their permitted relationshi
 | Layer | Owns | Does not own |
 |---|---|---|
 | ProtocolAi | Vocabulary identity: protocol IDs, symbol IDs, names, values, and globally shared vocabulary metadata when defined | Grammar productions or application execution |
-| GrammarAi | Grammar-owned node kinds, contextual roles/slots, nonterminals, productions, ordering, composition, and structural validation | Global vocabulary identity/category ownership or host authorization |
+| GrammarAi | Grammar-owned node kinds, contextual roles/slots, nonterminals, productions, ordering, composition, structural validation, and opaque qualified references to external categories/members | Global vocabulary identity/category metadata, host catalog membership/exposure, or authorization |
 | Host/application | Registry, context, prompt construction, identifier lifecycle, validation policy, and interpretation | The reusable grammar definition itself |
 | LLM | Selects and composes mapped structures; proposes new identifiers when permitted | Authority to execute a proposal |
 
@@ -22,14 +22,9 @@ A source-language spelling such as the C# keyword if is not the structure. It is
 
 A ProtocolAi symbol can provide a stable identity for that item. GrammarAi then defines the role that identity can occupy and the relationships in which it participates.
 
-The current ProtocolAi ProtocolSymbol contract provides an ID, name, and value. It does not currently expose a first-class category field. Therefore, categories such as keyword, operator, punctuation, literal, identifier, expression-kind, or statement-kind must not be assumed to exist in ProtocolAi today.
+ProtocolAi owns the stable identity of vocabulary categories/protocols and their member symbols. GrammarAi does not infer or duplicate that metadata. A GrammarAi structural slot may target one opaque external category identity, and each external relationship carries a qualified pair: category/protocol ID plus member symbol ID. The host-supplied resolver checks that pair against the exact catalog/capability snapshot used for the request.
 
-The design must make category explicit somewhere in the mapping contract. Two approaches require evaluation:
-
-1. ProtocolAi owns a category/metadata vocabulary that classifies its symbols globally.
-2. GrammarAi owns typed references or category constraints that classify the role a referenced ProtocolAi symbol plays in a particular grammar.
-
-These approaches are not equivalent. The first classifies a vocabulary item globally; the second classifies its grammatical role contextually. A token may have one lexical identity but participate in several structural contexts. The API should preserve that distinction rather than duplicate or mutate ProtocolAi identity.
+A category identity and a grammatical role are different dimensions. The category identifies the namespace in which a vocabulary member is defined; the GrammarAi slot identifies the contextual role the value plays in one structure (for example, Condition, Body, Repository, or Trigger). The same member number may appear under two category IDs without aliasing. The host decides whether a category/member pair exists and is exposed; GrammarAi checks only the qualified target and graph shape.
 
 ## 3. Grammar as a typed relationship map
 
@@ -96,6 +91,8 @@ A compact conceptual identity representation might look like:
 
 The canonical wire contract is now implemented by GrammarStructureProposalCodec. It carries a wire version, structure-definition ID/version, node tuples, and relationship tuples; see [Typed Structural Schema](STRUCTURAL_SCHEMA.md) for the exact format.
 
+The v2 relationship tags distinguish nested GrammarAi nodes from external ProtocolAi values. External references are accepted only when a host-supplied IGrammarExternalReferenceResolver.Resolve(GrammarProtocolReference) returns ResolvedAndExposed; UnknownProtocol, UnknownSymbol, and NotExposed are rejected. The host binds that resolver to the exact catalog/capability snapshot used for the model request. The snapshot identifier remains in the host envelope, not in GrammarAi state. The codec reads legacy v1 nested-node payloads and emits canonical v2. Old v1 readers cannot consume v2, so the host must negotiate the wire version.
+
 The important properties are:
 - node kinds and slot roles have stable identities;
 - relationships are explicit and typed;
@@ -148,7 +145,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 
 | Gap | Why it matters | Direction |
 |---|---|---|
-| First-class symbol categories/roles | Current ProtocolAi symbols expose ID/name/value only | Decide global vocabulary category versus grammar-contextual role |
+| External category references | GrammarAi stores qualified opaque category/member IDs; the host resolver validates membership and exposure | Keep global category identity in ProtocolAi and contextual slot role in GrammarAi |
 | Category ownership | ProtocolAi currently exposes ID/name/value but no first-class category field | Resolve global vocabulary metadata ownership versus grammar-contextual roles; do not conflate them |
 | Typed grammar nodes and slots | Implemented as grammar-owned node kinds and contextual slots | Extend the map with domain-specific structural definitions |
 | Optional/repeated relationships | Implemented through slot cardinality and ordered graph relationships | Preserve ordering and constraints in future domain maps |

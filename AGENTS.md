@@ -35,14 +35,14 @@ Work directly on `development`. Do not create persistent feature or handoff bran
 
 GrammarAi is an AI-facing knowledge-mapping layer, not a compiler project. ProtocolAi owns stable vocabulary identity; GrammarAi owns typed structural relationships, grammar nodes, roles/slots, production composition, and structural constraints that let an AI reference known concepts compactly. The host owns identifier allocation/scope, active context, interpretation, policy, authorization, and execution.
 
-The current ProtocolAi ProtocolSymbol contract exposes ID, name, and value; it does not currently expose a first-class category field. Do not assume token categories already exist or duplicate global vocabulary metadata in GrammarAi without an explicit ownership decision. Distinguish a vocabulary item's global category from its contextual grammatical role.
+ProtocolAi owns stable vocabulary identity, including the opaque protocol/category and member identities referenced by GrammarAi. GrammarAi does not depend on ProtocolAi or duplicate its metadata: it stores qualified external references and lets the host resolve membership and exposure against the exact catalog/capability snapshot used for the request. A GrammarSlotDefinition's contextual role (for example, Condition, Body, Repository, or Trigger) is GrammarAi-owned and is not the global category identity.
 
 Do not make compiler parsing, code generation, Roslyn replacement, or source tokenization the primary definition of GrammarAi. Compiler/parser integrations may be optional adapters. A valid grammar-shaped proposal does not establish semantic correctness, safety, authorization, or permission to execute.
 
 ## Cross-package and trust boundaries
 
 - ProtocolAi owns application-defined vocabulary and symbol identity.
-- GrammarAi owns grammar structure and composition over externally owned protocol references.
+- GrammarAi owns grammar structure and composition over externally owned protocol references. External category/member references are opaque; the host-supplied resolver verifies membership and exposure against the request's exact catalog/capability snapshot.
 - CommandAi owns versioned command-proposal representation and its codec.
 - HeadlessAi owns configured AI endpoint request/response communication.
 - The consuming host owns interpretation, trust decisions, policy, authorization, approval, memory/state, and execution.

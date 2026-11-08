@@ -255,6 +255,173 @@ public sealed class GrammarStructureInstanceTests
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(invalid, schema));
     }
 
+
+    [Fact]
+    public void External_values_round_trip_as_canonical_v2_and_keep_category_qualified_identity()
+    {
+        var schema = new GrammarStructureDefinition(
+            703, "QualifiedExternalValues",
+            [new GrammarNodeDefinition(1, "Request")],
+            [
+                new GrammarSlotDefinition(10, 1, "Repository", GrammarSlotTarget.ExternalProtocolCategory(900), 1, 1),
+                new GrammarSlotDefinition(11, 1, "Trigger", GrammarSlotTarget.ExternalProtocolCategory(901), 1, 1)
+            ]);
+        var resolver = new MultiCategoryResolver();
+        var instance = new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42)),
+                new GrammarRelationship(100, 11, new GrammarProtocolReference(901, 42))
+            ],
+            resolver);
+
+        var json = GrammarStructureProposalCodec.Serialize(instance);
+        var decoded = GrammarStructureProposalCodec.Deserialize(json, schema, resolver);
+
+        Assert.Equal("{""v"":2,""g"":703,""gv"":1,""n"":[[100,1]],""r"":[[100,10,1,900,42],[100,11,1,901,42]]}", json);
+        Assert.Equal(instance.Relationships, decoded.Relationships);
+        Assert.Equal(json, GrammarStructureProposalCodec.Serialize(decoded));
+    }
+
+    [Fact]
+    public void Mixed_relationship_values_preserve_global_order_and_apply_cardinality_per_slot()
+    {
+        var schema = new GrammarStructureDefinition(
+            704, "MixedRelationshipOrder",
+            [new GrammarNodeDefinition(1, "Root"), new GrammarNodeDefinition(2, "Child")],
+            [
+                new GrammarSlotDefinition(10, 1, "ExternalValues", GrammarSlotTarget.ExternalProtocolCategory(900), 0, 2),
+                new GrammarSlotDefinition(11, 1, "NestedValues", GrammarSlotTarget.Node(2), 1, 2)
+            ]);
+        var resolver = new MultiCategoryResolver();
+        var relationships = new[]
+        {
+            new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42)),
+            new GrammarRelationship(100, 11, 101),
+            new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 43)),
+            new GrammarRelationship(100, 11, 102)
+        };
+        var instance = new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1), new GrammarNodeInstance(101, 2), new GrammarNodeInstance(102, 2)],
+            relationships,
+            resolver);
+
+        Assert.Equal(relationships, instance.Relationships);
+        Assert.True(instance.Relationships[0].IsExternal);
+        Assert.False(instance.Relationships[1].IsExternal);
+        Assert.True(instance.Relationships[2].IsExternal);
+        Assert.False(instance.Relationships[3].IsExternal);
+        Assert.Equal(new ulong[] { 101, 102 }, instance.GetRelationships(100, 11).Select(x => x.ChildInstanceId));
+        Assert.Equal(new ulong[] { 42, 43 }, instance.GetRelationships(100, 10).Select(x => x.ExternalReference!.Value.SymbolId));
+
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1), new GrammarNodeInstance(101, 2), new GrammarNodeInstance(102, 2)],
+            [
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42)),
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 43)),
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 44)),
+                new GrammarRelationship(100, 11, 101)
+            ],
+            resolver));
+    }
+
+    [Fact]
+    public void External_values_require_a_host_resolver()
+    {
+        var schema = new GrammarStructureDefinition(
+            705, "ResolverRequired",
+            [new GrammarNodeDefinition(1, "Request")],
+            [new GrammarSlotDefinition(10, 1, "Value", GrammarSlotTarget.ExternalProtocolCategory(900), 0, 1)]);
+
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42))]));
+    }
+
+    [Theory]
+    [InlineData(GrammarExternalReferenceStatus.UnknownProtocol)]
+    [InlineData(GrammarExternalReferenceStatus.UnknownSymbol)]
+    [InlineData(GrammarExternalReferenceStatus.NotExposed)]
+    public void External_values_fail_closed_for_unresolved_or_unexposed_references(GrammarExternalReferenceStatus status)
+    {
+        var schema = new GrammarStructureDefinition(
+            706, "ResolverOutcomes",
+            [new GrammarNodeDefinition(1, "Request")],
+            [new GrammarSlotDefinition(10, 1, "Value", GrammarSlotTarget.ExternalProtocolCategory(900), 0, 1)]);
+
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42))],
+            new FixedStatusResolver(status)));
+    }
+
+    [Fact]
+    public void External_values_reject_a_category_that_does_not_match_the_slot_target()
+    {
+        var schema = new GrammarStructureDefinition(
+            707, "WrongCategory",
+            [new GrammarNodeDefinition(1, "Request")],
+            [new GrammarSlotDefinition(10, 1, "Value", GrammarSlotTarget.ExternalProtocolCategory(900), 0, 1)]);
+
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [new GrammarRelationship(100, 10, new GrammarProtocolReference(901, 42))],
+            new MultiCategoryResolver()));
+    }
+
+    [Fact]
+    public void Relationship_value_case_must_match_the_slot_target_case()
+    {
+        var schema = new GrammarStructureDefinition(
+            708, "TargetCase",
+            [new GrammarNodeDefinition(1, "Root"), new GrammarNodeDefinition(2, "Child")],
+            [
+                new GrammarSlotDefinition(10, 1, "External", GrammarSlotTarget.ExternalProtocolCategory(900), 0, 1),
+                new GrammarSlotDefinition(11, 1, "Nested", GrammarSlotTarget.Node(2), 0, 1)
+            ]);
+
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1), new GrammarNodeInstance(101, 2)],
+            [new GrammarRelationship(100, 10, 101)]));
+
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1), new GrammarNodeInstance(101, 2)],
+            [new GrammarRelationship(100, 11, new GrammarProtocolReference(900, 42))],
+            new MultiCategoryResolver()));
+    }
+
+    [Fact]
+    public void Proposal_codec_rejects_wrong_v1_and_v2_relationship_tuple_arities()
+    {
+        var schema = CreateConditionalSchema();
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
+            "{""v"":1,""g"":9001,""gv"":1,""n"":[],""r"":[[1,101,2,3]]}", schema));
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
+            "{""v"":2,""g"":9001,""gv"":1,""n"":[],""r"":[[1,101,0,2,3]]}", schema));
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
+            "{""v"":2,""g"":9001,""gv"":1,""n"":[],""r"":[[1,101,1,900]]}", schema));
+    }
+
+    [Fact]
+    public void Proposal_codec_rejects_oversized_payloads_before_parsing()
+    {
+        var oversized = new string(' ', GrammarLimits.MaxProposalCharacters + 1);
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(oversized, CreateConditionalSchema()));
+    }
+
+    private sealed class FixedStatusResolver(GrammarExternalReferenceStatus status) : IGrammarExternalReferenceResolver
+    {
+        public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) => status;
+    }
+
     private sealed class MultiCategoryResolver : IGrammarExternalReferenceResolver
     {
         public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) =>

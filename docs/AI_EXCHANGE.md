@@ -7,7 +7,7 @@
 
 # GrammarAI AI Exchange
 
-> **Status: architectural design note.** The current package defines and validates grammar definitions and emits deterministic descriptions. It does not call an LLM, provide a provider adapter, parse model responses, or validate arbitrary responses against a grammar. The exchange pipeline below describes a host integration direction, not a shipped API contract.
+> **Status: partial implementation plus architectural design note.** GrammarAi implements a deterministic structural proposal codec (GrammarStructureProposalCodec) for validated typed graph instances. It does not call an LLM, provide a provider adapter, parse arbitrary model text, or validate arbitrary responses against the full production grammar. The end-to-end exchange pipeline below remains host integration direction, not a shipped provider/exchange API.
 
 ## Grammar is the shape the model is allowed to speak
 
@@ -156,7 +156,7 @@ This keeps the grammar portable.
 
 ## Design direction: human-readable and machine-readable forms
 
-The Workshop may eventually maintain two manifestations of the same grammar. Today, the public API exposes deterministic text through `GrammarDefinition.Describe()`; a separate machine-readable grammar serializer and provider-format adapter are not implemented in this package.
+The Workshop may eventually maintain two manifestations of the same grammar. Today, GrammarDefinition.Describe() provides deterministic diagnostic text, while GrammarStructureProposalCodec serializes typed structural graph proposals as bounded, versioned JSON (canonical v2 output; v1 nested-node input remains readable). A complete serializer for grammar-definition manifests, provider-format adapter, and exchange orchestrator are not implemented in this package.
 
 ### Human-readable
 
@@ -223,7 +223,7 @@ resolution    rejection
 host policy
 ```
 
-The current GrammarAi package validates grammar-definition invariants, such as a declared start symbol and productions for referenced nonterminals. It does not yet parse or validate arbitrary model responses against the grammar; that requires a host-side parser or validator.
+The current GrammarAi package validates grammar-definition invariants and typed structural graph instances. GrammarStructureProposalCodec.Deserialize validates the bounded v1/v2 structural proposal contract against a caller-selected definition and, for external category values, a host-supplied resolver. It does not parse arbitrary model text, validate arbitrary responses against the production grammar, or establish semantic correctness; those remain host-side responsibilities.
 
 ProtocolAI establishes what referenced identities mean.
 
@@ -368,6 +368,8 @@ GrammarAi remains free of execution, providers, GUI frameworks, and API credenti
 - [Consuming GrammarAi](CONSUMING.md)
 - [Examples](EXAMPLES.md)
 - [Grammar definition tests](../tests/GrammarAi.Tests/GrammarDefinitionTests.cs)
+- [Typed structural instance and proposal codec tests](../tests/GrammarAi.Tests/GrammarStructureInstanceTests.cs)
+- [Typed structural schema and v1/v2 wire contract](STRUCTURAL_SCHEMA.md)
 
 ---
 

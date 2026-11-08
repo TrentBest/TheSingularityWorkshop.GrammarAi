@@ -38,7 +38,7 @@ A slot definition declares:
 | 1 | null | one or more children |
 | N | M | bounded repeated children |
 
-The structure definition validates unique node and slot IDs and ensures every owner references a node in the same definition. Node targets must reference a declared node kind; external-category targets remain opaque ProtocolAi identities and are not resolved by GrammarAi. It preserves declaration order and exposes GetSlots(ownerNodeId).
+The structure definition validates unique node and slot IDs and ensures every owner references a node in the same definition. A slot target is a discriminated value: GrammarSlotTarget.Node(nodeDefinitionId) or GrammarSlotTarget.ExternalProtocolCategory(protocolCategoryId). Exactly one target case is represented. Node targets must reference a declared node kind; external category IDs remain opaque ProtocolAi-owned identities. It preserves declaration order and exposes GetSlots(ownerNodeId).
 
 ## Worked control-flow schema
 
@@ -75,6 +75,43 @@ The canonical compact shape is:
 
 The n tuples are [instance ID, node-kind ID]. In v2, r tuples are tagged: [parent, slot, 0, child instance] for a nested node, or [parent, slot, 1, protocol/category ID, member symbol ID] for an external vocabulary value. v1 [parent, slot, child] tuples remain readable; the serializer emits canonical v2. External values require an IGrammarExternalReferenceResolver supplied by the host and bound to the exact catalog/capability snapshot used for the model request. Resolver outcomes distinguish resolved-and-exposed, unknown protocol, unknown symbol, and not exposed. The resolver is not a global GrammarAi registry. Tuple and relationship order are preserved. The codec rejects unknown wire versions/tags, mismatched definition ID/version, duplicate or unexpected properties, malformed tuples, oversized input, and structurally invalid graphs. Serialization is deterministic for the same validated instance.
 
+## External-reference resolution contract
+
+The public host boundary is intentionally small:
+
+~~~csharp
+public enum GrammarExternalReferenceStatus : byte
+{
+    ResolvedAndExposed = 0,
+    UnknownProtocol = 1,
+    UnknownSymbol = 2,
+    NotExposed = 3
+}
+
+public interface IGrammarExternalReferenceResolver
+{
+    GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference);
+}
+~~~
+
+GrammarProtocolReference qualifies a member symbol with its owning protocol/category identity. The resolver is required whenever an instance contains an external relationship. UnknownProtocol means the referenced category/protocol identity is not present in the selected catalog; UnknownSymbol means the member is not present in that category; NotExposed means the identity exists but is not exposed in the selected request view. Only ResolvedAndExposed is accepted. An unknown enum value also fails closed because validation accepts only that exact success value.
+
+The resolver implementation belongs to the host and must be bound to the exact catalog/capability snapshot used to construct the model request. Snapshot identity and request provenance stay in the host-owned exchange envelope; GrammarAi receives only the resolver for that snapshot. GrammarAi has no global registry, session cache, or permission to widen the selected view.
+
+A relationship carries exactly one value case: either a child instance ID or a qualified external reference. Its ChildInstanceId accessor throws for an external relationship; no synthetic child ID is produced. The target case must match the slot's declared target. Minimum/maximum cardinality applies to all relationships in that slot, and the original relationship sequence is preserved, including interleaved relationships belonging to different slots.
+
+## Wire compatibility
+
+| Capability | v1 reader | v2 reader |
+|---|---|---|
+| Nested node relationship | [parent, slot, child] | [parent, slot, 0, child] |
+| External category/member value | Not representable | [parent, slot, 1, protocolOrCategory, member] |
+| Serializer output | Historical v1 | Canonical v2 |
+| Read compatibility | Existing v1 payloads | v1 nested payloads and v2 tagged payloads |
+| Compatibility with old readers | Native | Old v1 readers cannot consume v2; negotiate wire version in the host before sending |
+
+The top-level g and gv values identify the grammar definition and its structural version; v identifies the wire encoding. Changing a slot's target contract changes the structural definition and requires a new definition version. Changing tuple encoding changes the wire version. The codec rejects a stale definition ID/version; it does not migrate schemas. The host must negotiate a wire version with a consumer before transmitting v2.
+
 ## Still outside this increment
 
 This addition does not yet provide:
@@ -88,7 +125,7 @@ Those concerns remain separate contracts. In particular, a structurally valid sc
 
 ## Verification
 
-The GrammarStructureDefinitionTests exercise the If/ElseIf/Else schema, occurrence bounds, unknown references, duplicate identities, and immutable snapshots. GrammarStructureInstanceTests exercise a populated If/ElseIf/Else graph, ordered repeated branches, omitted optional else, required-slot enforcement, wrong target kinds, slot ownership, endpoint/identity validation, graph semantics, deterministic codec round trips, stale schema rejection, wire-version rejection, duplicate-property rejection, and structural validation after decoding. Instance collections are bounded by GrammarLimits.MaxStructureInstances and GrammarLimits.MaxStructureRelationships; serialized proposals are bounded by GrammarLimits.MaxProposalCharacters. Repository CI is the execution evidence for these tests.
+The GrammarStructureDefinitionTests exercise the If/ElseIf/Else schema, occurrence bounds, unknown references, duplicate identities, and immutable snapshots. GrammarStructureInstanceTests exercise a populated If/ElseIf/Else graph, ordered repeated branches, omitted optional else, required-slot enforcement, wrong target kinds, slot ownership, endpoint/identity validation, graph semantics, v1 nested decoding, v2 external-value round trips, colliding member IDs under distinct categories, resolver-required and resolver-failure cases, wrong category/target cases, mixed relationship ordering and cardinality, malformed tuple arities, stale schema rejection, unknown wire versions/tags, duplicate-property rejection, oversized payload rejection, and structural validation after decoding. Instance collections are bounded by GrammarLimits.MaxStructureInstances and GrammarLimits.MaxStructureRelationships; serialized proposals are bounded by GrammarLimits.MaxProposalCharacters. Repository CI is the execution evidence for these tests.
 
 ---
 
