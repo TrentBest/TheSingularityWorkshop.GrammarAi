@@ -279,7 +279,7 @@ public sealed class GrammarStructureInstanceTests
         var json = GrammarStructureProposalCodec.Serialize(instance);
         var decoded = GrammarStructureProposalCodec.Deserialize(json, schema, resolver);
 
-        Assert.Equal("{""v"":2,""g"":703,""gv"":1,""n"":[[100,1]],""r"":[[100,10,1,900,42],[100,11,1,901,42]]}", json);
+        Assert.Equal("""{"v":2,"g":703,"gv":1,"n":[[100,1]],"r":[[100,10,1,900,42],[100,11,1,901,42]]}""", json);
         Assert.Equal(instance.Relationships, decoded.Relationships);
         Assert.Equal(json, GrammarStructureProposalCodec.Serialize(decoded));
     }
@@ -403,11 +403,11 @@ public sealed class GrammarStructureInstanceTests
     {
         var schema = CreateConditionalSchema();
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
-            "{""v"":1,""g"":9001,""gv"":1,""n"":[],""r"":[[1,101,2,3]]}", schema));
+            """{"v":1,"g":9001,"gv":1,"n":[],"r":[[1,101,2,3]]}""", schema));
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
-            "{""v"":2,""g"":9001,""gv"":1,""n"":[],""r"":[[1,101,0,2,3]]}", schema));
+            """{"v":2,"g":9001,"gv":1,"n":[],"r":[[1,101,0,2,3]]}""", schema));
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(
-            "{""v"":2,""g"":9001,""gv"":1,""n"":[],""r"":[[1,101,1,900]]}", schema));
+            """{"v":2,"g":9001,"gv":1,"n":[],"r":[[1,101,1,900]]}""", schema));
     }
 
     [Fact]
@@ -425,7 +425,7 @@ public sealed class GrammarStructureInstanceTests
     private sealed class MultiCategoryResolver : IGrammarExternalReferenceResolver
     {
         public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) =>
-            (reference.ProtocolId is 900 or 901) && reference.SymbolId == 42
+            (reference.ProtocolId is 900 or 901) && (reference.SymbolId is 42 or 43 or 44)
                 ? GrammarExternalReferenceStatus.ResolvedAndExposed
                 : GrammarExternalReferenceStatus.UnknownSymbol;
     }
