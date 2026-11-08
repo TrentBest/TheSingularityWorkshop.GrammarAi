@@ -13,9 +13,9 @@ GrammarAi's intended purpose is an AI-facing knowledge-mapping system, not a com
 
 The implementation provides the existing production-grammar foundation and a typed graph model: immutable node/slot definitions, required/optional/repeated cardinality, ordered graph relationships, structural validation, and deterministic integer-first proposal exchange. Slots now explicitly target either GrammarAi node kinds or opaque ProtocolAi categories; relationships carry either a child instance or a qualified external protocol/member reference. The codec emits tagged v2 tuples and continues to read legacy v1 nested-node proposals. External values fail closed without a host-supplied resolver bound to the exact request catalog/capability snapshot. The QuickStart's identifier registry remains illustrative, not a production identity service.
 
-Important cross-repository finding: ProtocolAi's current ProtocolSymbol contract exposes ID, name, and value, but no first-class category field. Ownership of global vocabulary categories remains an explicit decision; contextual grammatical roles are already represented by GrammarAi slots and must not be confused with global categories.
+Cross-repository ownership: ProtocolAi owns global vocabulary/category/member identities. GrammarAi stores only opaque, qualified category/member references and owns contextual slot roles. The host resolver validates membership and exposure against the exact request catalog/capability snapshot. Global category metadata and contextual grammatical roles are distinct; GrammarAi does not duplicate the former.
 
-Important cross-repository finding: ProtocolAi's current ProtocolSymbol contract exposes ID, name, and value, but no first-class category field. Category ownership must be decided explicitly; global vocabulary categories and contextual grammatical roles are different concepts.
+
 
 See the [Knowledge Mapping Model](KNOWLEDGE_MAPPING_MODEL.md) for the intended architecture and conceptual C# control-flow mapping. Compiler/parser integrations may be useful optional adapters, but they are not the definition of GrammarAi.
 
