@@ -316,6 +316,29 @@ public sealed class GrammarStructureInstanceTests
         Assert.Equal(new ulong[] { 101, 102 }, instance.GetRelationships(100, 11).Select(x => x.ChildInstanceId));
         Assert.Equal(new ulong[] { 42, 43 }, instance.GetRelationships(100, 10).Select(x => x.ExternalReference!.Value.SymbolId));
 
+        // External values do not satisfy the required nested-node slot.
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1), new GrammarNodeInstance(101, 2)],
+            [new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42))],
+            resolver));
+
+        // Nested-node values obey the same maximum-occurrence rule.
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [
+                new GrammarNodeInstance(100, 1),
+                new GrammarNodeInstance(101, 2),
+                new GrammarNodeInstance(102, 2),
+                new GrammarNodeInstance(103, 2)
+            ],
+            [
+                new GrammarRelationship(100, 11, 101),
+                new GrammarRelationship(100, 11, 102),
+                new GrammarRelationship(100, 11, 103)
+            ],
+            resolver));
+
         Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
             schema,
             [new GrammarNodeInstance(100, 1), new GrammarNodeInstance(101, 2), new GrammarNodeInstance(102, 2)],
