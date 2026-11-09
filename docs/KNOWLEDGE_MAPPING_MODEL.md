@@ -103,7 +103,19 @@ The important properties are:
 - variable names are references to host-managed identities, not repeated vocabulary definitions;
 - the model can return a compact structure that the host resolves using its current registry.
 
-## 5. New identifiers and conversation context
+## 5. C# expression grammar: precedence as reusable structure
+
+The first C# expansion is a bounded production grammar, separate from the control-flow graph schema. `CSharpExpressionGrammar.Create` builds a recursive grammar over host-supplied ProtocolAi token identities. It includes assignment, logical OR/AND, equality, relational, additive, multiplicative, unary, identifiers, literals, and parenthesized expressions.
+
+The production layers encode precedence directly: multiplicative expressions nest below additive expressions, which nest below relational expressions, and so on. Binary layers use left recursion to express left associativity; assignment recurses on its right side. Parenthesized expressions recurse back to the expression start symbol.
+
+The host passes one category/protocol ID and a complete mapping from `CSharpExpressionToken` roles to ProtocolAi member IDs. GrammarAi validates that every required role has a nonzero identity, but does not own the token catalog, token spelling, language-version selection, or lexical recognition.
+
+This is deliberately a core expression subset, not a complete C# expression grammar. Invocation, member access, element access, casts, conditional expressions, lambdas, patterns, query expressions, and newer language-version features remain future slices. The grammar describes production structure; it does not perform parsing, binding, type checking, overload resolution, or code generation.
+
+The QuickStart prints this grammar alongside the typed If/ElseIf/Else graph. The grammar's production model is the appropriate recursive representation for precedence layers; the typed graph remains useful for explicit contextual roles, cardinality, and ordered relationships.
+
+## 6. New identifiers and conversation context
 
 Not every identifier can be known in advance. A newly introduced variable, method, type, or application-specific name may arrive as text.
 
@@ -120,7 +132,7 @@ This is context/registry management, not a reason for GrammarAi to own global mu
 
 A name's identity should be scoped carefully. Two variables named value in different lexical scopes are not necessarily the same symbol. The mapping contract must distinguish identity from display spelling.
 
-## 6. The AI exchange
+## 7. The AI exchange
 
 The target is not “send the whole C# source to a compiler grammar.” The target is “give the model a compact map of the relevant vocabulary and structural rules, then receive a compact structured proposal.”
 
@@ -133,17 +145,17 @@ A typical exchange has four conceptual parts:
 
 The host must reject unknown IDs, invalid structure, out-of-scope identifiers, stale versions, and proposals that violate application policy. A structurally valid proposal is not automatically correct, safe, authorized, or executable.
 
-## 7. C# is a vocabulary and structure resource, not a compiler target
+## 8. C# is a vocabulary and structure resource, not a compiler target
 
 A C# mapping can be useful without implementing Roslyn or compiling C#.
 
-The resource should identify relevant vocabulary and map constructs such as declarations and modifiers; types, generic parameters, and constraints; expressions and operators; statements and control flow; invocation/member access; object and collection creation; patterns, lambdas, async/await; namespaces, using directives, and attributes.
+The resource should identify relevant vocabulary and map constructs such as declarations and modifiers; types, generic parameters, and constraints; expressions and operators (a first precedence-layered core expression grammar is now implemented); statements and control flow; invocation/member access; object and collection creation; patterns, lambdas, async/await; namespaces, using directives, and attributes.
 
 The map should be layered. A task that only needs conditional control flow should not need the entire C# language definition in the prompt.
 
 The upstream C# language version and provenance still matter for accuracy. Compiler-grade parsing, binding, type checking, diagnostics, and code generation remain optional host integrations—not the definition of GrammarAi.
 
-## 8. Immediate domain gaps
+## 9. Immediate domain gaps
 
 | Gap | Why it matters | Direction |
 |---|---|---|
@@ -155,20 +167,20 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 | Compact deterministic exchange | Implemented by GrammarStructureProposalCodec | Keep canonical encoding stable within a wire version |
 | Identifier lifecycle and scope | Example demonstrates host-owned scoped reuse; no production registry service is included | Host owns persistence, collision handling, scope, and context manifest |
 | Structural proposal validation | Implemented for identity, slots, cardinality, order, definition version, and resource limits | Add host-specific scope and policy validation outside GrammarAi |
-| C# mapping resource | Gives a practical first language domain | Build a layered, version-pinned mapping from relevant constructs |
+| C# mapping resource | Core precedence-layered expression productions and If/ElseIf/Else structure are implemented | Add invocation/member access, declarations, types, and other version-pinned construct families |
 | Cross-request continuity | Later turns must reuse known identities | Host supplies the active mapping/context on each request |
 
-## 9. Recommended implementation sequence
+## 10. Recommended implementation sequence
 
 1. **Completed:** preserve ProtocolAi vocabulary/category/member identity separately from GrammarAi node-kind, slot, and instance identities. GrammarAi consumes opaque qualified references; the host resolver validates them against the request snapshot. Any richer global category metadata remains ProtocolAi-owned.
 2. **Completed:** implement typed structural roles, required/optional/repeated cardinality, and ordered graph relationships.
 3. **Completed:** implement a compact deterministic proposal contract with separate definition and wire versions.
 4. **Completed first vertical slice:** define and test IfStatement, ElseIfClause, ElseClause, Condition, and Body.
 5. **Example added:** demonstrate host-owned scoped identifier reuse across requests. This is illustrative; production persistence and allocation remain host responsibilities.
-6. Expand the C# mapping by useful construct families; do not attempt a full compiler grammar before the mapping contract is proven.
+6. **Implemented next slice:** add a precedence-layered core C# expression grammar over host-supplied ProtocolAi token identities. Continue with invocation/member access and declarations; do not attempt a full compiler grammar.
 7. Add other common domains using the same reusable structural model: JSON, HTTP/URI, SQL dialects, Python, JavaScript/TypeScript, XML, YAML, and domain-specific command formats.
 
-## 10. Explicit non-goals
+## 11. Explicit non-goals
 
 - Building a C# compiler or replacing Roslyn.
 - Implementing code generation as a GrammarAi responsibility.
@@ -180,7 +192,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 
 ## Verification status
 
-The typed structural schema, graph instance model, versioned integer-first proposal codec, and scoped host-registry example are implemented and covered by repository CI. The If/ElseIf/Else mapping is a focused structural vertical slice, not a complete C# language map. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
+The typed structural schema, graph instance model, versioned integer-first proposal codec, scoped host-registry example, and bounded precedence-layered C# core expression grammar are implemented and covered by repository CI. The If/ElseIf/Else graph and expression grammar are focused slices, not a complete C# language map. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
 
 ---
 
