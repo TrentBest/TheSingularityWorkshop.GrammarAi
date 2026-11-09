@@ -20,21 +20,21 @@ public sealed class CSharpExpressionGrammarTests
             symbol => Assert.Equal((ulong)1001, symbol.ProtocolReference!.Value.ProtocolId));
 
         // Postfix recursion makes chains such as object.Member(args)[index] composable.
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
             rule.RightHandSide.Count == 3 &&
-            rule.RightHandSide[0].IsNonTerminal && rule.RightHandSide[0].Id == 11 &&
+            rule.RightHandSide[0].IsNonTerminal && rule.RightHandSide[0].Id == 17 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.Dot] &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.Identifier]);
 
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
             rule.RightHandSide.Count == 3 &&
-            rule.RightHandSide[0].IsNonTerminal && rule.RightHandSide[0].Id == 11 &&
+            rule.RightHandSide[0].IsNonTerminal && rule.RightHandSide[0].Id == 17 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.OpenParenthesis] &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.CloseParenthesis]);
 
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
             rule.RightHandSide.Count == 4 &&
-            rule.RightHandSide[0].IsNonTerminal && rule.RightHandSide[0].Id == 11 &&
+            rule.RightHandSide[0].IsNonTerminal && rule.RightHandSide[0].Id == 17 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.OpenBracket] &&
             rule.RightHandSide[2].IsNonTerminal && rule.RightHandSide[2].Id == 1 &&
             rule.RightHandSide[3].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.CloseBracket]);
@@ -45,23 +45,23 @@ public sealed class CSharpExpressionGrammarTests
     {
         var grammar = CSharpExpressionGrammar.Create(3002, 1001, Tokens());
 
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
             rule.RightHandSide.Count == 3 &&
-            rule.RightHandSide[0].Id == 11 &&
+            rule.RightHandSide[0].Id == 17 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.OpenParenthesis] &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.CloseParenthesis]);
 
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
             rule.RightHandSide.Count == 4 &&
-            rule.RightHandSide[0].Id == 11 &&
+            rule.RightHandSide[0].Id == 17 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.OpenParenthesis] &&
-            rule.RightHandSide[2].Id == 12 &&
+            rule.RightHandSide[2].Id == 18 &&
             rule.RightHandSide[3].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.CloseParenthesis]);
 
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
             rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 2);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
-            rule.RightHandSide.Count == 3 && rule.RightHandSide[0].Id == 12 &&
+            rule.RightHandSide.Count == 3 && rule.RightHandSide[0].Id == 18 &&
             rule.RightHandSide[2].Id == 2);
     }
 
