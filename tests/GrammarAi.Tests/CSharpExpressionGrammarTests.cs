@@ -13,7 +13,7 @@ public sealed class CSharpExpressionGrammarTests
     {
         var grammar = CSharpExpressionGrammar.Create(3002, 1001, Tokens());
 
-        Assert.Equal(27, grammar.Rules.Count);
+        Assert.Equal(39, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
