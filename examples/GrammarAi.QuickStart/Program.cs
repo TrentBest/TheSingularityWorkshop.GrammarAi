@@ -11,6 +11,16 @@ Console.WriteLine("PRODUCTION GRAMMAR");
 Console.WriteLine(grammar.Describe());
 Console.WriteLine();
 
+// The host supplies ProtocolAi identities from its active vocabulary snapshot.
+var csharpTokens = Enum.GetValues<CSharpExpressionToken>()
+    .ToDictionary(token => token, token => (ulong)token + 300);
+var csharpExpressions = CSharpExpressionGrammar.Create(3002, 1001, csharpTokens);
+Console.WriteLine("LAYERED C# EXPRESSION GRAMMAR");
+Console.WriteLine(csharpExpressions.Describe());
+Console.WriteLine("The productions encode assignment, logical, equality, relational, additive, multiplicative, unary, and primary precedence.");
+Console.WriteLine();
+
+
 var schema = new GrammarStructureDefinition(
     9001,
     "ConditionalControlFlow",
