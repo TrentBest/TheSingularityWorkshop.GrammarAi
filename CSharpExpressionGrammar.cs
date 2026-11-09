@@ -14,7 +14,11 @@ public enum CSharpExpressionToken
     Relational,
     Additive,
     Multiplicative,
-    Unary
+    Unary,
+    Dot,
+    Comma,
+    OpenBracket,
+    CloseBracket
 }
 
 /// <summary>
@@ -24,7 +28,7 @@ public enum CSharpExpressionToken
 /// This is a structural expression grammar, not a C# parser or semantic model. The host supplies the
 /// vocabulary category and member IDs from its selected ProtocolAi catalog. Productions encode precedence
 /// and associativity; token spelling, overload resolution, type checking, and language-version policy remain
-/// outside GrammarAi. Invocation and member access are intentionally separate future slices.
+/// outside GrammarAi. This slice includes postfix member access, invocation, and element access.
 /// </remarks>
 public static class CSharpExpressionGrammar
 {
@@ -38,13 +42,10 @@ public static class CSharpExpressionGrammar
     private const ulong Multiplicative = 8;
     private const ulong Unary = 9;
     private const ulong Primary = 10;
+    private const ulong Postfix = 11;
+    private const ulong ArgumentList = 12;
 
-    /// <summary>
-    /// Creates a version-independent grammar definition for the core expression precedence hierarchy.
-    /// </summary>
-    /// <param name="grammarId">Host-assigned nonzero grammar identity.</param>
-    /// <param name="protocolCategoryId">ProtocolAi category/protocol identity containing the supplied token members.</param>
-    /// <param name="tokenIds">Complete mapping from each token role to its nonzero ProtocolAi symbol identity.</param>
+    /// <summary>Creates a version-independent grammar definition for the core expression hierarchy.</summary>
     public static GrammarDefinition Create(
         ulong grammarId,
         ulong protocolCategoryId,
@@ -54,8 +55,7 @@ public static class CSharpExpressionGrammar
         if (protocolCategoryId == 0) throw new ArgumentOutOfRangeException(nameof(protocolCategoryId));
         ArgumentNullException.ThrowIfNull(tokenIds);
 
-        var required = Enum.GetValues<CSharpExpressionToken>();
-        foreach (var token in required)
+        foreach (var token in Enum.GetValues<CSharpExpressionToken>())
         {
             if (!tokenIds.TryGetValue(token, out var id) || id == 0)
                 throw new ArgumentException($"A nonzero ProtocolAi symbol identity is required for token '{token}'.", nameof(tokenIds));
@@ -81,11 +81,18 @@ public static class CSharpExpressionGrammar
             .Rule(13, Additive, N(Additive), T(CSharpExpressionToken.Additive), N(Multiplicative))
             .Rule(14, Multiplicative, N(Unary))
             .Rule(15, Multiplicative, N(Multiplicative), T(CSharpExpressionToken.Multiplicative), N(Unary))
-            .Rule(16, Unary, N(Primary))
+            .Rule(16, Unary, N(Postfix))
             .Rule(17, Unary, T(CSharpExpressionToken.Unary), N(Unary))
             .Rule(18, Primary, T(CSharpExpressionToken.Identifier))
             .Rule(19, Primary, T(CSharpExpressionToken.Literal))
             .Rule(20, Primary, T(CSharpExpressionToken.OpenParenthesis), N(Expression), T(CSharpExpressionToken.CloseParenthesis))
+            .Rule(21, Postfix, N(Primary))
+            .Rule(22, Postfix, N(Postfix), T(CSharpExpressionToken.Dot), T(CSharpExpressionToken.Identifier))
+            .Rule(23, Postfix, N(Postfix), T(CSharpExpressionToken.OpenParenthesis), T(CSharpExpressionToken.CloseParenthesis))
+            .Rule(24, Postfix, N(Postfix), T(CSharpExpressionToken.OpenParenthesis), N(ArgumentList), T(CSharpExpressionToken.CloseParenthesis))
+            .Rule(25, Postfix, N(Postfix), T(CSharpExpressionToken.OpenBracket), N(Expression), T(CSharpExpressionToken.CloseBracket))
+            .Rule(26, ArgumentList, N(Assignment))
+            .Rule(27, ArgumentList, N(ArgumentList), T(CSharpExpressionToken.Comma), N(Assignment))
             .Build();
     }
 }
