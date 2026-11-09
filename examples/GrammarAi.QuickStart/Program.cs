@@ -17,7 +17,7 @@ var csharpTokens = Enum.GetValues<CSharpExpressionToken>()
 var csharpExpressions = CSharpExpressionGrammar.Create(3002, 1001, csharpTokens);
 Console.WriteLine("LAYERED C# EXPRESSION GRAMMAR");
 Console.WriteLine(csharpExpressions.Describe());
-Console.WriteLine("The productions encode assignment through primary precedence, then recursive postfix member access, invocation (including empty argument lists), and element access.");
+Console.WriteLine("The productions encode assignment, conditional and null-coalescing expressions, logical and bitwise operators, shifts, equality and relational operators, arithmetic, unary expressions, then recursive postfix member access, invocation (including empty argument lists), and element access.");
 Console.WriteLine("The same postfix form composes chains such as receiver.Member(arguments)[index].");
 Console.WriteLine();
 
