@@ -111,7 +111,7 @@ The production layers encode precedence directly: multiplicative expressions nes
 
 The host passes one category/protocol ID and a complete mapping from `CSharpExpressionToken` roles to ProtocolAi member IDs. GrammarAi validates that every required role has a nonzero identity, but does not own the token catalog, token spelling, language-version selection, or lexical recognition.
 
-This is deliberately a core expression subset, not a complete C# expression grammar. Invocation, member access, element access, casts, conditional expressions, lambdas, patterns, query expressions, and newer language-version features remain future slices. The grammar describes production structure; it does not perform parsing, binding, type checking, overload resolution, or code generation.
+This is deliberately a core expression subset, not a complete C# expression grammar. The grammar now includes recursive postfix member access, invocation (with empty or comma-separated argument lists), and element access. The postfix layer binds more tightly than unary operators and can compose chains such as `receiver.Member(arguments)[index]`. Casts, conditional expressions, lambdas, patterns, query expressions, named/ref/out arguments, and newer language-version features remain future slices. The grammar describes production structure; it does not perform parsing, binding, type checking, overload resolution, or code generation.
 
 The QuickStart prints this grammar alongside the typed If/ElseIf/Else graph. The grammar's production model is the appropriate recursive representation for precedence layers; the typed graph remains useful for explicit contextual roles, cardinality, and ordered relationships.
 
