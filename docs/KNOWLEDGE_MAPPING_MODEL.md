@@ -105,13 +105,13 @@ The important properties are:
 
 ## 5. C# expression grammar: precedence as reusable structure
 
-The first C# expansion is a bounded production grammar, separate from the control-flow graph schema. `CSharpExpressionGrammar.Create` builds a recursive grammar over host-supplied ProtocolAi token identities. It includes assignment, logical OR/AND, equality, relational, additive, multiplicative, unary, identifiers, literals, and parenthesized expressions.
+The first C# expansion is a bounded production grammar, separate from the control-flow graph schema. `CSharpExpressionGrammar.Create` builds a recursive grammar over host-supplied ProtocolAi token identities. It includes assignment, conditional and null-coalescing expressions, logical OR/AND, bitwise OR/XOR/AND, equality, relational, shifts, additive, multiplicative, unary, identifiers, literals, and parenthesized expressions.
 
-The production layers encode precedence directly: multiplicative expressions nest below additive expressions, which nest below relational expressions, and so on. Binary layers use left recursion to express left associativity; assignment recurses on its right side. Parenthesized expressions recurse back to the expression start symbol.
+The production layers encode precedence directly: multiplicative expressions nest below additive, shift, relational, equality, bitwise, logical, null-coalescing, conditional, and assignment layers. Binary operator layers use left recursion to express left associativity; assignment and null-coalescing recurse on their right side. Conditional true/false branches recurse through the expression start symbol. Parenthesized expressions also recurse back to that start symbol.
 
 The host passes one category/protocol ID and a complete mapping from `CSharpExpressionToken` roles to ProtocolAi member IDs. GrammarAi validates that every required role has a nonzero identity, but does not own the token catalog, token spelling, language-version selection, or lexical recognition.
 
-This is deliberately a core expression subset, not a complete C# expression grammar. The grammar now includes recursive postfix member access, invocation (with empty or comma-separated argument lists), and element access. The postfix layer binds more tightly than unary operators and can compose chains such as `receiver.Member(arguments)[index]`. Casts, conditional expressions, lambdas, patterns, query expressions, named/ref/out arguments, and newer language-version features remain future slices. The grammar describes production structure; it does not perform parsing, binding, type checking, overload resolution, or code generation.
+This is deliberately a core expression subset, not a complete C# expression grammar. The grammar now includes recursive postfix member access, invocation (with empty or comma-separated argument lists), and element access. The postfix layer binds more tightly than unary operators and can compose chains such as `receiver.Member(arguments)[index]`. Casts, conditional access, lambdas, patterns, query expressions, named/ref/out arguments, and newer language-version features remain future slices. The grammar describes production structure; it does not perform parsing, binding, type checking, overload resolution, or code generation.
 
 The QuickStart prints this grammar alongside the typed If/ElseIf/Else graph. The grammar's production model is the appropriate recursive representation for precedence layers; the typed graph remains useful for explicit contextual roles, cardinality, and ordered relationships.
 
@@ -192,7 +192,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 
 ## Verification status
 
-The typed structural schema, graph instance model, versioned integer-first proposal codec, scoped host-registry example, and bounded precedence-layered C# core expression grammar are implemented and covered by repository CI. The If/ElseIf/Else graph and expression grammar are focused slices, not a complete C# language map. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
+The typed structural schema, graph instance model, versioned integer-first proposal codec, scoped host-registry example, and expanded 39-production C# core expression grammar are implemented and covered by repository CI. The If/ElseIf/Else graph and expression grammar are focused slices, not a complete C# language map. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
 
 ---
 
