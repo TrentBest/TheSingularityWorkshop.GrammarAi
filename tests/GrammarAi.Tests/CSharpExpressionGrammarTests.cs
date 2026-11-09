@@ -58,9 +58,9 @@ public sealed class CSharpExpressionGrammarTests
             rule.RightHandSide[2].Id == 18 &&
             rule.RightHandSide[3].ProtocolReference?.SymbolId == Tokens()[CSharpExpressionToken.CloseParenthesis]);
 
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
             rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 2);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
             rule.RightHandSide.Count == 3 && rule.RightHandSide[0].Id == 18 &&
             rule.RightHandSide[2].Id == 2);
     }
