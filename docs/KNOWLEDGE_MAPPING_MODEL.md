@@ -42,6 +42,8 @@ The typed structural model now adds grammar-owned node-kind IDs, contextual slot
 
 This is more expressive than merely listing C# punctuation tokens. It maps the conceptual shape of a construct while retaining links to the vocabulary used to express it.
 
+The C# language examples are deliberately split into independent resources. `CSharpExpressionGrammar` describes a bounded precedence and associativity hierarchy for expressions; `CSharpTypeGrammar` describes qualified names, generic arguments, nullable forms, array ranks, and tuple types. Both consume host-supplied ProtocolAi token identities. They are structural grammar resources, not a complete or version-pinned C# language definition: lexical rules, declarations, aliases, contextual keywords, type binding, compiler diagnostics, and language-version conformance remain outside this slice.
+
 ## 4. Worked example: if / else-if / else
 
 The following illustrates the implemented structural model. The example node and slot IDs are local to this illustrative schema; applications define and version their own maps.
