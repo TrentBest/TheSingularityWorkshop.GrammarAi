@@ -18,16 +18,20 @@ public enum CSharpDeclarationToken
     CloseBrace,
     GetAccessor,
     SetAccessor,
-    InitAccessor
+    InitAccessor,
+    ThisKeyword,
+    BaseKeyword,
+    Colon
 }
 
-/// <summary>Builds a bounded grammar for C# method, property, field, and parameter declaration shapes.</summary>
+/// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
 /// <remarks>
 /// TypeReference, ExpressionReference, and BlockReference are opaque host vocabulary references to
 /// independently mapped structures; this grammar deliberately does not copy their productions. Modifier
-/// and accessor tokens are likewise supplied by the host. Constructors, operators, events, indexers,
-/// attributes, generic parameters, constraints, explicit interface implementations,
-/// parameter attributes/modifiers, and language-version policy are excluded.
+/// and accessor tokens are likewise supplied by the host. Constructor argument lists use expression
+/// references, not parameter declarations. Operators, events, indexers, attributes, generic parameters,
+/// constraints, explicit interface implementations, parameter attributes/modifiers, and language-version
+/// policy are excluded.
 /// </remarks>
 public static class CSharpDeclarationGrammar
 {
@@ -41,6 +45,9 @@ public static class CSharpDeclarationGrammar
     private const ulong Parameter = 8;
     private const ulong AccessorList = 9;
     private const ulong Accessor = 10;
+    private const ulong ConstructorDeclaration = 11;
+    private const ulong ConstructorInitializer = 12;
+    private const ulong ConstructorArgumentList = 13;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -104,6 +111,31 @@ public static class CSharpDeclarationGrammar
             .Rule(26, Accessor, T(CSharpDeclarationToken.InitAccessor), T(CSharpDeclarationToken.BlockReference))
             .Rule(27, Accessor, T(CSharpDeclarationToken.InitAccessor), T(CSharpDeclarationToken.Arrow),
                 T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(28, MemberDeclaration, N(ConstructorDeclaration))
+            .Rule(29, ConstructorDeclaration, N(ModifierList), T(CSharpDeclarationToken.Identifier),
+                T(CSharpDeclarationToken.OpenParenthesis), N(ParameterList),
+                T(CSharpDeclarationToken.CloseParenthesis), N(ConstructorInitializer),
+                T(CSharpDeclarationToken.BlockReference))
+            .Rule(30, ConstructorDeclaration, N(ModifierList), T(CSharpDeclarationToken.Identifier),
+                T(CSharpDeclarationToken.OpenParenthesis), N(ParameterList),
+                T(CSharpDeclarationToken.CloseParenthesis), N(ConstructorInitializer),
+                T(CSharpDeclarationToken.Arrow), T(CSharpDeclarationToken.ExpressionReference),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(31, ConstructorDeclaration, N(ModifierList), T(CSharpDeclarationToken.Identifier),
+                T(CSharpDeclarationToken.OpenParenthesis), N(ParameterList),
+                T(CSharpDeclarationToken.CloseParenthesis), N(ConstructorInitializer),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(32, ConstructorInitializer)
+            .Rule(33, ConstructorInitializer, T(CSharpDeclarationToken.Colon),
+                T(CSharpDeclarationToken.ThisKeyword), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ConstructorArgumentList), T(CSharpDeclarationToken.CloseParenthesis))
+            .Rule(34, ConstructorInitializer, T(CSharpDeclarationToken.Colon),
+                T(CSharpDeclarationToken.BaseKeyword), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ConstructorArgumentList), T(CSharpDeclarationToken.CloseParenthesis))
+            .Rule(35, ConstructorArgumentList)
+            .Rule(36, ConstructorArgumentList, T(CSharpDeclarationToken.ExpressionReference))
+            .Rule(37, ConstructorArgumentList, T(CSharpDeclarationToken.ExpressionReference),
+                T(CSharpDeclarationToken.Comma), N(ConstructorArgumentList))
             .Build();
     }
 }
