@@ -57,7 +57,6 @@ public static class CSharpDeclarationGrammar
     private const ulong IndexerDeclaration = 14;
     private const ulong EventDeclaration = 15;
     private const ulong EventAccessorList = 16;
-    private const ulong EventAccessor = 17;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -158,10 +157,12 @@ public static class CSharpDeclarationGrammar
             .Rule(42, EventDeclaration, N(ModifierList), T(CSharpDeclarationToken.EventKeyword),
                 T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier),
                 T(CSharpDeclarationToken.OpenBrace), N(EventAccessorList), T(CSharpDeclarationToken.CloseBrace))
-            .Rule(43, EventAccessorList, N(EventAccessor), N(EventAccessor))
-            .Rule(44, EventAccessorList, N(EventAccessor), N(EventAccessor))
-            .Rule(45, EventAccessor, T(CSharpDeclarationToken.AddAccessor), T(CSharpDeclarationToken.BlockReference))
-            .Rule(46, EventAccessor, T(CSharpDeclarationToken.RemoveAccessor), T(CSharpDeclarationToken.BlockReference))
+            .Rule(43, EventAccessorList, T(CSharpDeclarationToken.AddAccessor),
+                T(CSharpDeclarationToken.BlockReference), T(CSharpDeclarationToken.RemoveAccessor),
+                T(CSharpDeclarationToken.BlockReference))
+            .Rule(44, EventAccessorList, T(CSharpDeclarationToken.RemoveAccessor),
+                T(CSharpDeclarationToken.BlockReference), T(CSharpDeclarationToken.AddAccessor),
+                T(CSharpDeclarationToken.BlockReference))
             .Build();
     }
 }
