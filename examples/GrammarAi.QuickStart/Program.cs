@@ -21,6 +21,15 @@ Console.WriteLine("The productions encode assignment, conditional and null-coale
 Console.WriteLine("The same postfix form composes chains such as receiver.Member(arguments)[index].");
 Console.WriteLine();
 
+// Type syntax is a separate grammar resource so expression and type maps can evolve independently.
+var csharpTypeTokens = Enum.GetValues<CSharpTypeToken>()
+    .ToDictionary(token => token, token => (ulong)token + 700);
+var csharpTypes = CSharpTypeGrammar.Create(3003, 1001, csharpTypeTokens);
+Console.WriteLine("LAYERED C# TYPE GRAMMAR");
+Console.WriteLine(csharpTypes.Describe());
+Console.WriteLine("The bounded type map covers qualified and generic names, nullable forms, array ranks, and tuple types.");
+Console.WriteLine("It describes syntax shape only; type binding, aliases, nullable-reference semantics, and language-version policy remain host/compiler concerns.");
+Console.WriteLine();
 
 var schema = new GrammarStructureDefinition(
     9001,
