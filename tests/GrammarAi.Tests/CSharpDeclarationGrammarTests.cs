@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(27, grammar.Rules.Count);
+        Assert.Equal(37, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -49,6 +49,22 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.InitAccessor] &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
+        // Constructors have no return-type slot; parameters and invocation arguments are distinct shapes.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 12) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Identifier]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ThisKeyword]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BaseKeyword]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
+            rule.RightHandSide.Count == 1 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExpressionReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
+            rule.RightHandSide.Count == 3 &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Comma]);
     }
 
     [Fact]
