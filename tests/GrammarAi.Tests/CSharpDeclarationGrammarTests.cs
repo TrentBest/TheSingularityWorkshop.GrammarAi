@@ -48,7 +48,7 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide[0].Id == 24 && rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 8 &&
             rule.RightHandSide.Count == 5 &&
-            rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Assignment]);
+            rule.RightHandSide[3].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Assignment]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 &&
             rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.InitAccessor]);
