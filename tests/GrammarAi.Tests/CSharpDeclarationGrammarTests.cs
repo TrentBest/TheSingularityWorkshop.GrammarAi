@@ -25,14 +25,14 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Arrow]) &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExpressionReference]));
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 7 &&
             rule.RightHandSide.Count == 3 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Comma] &&
             rule.RightHandSide[1].Id == 8 && rule.RightHandSide[2].Id == 7);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 16 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 8 &&
             rule.RightHandSide.Count == 4 &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Assignment]);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 21 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 &&
             rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.InitAccessor]);
     }
@@ -45,8 +45,8 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 5 && rule.RightHandSide.Count == 0);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 6 && rule.RightHandSide.Count == 0);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 9 && rule.RightHandSide.Count == 1);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 && rule.RightHandSide.Count == 2);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 7 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 9 && rule.RightHandSide.Count == 2);
     }
 
     [Fact]
