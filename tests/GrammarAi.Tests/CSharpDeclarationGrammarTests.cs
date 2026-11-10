@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(37, grammar.Rules.Count);
+        Assert.Equal(39, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -65,6 +65,14 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
             rule.RightHandSide.Count == 3 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Comma]);
+        // Indexers use the this keyword, bracketed index parameters, and the existing accessor model.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 1 &&
+            rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 14);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ThisKeyword]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OpenBracket]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CloseBracket]) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 6) && rule.RightHandSide.Any(symbol => symbol.Id == 9));
     }
 
     [Fact]
