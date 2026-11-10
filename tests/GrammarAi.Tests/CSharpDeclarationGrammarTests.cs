@@ -25,11 +25,11 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 21 && rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AttributeSectionReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 22 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 22 &&
-            rule.RightHandSide.First().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.GenericParameterListReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 22 && rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.GenericParameterListReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 23 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 23 &&
-            rule.RightHandSide.First().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ConstraintClauseReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 23 && rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ConstraintClauseReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 && rule.RightHandSide.Any(symbol => symbol.Id == 21) &&
             rule.RightHandSide.Any(symbol => symbol.Id == 22));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 &&
