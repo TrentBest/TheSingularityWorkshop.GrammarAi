@@ -53,7 +53,7 @@ This audit deliberately separates implemented behavior from capabilities that ne
 | Grammar import/export formats | Not implemented | No EBNF, BNF, ABNF, PEG, ANTLR, or tree-sitter importer |
 | Lexer / tokenizer | Not implemented | No source-text scanning API |
 | Parser / parse tree / diagnostics | Not implemented | No source-text parsing API |
-| Bounded C# expression, type, and member declaration grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions), `CSharpTypeGrammar` (21 productions), and `CSharpDeclarationGrammar` (21 productions); host-supplied ProtocolAi identities; opaque cross-resource type/expression/body references; no parser or semantic analysis |
+| Bounded C# expression, type, and member declaration grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions), `CSharpTypeGrammar` (21 productions), and `CSharpDeclarationGrammar` (27 productions); host-supplied ProtocolAi identities; opaque cross-resource type/expression/body references; no parser or semantic analysis |
 | Common language/format catalogue | Not included | No versioned standard grammar catalogue |
 | Semantic analysis / type checking | Not implemented | Must remain distinct from syntax recognition |
 | Incremental parsing / error recovery | Not implemented | Requires a parser design and source-position model |
