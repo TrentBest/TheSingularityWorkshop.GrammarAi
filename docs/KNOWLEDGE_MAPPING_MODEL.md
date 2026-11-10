@@ -42,7 +42,7 @@ The typed structural model now adds grammar-owned node-kind IDs, contextual slot
 
 This is more expressive than merely listing C# punctuation tokens. It maps the conceptual shape of a construct while retaining links to the vocabulary used to express it.
 
-The C# language examples are deliberately split into independent resources. `CSharpExpressionGrammar` describes a bounded precedence and associativity hierarchy for expressions; `CSharpTypeGrammar` describes qualified names, generic arguments, nullable forms, array ranks, and tuple types; `CSharpDeclarationGrammar` describes method/property/field signatures, modifiers, parameter lists/defaults, and accessor signatures. All three consume host-supplied ProtocolAi identities. Declaration type, expression, and block references are opaque links to independently mapped resources, not duplicated productions. These are structural grammar resources, not a complete or version-pinned C# language definition: lexical rules, constructors, operators, events, indexers, attributes, generic constraints, contextual keywords, type binding, compiler diagnostics, and language-version conformance remain outside this slice.
+The C# language examples are deliberately split into independent resources. `CSharpExpressionGrammar` describes a bounded precedence and associativity hierarchy for expressions; `CSharpTypeGrammar` describes qualified names, generic arguments, nullable forms, array ranks, and tuple types; `CSharpDeclarationGrammar` describes method/property/field signatures, modifiers, parameter lists/defaults, and get/set/init accessors with semicolon, block, or expression bodies. All three consume host-supplied ProtocolAi identities. Declaration type, expression, and block references are opaque links to independently mapped resources, not duplicated productions. These are structural grammar resources, not a complete or version-pinned C# language definition: lexical rules, constructors, operators, events, indexers, attributes, generic constraints, contextual keywords, type binding, compiler diagnostics, and language-version conformance remain outside this slice.
 
 ## 4. Worked example: if / else-if / else
 
@@ -169,7 +169,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 | Compact deterministic exchange | Implemented by GrammarStructureProposalCodec | Keep canonical encoding stable within a wire version |
 | Identifier lifecycle and scope | Example demonstrates host-owned scoped reuse; no production registry service is included | Host owns persistence, collision handling, scope, and context manifest |
 | Structural proposal validation | Implemented for identity, slots, cardinality, order, definition version, and resource limits | Add host-specific scope and policy validation outside GrammarAi |
-| C# mapping resource | Core precedence-layered expression productions and If/ElseIf/Else structure are implemented | Add invocation/member access, declarations, types, and other version-pinned construct families |
+| C# mapping resources | Core expression (39), type (21), and member declaration (27) production slices plus If/ElseIf/Else structure are implemented | Expand declaration families and define explicit language-version pinning; keep compiler semantics outside GrammarAi |
 | Cross-request continuity | Later turns must reuse known identities | Host supplies the active mapping/context on each request |
 
 ## 10. Recommended implementation sequence
@@ -179,7 +179,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 3. **Completed:** implement a compact deterministic proposal contract with separate definition and wire versions.
 4. **Completed first vertical slice:** define and test IfStatement, ElseIfClause, ElseClause, Condition, and Body.
 5. **Example added:** demonstrate host-owned scoped identifier reuse across requests. This is illustrative; production persistence and allocation remain host responsibilities.
-6. **Implemented next slice:** add a precedence-layered core C# expression grammar over host-supplied ProtocolAi token identities. Continue with invocation/member access and declarations; do not attempt a full compiler grammar.
+6. **Implemented:** add independently composable expression, type, and member-declaration grammar resources over host-supplied ProtocolAi token identities. Continue with additional declaration families and explicit language-version policy; do not attempt a full compiler grammar.
 7. Add other common domains using the same reusable structural model: JSON, HTTP/URI, SQL dialects, Python, JavaScript/TypeScript, XML, YAML, and domain-specific command formats.
 
 ## 11. Explicit non-goals
