@@ -23,7 +23,10 @@ public enum CSharpDeclarationToken
     BaseKeyword,
     Colon,
     OpenBracket,
-    CloseBracket
+    CloseBracket,
+    EventKeyword,
+    AddAccessor,
+    RemoveAccessor
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -31,7 +34,8 @@ public enum CSharpDeclarationToken
 /// TypeReference, ExpressionReference, and BlockReference are opaque host vocabulary references to
 /// independently mapped structures; this grammar deliberately does not copy their productions. Modifier
 /// and accessor tokens are likewise supplied by the host. Constructor argument lists use expression
-/// references, not parameter declarations. Operators, events, indexers, attributes, generic parameters,
+/// references, not parameter declarations. Field-like events and custom add/remove event accessors are
+/// represented separately from property accessors. Operators, attributes, generic parameters,
 /// constraints, explicit interface implementations, parameter attributes/modifiers, and language-version
 /// policy are excluded.
 /// </remarks>
@@ -51,6 +55,9 @@ public static class CSharpDeclarationGrammar
     private const ulong ConstructorInitializer = 12;
     private const ulong ConstructorArgumentList = 13;
     private const ulong IndexerDeclaration = 14;
+    private const ulong EventDeclaration = 15;
+    private const ulong EventAccessorList = 16;
+    private const ulong EventAccessor = 17;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -144,6 +151,17 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.ThisKeyword), T(CSharpDeclarationToken.OpenBracket),
                 N(ParameterList), T(CSharpDeclarationToken.CloseBracket), T(CSharpDeclarationToken.OpenBrace),
                 N(AccessorList), T(CSharpDeclarationToken.CloseBrace))
+            .Rule(40, MemberDeclaration, N(EventDeclaration))
+            .Rule(41, EventDeclaration, N(ModifierList), T(CSharpDeclarationToken.EventKeyword),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(42, EventDeclaration, N(ModifierList), T(CSharpDeclarationToken.EventKeyword),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier),
+                T(CSharpDeclarationToken.OpenBrace), N(EventAccessorList), T(CSharpDeclarationToken.CloseBrace))
+            .Rule(43, EventAccessorList, N(EventAccessor), N(EventAccessor))
+            .Rule(44, EventAccessorList, N(EventAccessor), N(EventAccessor))
+            .Rule(45, EventAccessor, T(CSharpDeclarationToken.AddAccessor), T(CSharpDeclarationToken.BlockReference))
+            .Rule(46, EventAccessor, T(CSharpDeclarationToken.RemoveAccessor), T(CSharpDeclarationToken.BlockReference))
             .Build();
     }
 }
