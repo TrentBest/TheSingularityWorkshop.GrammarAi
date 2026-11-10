@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(46, grammar.Rules.Count);
+        Assert.Equal(44, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -82,13 +82,16 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
             rule.RightHandSide.Any(symbol => symbol.Id == 16) &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OpenBrace]));
-        Assert.Equal(2, grammar.Rules.Count(rule => rule.LeftHandSide == 16 && rule.RightHandSide.Count == 2));
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 16 && rule.RightHandSide.Count == 4 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AddAccessor] &&
-            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference] &&
+            rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.RemoveAccessor] &&
+            rule.RightHandSide[3].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 16 && rule.RightHandSide.Count == 4 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.RemoveAccessor] &&
-            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]));
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference] &&
+            rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AddAccessor] &&
+            rule.RightHandSide[3].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]));
     }
 
     [Fact]
