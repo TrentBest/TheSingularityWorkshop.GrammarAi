@@ -24,7 +24,9 @@ public sealed class CSharp11CompilerCorpusTests
         { "constructor initializer", "public class Base { public Base(int value) { } } public sealed class Sample : Base { public Sample() : base(1) { } }" },
         { "attributes and generic class constraints", "[System.Obsolete(\"sample\")] public sealed class Sample<T> where T : class, new() { }" },
         { "generic method unmanaged constraint", "public sealed class Sample { public void Use<TValue>() where TValue : unmanaged { } }" },
-        { "generic method notnull constraint", "public sealed class Sample { public void Use<TValue>() where TValue : notnull { } }" }
+        { "generic method notnull constraint", "public sealed class Sample { public void Use<TValue>() where TValue : notnull { } }" },
+        { "parameter and return-target attributes", "public sealed class Sample { [return: System.Obsolete] public int Read([System.Obsolete] int value) => value; }" },
+        { "parameter attributes with generic method metadata", "public sealed class Sample { [System.Obsolete] public TResult Convert<TSource, TResult>([System.Obsolete] TSource value) where TSource : notnull where TResult : class, new() => new TResult(); }" }
     };
 
     public static TheoryData<string, string, string> VersionBoundaryCases => new()

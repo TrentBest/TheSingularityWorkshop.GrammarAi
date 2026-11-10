@@ -35,7 +35,8 @@ public enum CSharpDeclarationToken
     CheckedOperatorToken,
     AttributeSectionReference,
     GenericParameterListReference,
-    ConstraintClauseReference
+    ConstraintClauseReference,
+    ParameterAttributeSectionReference
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -46,7 +47,7 @@ public enum CSharpDeclarationToken
 /// references, not parameter declarations. Field-like events and custom add/remove event accessors are
 /// represented separately from property accessors. Ordinary operator overloads and implicit/explicit conversion operators
 /// are represented as distinct declaration shapes; operand and conversion semantics remain host-owned. Attributes, generic parameters,
-/// constraints, explicit interface implementations, and parameter attributes/modifiers are excluded. The
+/// constraints, explicit interface implementations, and parameter modifiers are excluded. Parameter attribute sections are opaque host references composed at each parameter slot. The
 /// target language baseline is described separately by CSharpGrammarProfile; that metadata does not
 /// make this bounded slice a complete or compiler-conformance-validated C# grammar.
 /// </remarks>
@@ -74,6 +75,7 @@ public static class CSharpDeclarationGrammar
     private const ulong DeclarationAttributes = 21;
     private const ulong GenericMethodMetadata = 22;
     private const ulong GenericMethodConstraintTail = 23;
+    private const ulong ParameterAttributes = 24;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -120,8 +122,8 @@ public static class CSharpDeclarationGrammar
             .Rule(12, ParameterList, N(Parameter), N(ParameterTail))
             .Rule(13, ParameterTail)
             .Rule(14, ParameterTail, T(CSharpDeclarationToken.Comma), N(Parameter), N(ParameterTail))
-            .Rule(15, Parameter, T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier))
-            .Rule(16, Parameter, T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier),
+            .Rule(15, Parameter, N(ParameterAttributes), T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier))
+            .Rule(16, Parameter, N(ParameterAttributes), T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier),
                 T(CSharpDeclarationToken.Assignment), T(CSharpDeclarationToken.ExpressionReference))
             .Rule(17, AccessorList, N(Accessor))
             .Rule(18, AccessorList, N(Accessor), N(Accessor))
@@ -258,6 +260,8 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.Identifier), N(GenericMethodMetadata), T(CSharpDeclarationToken.OpenParenthesis),
                 N(ParameterList), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
                 T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(69, ParameterAttributes)
+            .Rule(70, ParameterAttributes, N(ParameterAttributes), T(CSharpDeclarationToken.ParameterAttributeSectionReference))
             .Build();
     }
 }

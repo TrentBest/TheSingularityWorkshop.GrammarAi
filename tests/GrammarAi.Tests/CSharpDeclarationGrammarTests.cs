@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(68, grammar.Rules.Count);
+        Assert.Equal(70, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -41,8 +41,13 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide.Count == 3 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Comma] &&
             rule.RightHandSide[1].Id == 8 && rule.RightHandSide[2].Id == 7);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 24 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 24 && rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ParameterAttributeSectionReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 8 && rule.RightHandSide.Count == 3 &&
+            rule.RightHandSide[0].Id == 24 && rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 8 &&
-            rule.RightHandSide.Count == 4 &&
+            rule.RightHandSide.Count == 5 &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Assignment]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 &&
             rule.RightHandSide.Count == 2 &&
