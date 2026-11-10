@@ -10,10 +10,23 @@ The bounded C# grammar resources in GrammarAi declare **C# 11** as their current
 |---|---:|---|
 | Init-only property/indexer accessors | C# 9 | Supported by C# 9 and later |
 | Checked user-defined unary/binary operators | C# 11 | Supported by C# 11 and later |
+| Unmanaged generic constraint | C# 7.3 | Represented in the metadata slice |
+| Not-null generic constraint | C# 8 | Represented in the metadata slice |
+| Default generic constraint | C# 9 | Represented in the metadata slice |
+
+## Bounded structural slices
+
+The declaration grammar now has a separate composable metadata grammar, `CSharpMetadataGrammar`, for:
+
+- Attribute sections, optional target specifiers, comma-separated attributes, qualified attribute names, and optional argument lists.
+- Generic parameter lists and constraint clauses.
+- Primary constraint families represented here: `class`, `class?`, `struct`, `unmanaged`, `notnull`, and `default`; type constraints and `new()` are separate alternatives.
+
+The metadata grammar deliberately exposes attributes, generic parameter lists, and constraint clauses as independent roots. A host composes them into the correct declaration slots, supplies attribute arguments and type references as opaque structures, and handles declaration-specific placement. The structural map does not resolve attribute names or type parameters, enforce constraint ordering/satisfiability, or decide whether a particular constraint is legal for a particular declaration.
 
 ## Pinned compiler corpus
 
-`CSharp11CompilerCorpusTests` is a **test-only** compiler-backed corpus pinned to Roslyn 4.11.0 and explicit language-version settings. Positive cases cover init-only accessors, checked unary/binary operator pairs, expression-bodied methods, optional parameters, indexers, custom events, and constructor initializers. Earlier-version cases prove init-only accessors are rejected by C# 8 and checked operators by C# 10. Negative C# 11 cases cover malformed indexers, wrong operator arity, incomplete custom events, and recursive constructor initializers.
+`CSharp11CompilerCorpusTests` is a **test-only** compiler-backed corpus pinned to Roslyn 4.11.0 and explicit language-version settings. Positive cases cover init-only accessors, checked unary/binary operator pairs, expression-bodied methods, optional parameters, indexers, custom events, constructor initializers, attributes, and representative generic constraints. Earlier-version cases prove init-only accessors are rejected by C# 8 and checked operators by C# 10. Negative C# 11 cases cover malformed indexers and attributes, wrong operator arity, incomplete custom events, and recursive constructor initializers.
 
 The Roslyn dependency is confined to the test project, not the GrammarAi runtime or package.
 

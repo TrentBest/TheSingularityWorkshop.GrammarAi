@@ -52,6 +52,7 @@ public sealed class CSharp11CompilerCorpusTests
 
     [Theory]
     [InlineData("public sealed class Sample { public int this[int index { get; } }")]
+    [InlineData("[System.Obsolete(\"sample\") public sealed class Sample { }")]
     [InlineData("public sealed class Number { public static Number operator +(Number left, Number middle, Number right) => left; }")]
     [InlineData("public sealed class Sample { public event System.Action Changed { add { } } }")]
     [InlineData("public sealed class Sample { public Sample(int value) : this(value) { } }")]
