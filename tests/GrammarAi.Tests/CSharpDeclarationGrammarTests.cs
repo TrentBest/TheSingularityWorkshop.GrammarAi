@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(21, grammar.Rules.Count);
+        Assert.Equal(27, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -35,6 +35,20 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 &&
             rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.InitAccessor]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 &&
+            rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.GetAccessor] &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 &&
+            rule.RightHandSide.Count == 4 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.SetAccessor] &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Arrow] &&
+            rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExpressionReference] &&
+            rule.RightHandSide[3].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Semicolon]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 &&
+            rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.InitAccessor] &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
     }
 
     [Fact]
