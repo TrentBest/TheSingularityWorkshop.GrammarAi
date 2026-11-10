@@ -22,8 +22,8 @@ public sealed class CSharpDeclarationGrammarTests
 
         // Generic methods compose metadata roots through opaque references.
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 21 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 21 && rule.RightHandSide.Count == 1 &&
-            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AttributeSectionReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 21 && rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AttributeSectionReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 22 && rule.RightHandSide.Count == 0);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 22 &&
             rule.RightHandSide.First().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.GenericParameterListReference]);
