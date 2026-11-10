@@ -26,7 +26,7 @@ public enum CSharpDeclarationToken
 /// TypeReference, ExpressionReference, and BlockReference are opaque host vocabulary references to
 /// independently mapped structures; this grammar deliberately does not copy their productions. Modifier
 /// and accessor tokens are likewise supplied by the host. Constructors, operators, events, indexers,
-/// attributes, generic parameters, constraints, explicit interface implementations, accessor bodies,
+/// attributes, generic parameters, constraints, explicit interface implementations, 
 /// parameter attributes/modifiers, and language-version policy are excluded.
 /// </remarks>
 public static class CSharpDeclarationGrammar
@@ -95,6 +95,15 @@ public static class CSharpDeclarationGrammar
             .Rule(19, Accessor, T(CSharpDeclarationToken.GetAccessor), T(CSharpDeclarationToken.Semicolon))
             .Rule(20, Accessor, T(CSharpDeclarationToken.SetAccessor), T(CSharpDeclarationToken.Semicolon))
             .Rule(21, Accessor, T(CSharpDeclarationToken.InitAccessor), T(CSharpDeclarationToken.Semicolon))
+            .Rule(22, Accessor, T(CSharpDeclarationToken.GetAccessor), T(CSharpDeclarationToken.BlockReference))
+            .Rule(23, Accessor, T(CSharpDeclarationToken.GetAccessor), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(24, Accessor, T(CSharpDeclarationToken.SetAccessor), T(CSharpDeclarationToken.BlockReference))
+            .Rule(25, Accessor, T(CSharpDeclarationToken.SetAccessor), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(26, Accessor, T(CSharpDeclarationToken.InitAccessor), T(CSharpDeclarationToken.BlockReference))
+            .Rule(27, Accessor, T(CSharpDeclarationToken.InitAccessor), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
             .Build();
     }
 }
