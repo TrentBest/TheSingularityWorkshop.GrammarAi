@@ -26,7 +26,7 @@ public enum CSharpDeclarationToken
 /// TypeReference, ExpressionReference, and BlockReference are opaque host vocabulary references to
 /// independently mapped structures; this grammar deliberately does not copy their productions. Modifier
 /// and accessor tokens are likewise supplied by the host. Constructors, operators, events, indexers,
-/// attributes, generic parameters, constraints, explicit interface implementations, 
+/// attributes, generic parameters, constraints, explicit interface implementations,
 /// parameter attributes/modifiers, and language-version policy are excluded.
 /// </remarks>
 public static class CSharpDeclarationGrammar
