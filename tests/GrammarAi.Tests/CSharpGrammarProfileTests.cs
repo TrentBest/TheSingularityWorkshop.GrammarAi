@@ -50,6 +50,12 @@ public sealed class CSharpGrammarProfileTests
     }
 
     [Fact]
+    public void Default_language_version_is_rejected_by_profile()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new CSharpGrammarProfile(default));
+    }
+
+    [Fact]
     public void Unknown_features_are_rejected()
     {
         var profile = CSharpGrammarProfile.WorkshopBaseline;

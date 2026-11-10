@@ -52,6 +52,8 @@ public sealed class CSharpGrammarProfile
 
     public CSharpGrammarProfile(CSharpLanguageVersion languageVersion)
     {
+        if (languageVersion.Major < 1 || languageVersion.Minor < 0)
+            throw new ArgumentOutOfRangeException(nameof(languageVersion));
         LanguageVersion = languageVersion;
     }
 
