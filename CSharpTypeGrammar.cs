@@ -34,7 +34,7 @@ public static class CSharpTypeGrammar
     private const ulong TypeArgumentList = 6;
     private const ulong TupleType = 7;
     private const ulong TupleElements = 8;
-    private const ulong ArrayRank = 9;
+    private const ulong ArrayRank = 9;\n    private const ulong RankCommas = 10;
 
     /// <summary>Creates the bounded C# type grammar over host-owned ProtocolAi token identities.</summary>
     public static GrammarDefinition Create(
