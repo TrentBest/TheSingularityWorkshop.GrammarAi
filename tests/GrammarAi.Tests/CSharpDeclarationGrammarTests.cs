@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(55, grammar.Rules.Count);
+        Assert.Equal(59, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -114,6 +114,16 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide.Any(symbol => symbol.Id == 8));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Arrow]));
+        // Checked unary and binary forms are syntactically distinct and preserve exact operand counts.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CheckedKeyword]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CheckedOperatorToken]) &&
+            rule.RightHandSide.Count(symbol => symbol.Id == 8) == 1);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CheckedKeyword]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CheckedOperatorToken]) &&
+            rule.RightHandSide.Count(symbol => symbol.Id == 8) == 2 &&
+            rule.RightHandSide.Count(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Comma]) == 1);
     }
 
     [Fact]
