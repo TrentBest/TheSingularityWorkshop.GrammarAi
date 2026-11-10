@@ -37,7 +37,7 @@ var csharpDeclarationTokens = Enum.GetValues<CSharpDeclarationToken>()
 var csharpDeclarations = CSharpDeclarationGrammar.Create(3004, 1001, csharpDeclarationTokens);
 Console.WriteLine("BOUNDED C# MEMBER DECLARATION GRAMMAR");
 Console.WriteLine(csharpDeclarations.Describe());
-Console.WriteLine("The declaration slice covers methods, properties, fields, modifiers, parameter lists/defaults, and get/set/init accessor signatures.");
+Console.WriteLine("The 27-production declaration slice covers methods, properties, fields, modifiers, parameter lists/defaults, and get/set/init accessors with semicolon, block, or expression bodies.");
 Console.WriteLine("Type, expression, and block references remain opaque host-owned links; this is not a complete or version-pinned C# grammar.");
 Console.WriteLine();
 
