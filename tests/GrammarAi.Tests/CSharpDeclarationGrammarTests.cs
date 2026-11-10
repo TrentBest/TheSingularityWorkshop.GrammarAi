@@ -1,0 +1,66 @@
+using TheSingularityWorkshop.GrammarAi;
+using Xunit;
+
+namespace GrammarAi.Tests;
+
+public sealed class CSharpDeclarationGrammarTests
+{
+    private static IReadOnlyDictionary<CSharpDeclarationToken, ulong> Tokens() =>
+        Enum.GetValues<CSharpDeclarationToken>().ToDictionary(token => token, token => (ulong)token + 900);
+
+    [Fact]
+    public void Grammar_covers_methods_properties_fields_and_parameter_lists()
+    {
+        var tokens = Tokens();
+        var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
+
+        Assert.Equal(19, grammar.Rules.Count);
+        Assert.Empty(grammar.FindUnreachableNonTerminals());
+        Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
+            .Where(symbol => symbol.ProtocolReference.HasValue),
+            symbol => Assert.Equal((ulong)1001, symbol.ProtocolReference!.Value.ProtocolId));
+
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 1 &&
+            rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 2);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OpenParenthesis]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+            rule.RightHandSide.Count == 3 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Comma] &&
+            rule.RightHandSide[1].Id == 7 && rule.RightHandSide[2].Id == 8);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
+            rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.GetAccessor]);
+    }
+
+    [Fact]
+    public void Empty_and_nonempty_modifier_and_parameter_lists_are_representable()
+    {
+        var grammar = CSharpDeclarationGrammar.Create(3004, 1001, Tokens());
+
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 5 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 6 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 9 && rule.RightHandSide.Count == 1);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 && rule.RightHandSide.Count == 0);
+    }
+
+    [Fact]
+    public void Missing_or_zero_token_identity_is_rejected()
+    {
+        var tokens = Tokens().ToDictionary(pair => pair.Key, pair => pair.Value);
+        tokens.Remove(CSharpDeclarationToken.TypeReference);
+        Assert.Throws<ArgumentException>(() => CSharpDeclarationGrammar.Create(1, 1, tokens));
+
+        tokens = Tokens().ToDictionary(pair => pair.Key, pair => pair.Value);
+        tokens[CSharpDeclarationToken.Modifier] = 0;
+        Assert.Throws<ArgumentException>(() => CSharpDeclarationGrammar.Create(1, 1, tokens));
+    }
+
+    [Fact]
+    public void Grammar_and_category_identity_must_be_nonzero()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => CSharpDeclarationGrammar.Create(0, 1, Tokens()));
+        Assert.Throws<ArgumentOutOfRangeException>(() => CSharpDeclarationGrammar.Create(1, 0, Tokens()));
+    }
+}
