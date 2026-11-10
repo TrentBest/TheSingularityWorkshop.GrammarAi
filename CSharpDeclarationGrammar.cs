@@ -32,7 +32,10 @@ public enum CSharpDeclarationToken
     ImplicitKeyword,
     ExplicitKeyword,
     CheckedKeyword,
-    CheckedOperatorToken
+    CheckedOperatorToken,
+    AttributeSectionReference,
+    GenericParameterListReference,
+    ConstraintClauseReference
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -68,6 +71,9 @@ public static class CSharpDeclarationGrammar
     private const ulong ConversionDeclaration = 18;
     private const ulong UnaryOperatorDeclaration = 19;
     private const ulong BinaryOperatorDeclaration = 20;
+    private const ulong DeclarationAttributes = 21;
+    private const ulong GenericMethodMetadata = 22;
+    private const ulong GenericMethodConstraintTail = 23;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -234,6 +240,23 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.CheckedOperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
                 N(Parameter), T(CSharpDeclarationToken.Comma), N(Parameter),
                 T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            // Metadata remains independently defined; declaration slots consume opaque references.
+            .Rule(60, DeclarationAttributes)
+            .Rule(61, DeclarationAttributes, N(DeclarationAttributes), T(CSharpDeclarationToken.AttributeSectionReference))
+            .Rule(62, GenericMethodMetadata)
+            .Rule(63, GenericMethodMetadata, T(CSharpDeclarationToken.GenericParameterListReference), N(GenericMethodConstraintTail))
+            .Rule(64, GenericMethodConstraintTail)
+            .Rule(65, GenericMethodConstraintTail, T(CSharpDeclarationToken.ConstraintClauseReference), N(GenericMethodConstraintTail))
+            .Rule(66, MethodDeclaration, N(DeclarationAttributes), N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.Identifier), N(GenericMethodMetadata), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ParameterList), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Semicolon))
+            .Rule(67, MethodDeclaration, N(DeclarationAttributes), N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.Identifier), N(GenericMethodMetadata), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ParameterList), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(68, MethodDeclaration, N(DeclarationAttributes), N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.Identifier), N(GenericMethodMetadata), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ParameterList), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
                 T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
             .Build();
     }

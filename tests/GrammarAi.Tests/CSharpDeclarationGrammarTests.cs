@@ -14,12 +14,24 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(59, grammar.Rules.Count);
+        Assert.Equal(68, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
             symbol => Assert.Equal((ulong)1001, symbol.ProtocolReference!.Value.ProtocolId));
 
+        // Generic methods compose metadata roots through opaque references.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 21 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 21 &&
+            rule.RightHandSide.Last().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AttributeSectionReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 22 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 22 &&
+            rule.RightHandSide.First().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.GenericParameterListReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 23 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 23 &&
+            rule.RightHandSide.First().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ConstraintClauseReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 && rule.RightHandSide.Any(symbol => symbol.Id == 21) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 22));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 &&
