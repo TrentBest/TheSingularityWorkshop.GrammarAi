@@ -37,7 +37,7 @@ var csharpDeclarationTokens = Enum.GetValues<CSharpDeclarationToken>()
 var csharpDeclarations = CSharpDeclarationGrammar.Create(3004, 1001, csharpDeclarationTokens);
 Console.WriteLine("BOUNDED C# MEMBER DECLARATION GRAMMAR");
 Console.WriteLine(csharpDeclarations.Describe());
-Console.WriteLine("The 52-production declaration slice covers methods, properties, fields, constructors with optional this/base initializers, indexers, field-like events, custom add/remove event accessors, ordinary operator overloads, implicit/explicit conversion operators, parameter defaults, constructor argument lists, and get/set/init property/indexer accessors.");
+Console.WriteLine("The 55-production declaration slice covers methods, properties, fields, constructors with optional this/base initializers, indexers, field-like events, custom add/remove event accessors, unary and binary operator overloads, implicit/explicit conversion operators, parameter defaults, constructor argument lists, and get/set/init property/indexer accessors.");
 Console.WriteLine("Type, expression, and block references remain opaque host-owned links. Constructor parameters and constructor invocation arguments are modeled separately. This is not a complete or version-pinned C# grammar.");
 Console.WriteLine();
 
