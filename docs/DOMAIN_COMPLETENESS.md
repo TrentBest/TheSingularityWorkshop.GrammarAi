@@ -53,7 +53,7 @@ This audit deliberately separates implemented behavior from capabilities that ne
 | Grammar import/export formats | Not implemented | No EBNF, BNF, ABNF, PEG, ANTLR, or tree-sitter importer |
 | Lexer / tokenizer | Not implemented | No source-text scanning API |
 | Parser / parse tree / diagnostics | Not implemented | No source-text parsing API |
-| C# grammar definition | Not included | No built-in C# grammar package or resource |
+| Bounded C# expression and type grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions) and `CSharpTypeGrammar` (21 productions); host-supplied ProtocolAi token identities; no parser or semantic/type analysis |
 | Common language/format catalogue | Not included | No versioned standard grammar catalogue |
 | Semantic analysis / type checking | Not implemented | Must remain distinct from syntax recognition |
 | Incremental parsing / error recovery | Not implemented | Requires a parser design and source-position model |
@@ -116,7 +116,7 @@ The recommended first delivery is a separately versioned C# grammar resource/pac
 1. Continue coordinating category metadata with ProtocolAi. GrammarAi now consumes opaque category/member identities; ProtocolAi remains the identity owner and no category metadata is duplicated here.
 2. Define compatibility and migration policy between schema versions; the current codec rejects mismatches rather than migrating them.
 3. The QuickStart now demonstrates a host resolver bound to one illustrative catalog snapshot and keeps snapshot identity in a host exchange envelope. Replace the sample data with real ProtocolAi identity allocation, persistence, and cross-request context in a consuming host.
-4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice.
+4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice. The bounded C# expression and type resources are now separate, independently composable grammar slices; declarations and explicit language-version pinning remain open.
 5. Define a stable root/entry-point and graph-profile policy only where a consuming domain requires one; the core graph model intentionally allows shared nodes and cycles.
 6. Expand proposal diagnostics and adversarial tests while keeping semantic validation, authorization, and execution in the host.
 
