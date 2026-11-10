@@ -21,7 +21,10 @@ public sealed class CSharp11CompilerCorpusTests
         { "method expression body and optional parameter", "public sealed class Sample { public int Add(int value, int amount = 1) => value + amount; }" },
         { "indexer with init accessor", "public sealed class Sample { public int this[int index] { get => index; init { } } }" },
         { "custom event accessors", "public sealed class Sample { public event System.Action Changed { add { } remove { } } }" },
-        { "constructor initializer", "public class Base { public Base(int value) { } } public sealed class Sample : Base { public Sample() : base(1) { } }" }
+        { "constructor initializer", "public class Base { public Base(int value) { } } public sealed class Sample : Base { public Sample() : base(1) { } }" },
+        { "attributes and generic class constraints", "[System.Obsolete(\\"sample\\")] public sealed class Sample<T> where T : class, new() { }" },
+        { "generic method unmanaged constraint", "public sealed class Sample { public void Use<TValue>() where TValue : unmanaged { } }" },
+        { "generic method notnull constraint", "public sealed class Sample { public void Use<TValue>() where TValue : notnull { } }" }
     };
 
     public static TheoryData<string, string, string> VersionBoundaryCases => new()
@@ -52,6 +55,7 @@ public sealed class CSharp11CompilerCorpusTests
 
     [Theory]
     [InlineData("public sealed class Sample { public int this[int index { get; } }")]
+    [InlineData("[System.Obsolete(\\"sample\\") public sealed class Sample { }")]
     [InlineData("[System.Obsolete(\"sample\") public sealed class Sample { }")]
     [InlineData("public sealed class Number { public static Number operator +(Number left, Number middle, Number right) => left; }")]
     [InlineData("public sealed class Sample { public event System.Action Changed { add { } } }")]

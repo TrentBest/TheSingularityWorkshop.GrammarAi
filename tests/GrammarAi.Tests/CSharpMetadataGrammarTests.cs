@@ -18,7 +18,7 @@ public sealed class CSharpMetadataGrammarTests
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
             rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 1);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 4 &&
+        Assert.Contains(grammar.Rules, rule =>  rule.LeftHandSide == 1 &&
             rule.RightHandSide.Any(symbol => symbol.Id == 2) &&
             rule.RightHandSide.Any(symbol => symbol.Id == 3));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 3 &&
@@ -43,7 +43,7 @@ public sealed class CSharpMetadataGrammarTests
 
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
             rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 9);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 9 &&
             rule.RightHandSide.First().ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.OpenAngle] &&
             rule.RightHandSide.Last().ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.CloseAngle]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
