@@ -31,6 +31,16 @@ Console.WriteLine("The bounded type map covers qualified and generic names, null
 Console.WriteLine("It describes syntax shape only; type binding, aliases, nullable-reference semantics, and language-version policy remain host/compiler concerns.");
 Console.WriteLine();
 
+// Member declarations compose around opaque references to the independently mapped type/expression/body resources.
+var csharpDeclarationTokens = Enum.GetValues<CSharpDeclarationToken>()
+    .ToDictionary(token => token, token => (ulong)token + 900);
+var csharpDeclarations = CSharpDeclarationGrammar.Create(3004, 1001, csharpDeclarationTokens);
+Console.WriteLine("BOUNDED C# MEMBER DECLARATION GRAMMAR");
+Console.WriteLine(csharpDeclarations.Describe());
+Console.WriteLine("The declaration slice covers methods, properties, fields, modifiers, parameter lists/defaults, and get/set/init accessor signatures.");
+Console.WriteLine("Type, expression, and block references remain opaque host-owned links; this is not a complete or version-pinned C# grammar.");
+Console.WriteLine();
+
 var schema = new GrammarStructureDefinition(
     9001,
     "ConditionalControlFlow",
