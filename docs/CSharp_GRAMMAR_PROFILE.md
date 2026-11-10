@@ -19,10 +19,10 @@ The bounded C# grammar resources in GrammarAi declare **C# 11** as their current
 The declaration grammar now has a separate composable metadata grammar, `CSharpMetadataGrammar`, for:
 
 - Attribute sections, optional target specifiers, comma-separated attributes, qualified attribute names, and optional argument lists.
-- Generic parameter lists and constraint clauses.
+- Generic parameter lists with optional `in`/`out` variance markers, and constraint clauses.
 - Primary constraint families represented here: `class`, `class?`, `struct`, `unmanaged`, `notnull`, and `default`; type constraints and `new()` are separate alternatives.
 
-The metadata grammar deliberately exposes attributes, generic parameter lists, and constraint clauses as independent roots. A host composes them into the correct declaration slots, supplies attribute arguments and type references as opaque structures, and handles declaration-specific placement. The structural map does not resolve attribute names or type parameters, enforce constraint ordering/satisfiability, or decide whether a particular constraint is legal for a particular declaration.
+The metadata grammar deliberately exposes attributes, generic parameter lists, and constraint clauses as independent roots. Generic parameter syntax includes optional variance markers; the host must restrict variance to legal declaration contexts (such as interfaces and delegates) and must not treat the grammar fragment as a declaration-kind validator. A host composes them into the correct declaration slots, supplies attribute arguments and type references as opaque structures, and handles declaration-specific placement. The structural map does not resolve attribute names or type parameters, enforce constraint ordering/satisfiability, or decide whether a particular constraint is legal for a particular declaration.
 
 ## Pinned compiler corpus
 

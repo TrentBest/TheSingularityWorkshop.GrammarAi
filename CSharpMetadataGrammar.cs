@@ -24,7 +24,9 @@ public enum CSharpMetadataToken
     UnmanagedConstraint,
     NotNullConstraint,
     DefaultConstraint,
-    NewKeyword
+    NewKeyword,
+    InKeyword,
+    OutKeyword
 }
 
 /// <summary>Builds composable C# attribute and generic-constraint structures.</summary>
@@ -57,6 +59,7 @@ public static class CSharpMetadataGrammar
     private const ulong PrimaryConstraint = 17;
     private const ulong ConstructorConstraint = 18;
     private const ulong MetadataRoot = 19;
+    private const ulong TypeParameterVariance = 20;
 
     /// <summary>Creates the metadata grammar using host-owned ProtocolAi symbol identities.</summary>
     public static GrammarDefinition Create(
@@ -103,7 +106,7 @@ public static class CSharpMetadataGrammar
             .Rule(19, GenericParameterTail)
             .Rule(20, GenericParameterTail, T(CSharpMetadataToken.Comma),
                 N(GenericParameter), N(GenericParameterTail))
-            .Rule(21, GenericParameter, N(TypeParameterName))
+            .Rule(21, GenericParameter, N(TypeParameterVariance), N(TypeParameterName))
             .Rule(22, TypeParameterName, T(CSharpMetadataToken.Identifier))
             .Rule(23, ConstraintClause, T(CSharpMetadataToken.Identifier),
                 T(CSharpMetadataToken.Colon), N(ConstraintList))
@@ -123,8 +126,13 @@ public static class CSharpMetadataGrammar
             .Rule(34, PrimaryConstraint, T(CSharpMetadataToken.UnmanagedConstraint))
             .Rule(35, PrimaryConstraint, T(CSharpMetadataToken.NotNullConstraint))
             .Rule(36, PrimaryConstraint, T(CSharpMetadataToken.DefaultConstraint))
-            .Rule(37, ConstructorConstraint, T(CSharpMetadataToken.NewKeyword),
+.Rule(37, ConstructorConstraint, T(CSharpMetadataToken.NewKeyword),
                 T(CSharpMetadataToken.OpenParenthesis), T(CSharpMetadataToken.CloseParenthesis))
+            // Variance markers are represented structurally; the host restricts them to
+            // declaration contexts where C# permits variance (for example interfaces/delegates).
+            .Rule(38, TypeParameterVariance)
+            .Rule(39, TypeParameterVariance, T(CSharpMetadataToken.InKeyword))
+            .Rule(40, TypeParameterVariance, T(CSharpMetadataToken.OutKeyword))
             .Build();
     }
 }

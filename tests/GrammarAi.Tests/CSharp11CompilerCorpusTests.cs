@@ -59,6 +59,7 @@ public sealed class CSharp11CompilerCorpusTests
     [InlineData("public sealed class Sample { public event System.Action Changed { add { } } }")]
     [InlineData("[System.Obsolete(\"sample\") public sealed class Sample { }")]
     [InlineData("public sealed class Sample { public Sample(int value) : this(value) { } }")]
+    [InlineData("public sealed class Sample { public void Use<in TValue>() { } }")]
     public void Negative_corpus_rejects_malformed_or_incomplete_declarations(string source)
     {
         var errors = Compile(source, LanguageVersion.CSharp11).GetDiagnostics()

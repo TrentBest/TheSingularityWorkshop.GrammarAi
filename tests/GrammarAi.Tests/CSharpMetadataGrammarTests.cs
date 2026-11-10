@@ -14,7 +14,7 @@ public sealed class CSharpMetadataGrammarTests
         var tokens = Tokens();
         var grammar = CSharpMetadataGrammar.Create(3006, 1001, tokens);
 
-        Assert.Equal(37, grammar.Rules.Count);
+        Assert.Equal(40, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
             rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 1);
@@ -61,6 +61,13 @@ public sealed class CSharpMetadataGrammarTests
                 symbol => symbol.ProtocolReference?.SymbolId == tokens[token]));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 16 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.TypeReference]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+            rule.RightHandSide.Count == 2 && rule.RightHandSide[0].Id == 20 && rule.RightHandSide[1].Id == 15);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 &&
+            rule.RightHandSide.Single().ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.InKeyword]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 &&
+            rule.RightHandSide.Single().ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.OutKeyword]);
     }
 
     [Fact]
