@@ -43,8 +43,9 @@ public enum CSharpDeclarationToken
 /// references, not parameter declarations. Field-like events and custom add/remove event accessors are
 /// represented separately from property accessors. Ordinary operator overloads and implicit/explicit conversion operators
 /// are represented as distinct declaration shapes; operand and conversion semantics remain host-owned. Attributes, generic parameters,
-/// constraints, explicit interface implementations, parameter attributes/modifiers, and language-version
-/// policy are excluded.
+/// constraints, explicit interface implementations, and parameter attributes/modifiers are excluded. The
+/// target language baseline is described separately by CSharpGrammarProfile; that metadata does not
+/// make this bounded slice a complete or compiler-conformance-validated C# grammar.
 /// </remarks>
 public static class CSharpDeclarationGrammar
 {

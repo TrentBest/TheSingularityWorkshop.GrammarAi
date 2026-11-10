@@ -31,6 +31,12 @@ Console.WriteLine("The bounded type map covers qualified and generic names, null
 Console.WriteLine("It describes syntax shape only; type binding, aliases, nullable-reference semantics, and language-version policy remain host/compiler concerns.");
 Console.WriteLine();
 
+// The grammar profile pins the declared language baseline independently of grammar identity/version.
+var csharpProfile = CSharpGrammarProfile.WorkshopBaseline;
+Console.WriteLine($"C# grammar profile: {csharpProfile.LanguageVersion}; descriptor v{CSharpGrammarProfile.DescriptorVersion}");
+Console.WriteLine($"Checked user-defined operators supported: {csharpProfile.Supports(CSharpGrammarFeature.CheckedUserDefinedOperators)}");
+Console.WriteLine();
+
 // Member declarations compose around opaque references to the independently mapped type/expression/body resources.
 var csharpDeclarationTokens = Enum.GetValues<CSharpDeclarationToken>()
     .ToDictionary(token => token, token => (ulong)token + 900);

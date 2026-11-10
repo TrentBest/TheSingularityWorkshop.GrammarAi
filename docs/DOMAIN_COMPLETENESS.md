@@ -53,11 +53,15 @@ This audit deliberately separates implemented behavior from capabilities that ne
 | Grammar import/export formats | Not implemented | No EBNF, BNF, ABNF, PEG, ANTLR, or tree-sitter importer |
 | Lexer / tokenizer | Not implemented | No source-text scanning API |
 | Parser / parse tree / diagnostics | Not implemented | No source-text parsing API |
-| Bounded C# expression, type, and member declaration grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions), `CSharpTypeGrammar` (21 productions), and `CSharpDeclarationGrammar` (55 productions); host-supplied ProtocolAi identities; opaque cross-resource type/expression/body references; no parser or semantic analysis |
+| Bounded C# expression, type, and member declaration grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions), `CSharpTypeGrammar` (21 productions), and `CSharpDeclarationGrammar` (59 productions); host-supplied ProtocolAi identities; opaque cross-resource type/expression/body references; no parser or semantic analysis |
 | Common language/format catalogue | Not included | No versioned standard grammar catalogue |
 | Semantic analysis / type checking | Not implemented | Must remain distinct from syntax recognition |
 | Incremental parsing / error recovery | Not implemented | Requires a parser design and source-position model |
 | Provider constrained-output translation | Not implemented | Belongs in explicit adapters, not the core grammar model |
+
+## C# language profile and provenance
+
+The current bounded C# slices declare a **C# 11 baseline** through CSharpGrammarProfile.WorkshopBaseline. The descriptor keeps the language version separate from GrammarAi's own grammar/schema versions and exposes feature availability for the syntax currently represented: init-only accessors (C# 9+) and checked user-defined operators (C# 11+). It is metadata, not a parser, does not filter productions, and does not claim full C# 11 conformance. The declaration slice remains a partial member-declaration map; the next evidence step is a pinned positive/negative syntax corpus and explicit provenance for every expanded slice.
 
 ## The key formalism decision
 
@@ -116,7 +120,7 @@ The recommended first delivery is a separately versioned C# grammar resource/pac
 1. Continue coordinating category metadata with ProtocolAi. GrammarAi now consumes opaque category/member identities; ProtocolAi remains the identity owner and no category metadata is duplicated here.
 2. Define compatibility and migration policy between schema versions; the current codec rejects mismatches rather than migrating them.
 3. The QuickStart now demonstrates a host resolver bound to one illustrative catalog snapshot and keeps snapshot identity in a host exchange envelope. Replace the sample data with real ProtocolAi identity allocation, persistence, and cross-request context in a consuming host.
-4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice. The bounded C# expression and type resources are now separate, independently composable grammar slices; additional declaration families, checked operator forms, and explicit language-version pinning remain open.
+4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice. The bounded C# expression and type resources are now separate, independently composable grammar slices; additional declaration families and a positive/negative language conformance corpus remain open; CSharpGrammarProfile now pins the declared baseline to C# 11.
 5. Define a stable root/entry-point and graph-profile policy only where a consuming domain requires one; the core graph model intentionally allows shared nodes and cycles.
 6. Expand proposal diagnostics and adversarial tests while keeping semantic validation, authorization, and execution in the host.
 
