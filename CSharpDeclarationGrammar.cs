@@ -26,7 +26,11 @@ public enum CSharpDeclarationToken
     CloseBracket,
     EventKeyword,
     AddAccessor,
-    RemoveAccessor
+    RemoveAccessor,
+    OperatorKeyword,
+    OperatorToken,
+    ImplicitKeyword,
+    ExplicitKeyword
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -35,7 +39,8 @@ public enum CSharpDeclarationToken
 /// independently mapped structures; this grammar deliberately does not copy their productions. Modifier
 /// and accessor tokens are likewise supplied by the host. Constructor argument lists use expression
 /// references, not parameter declarations. Field-like events and custom add/remove event accessors are
-/// represented separately from property accessors. Operators, attributes, generic parameters,
+/// represented separately from property accessors. Ordinary operator overloads and implicit/explicit conversion operators
+/// are represented as distinct declaration shapes; operand and conversion semantics remain host-owned. Attributes, generic parameters,
 /// constraints, explicit interface implementations, parameter attributes/modifiers, and language-version
 /// policy are excluded.
 /// </remarks>
@@ -57,6 +62,8 @@ public static class CSharpDeclarationGrammar
     private const ulong IndexerDeclaration = 14;
     private const ulong EventDeclaration = 15;
     private const ulong EventAccessorList = 16;
+    private const ulong OperatorDeclaration = 17;
+    private const ulong ConversionDeclaration = 18;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -163,6 +170,35 @@ public static class CSharpDeclarationGrammar
             .Rule(44, EventAccessorList, T(CSharpDeclarationToken.RemoveAccessor),
                 T(CSharpDeclarationToken.BlockReference), T(CSharpDeclarationToken.AddAccessor),
                 T(CSharpDeclarationToken.BlockReference))
+            .Rule(45, MemberDeclaration, N(OperatorDeclaration))
+            .Rule(46, OperatorDeclaration, N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.OperatorToken),
+                T(CSharpDeclarationToken.OpenParenthesis), N(ParameterList),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(47, OperatorDeclaration, N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.OperatorToken),
+                T(CSharpDeclarationToken.OpenParenthesis), N(ParameterList),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(48, ConversionDeclaration, N(ModifierList), T(CSharpDeclarationToken.ImplicitKeyword),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.CloseParenthesis),
+                T(CSharpDeclarationToken.BlockReference))
+            .Rule(49, ConversionDeclaration, N(ModifierList), T(CSharpDeclarationToken.ImplicitKeyword),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.CloseParenthesis),
+                T(CSharpDeclarationToken.Arrow), T(CSharpDeclarationToken.ExpressionReference),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(50, ConversionDeclaration, N(ModifierList), T(CSharpDeclarationToken.ExplicitKeyword),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.CloseParenthesis),
+                T(CSharpDeclarationToken.BlockReference))
+            .Rule(51, ConversionDeclaration, N(ModifierList), T(CSharpDeclarationToken.ExplicitKeyword),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.CloseParenthesis),
+                T(CSharpDeclarationToken.Arrow), T(CSharpDeclarationToken.ExpressionReference),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(52, MemberDeclaration, N(ConversionDeclaration))
             .Build();
     }
 }
