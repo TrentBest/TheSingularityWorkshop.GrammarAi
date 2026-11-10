@@ -19,9 +19,9 @@ public sealed class CSharpTypeGrammarTests
             .Where(symbol => symbol.ProtocolReference.HasValue),
             symbol => Assert.Equal((ulong)1001, symbol.ProtocolReference!.Value.ProtocolId));
 
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 5 &&
             rule.RightHandSide.Count == 3 &&
-            rule.RightHandSide[0].Id == 12 &&
+            rule.RightHandSide[0].Id == 5 &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == Tokens()[CSharpTypeToken.Dot] &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == Tokens()[CSharpTypeToken.Identifier]);
 
