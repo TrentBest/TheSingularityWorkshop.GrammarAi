@@ -75,9 +75,10 @@ public static class CSharpTypeGrammar
             .Rule(15, TupleType, T(CSharpTypeToken.OpenParenthesis), N(TupleElements), T(CSharpTypeToken.CloseParenthesis))
             .Rule(16, TupleElements, N(Type), T(CSharpTypeToken.Comma), N(Type))
             .Rule(17, TupleElements, N(TupleElements), T(CSharpTypeToken.Comma), N(Type))
-            .Rule(18, ArrayRank, T(CSharpTypeToken.OpenBracket), T(CSharpTypeToken.CloseBracket))
-            .Rule(19, ArrayRank, T(CSharpTypeToken.OpenBracket), T(CSharpTypeToken.Comma), T(CSharpTypeToken.CloseBracket))
-            .Rule(20, ArrayRank, N(ArrayRank), T(CSharpTypeToken.Comma))
+            .Rule(18, ArrayRank, T(CSharpTypeToken.OpenBracket), N(RankCommas), T(CSharpTypeToken.CloseBracket))
+            .Rule(19, RankCommas)
+            .Rule(20, RankCommas, T(CSharpTypeToken.Comma))
+            .Rule(21, RankCommas, N(RankCommas), T(CSharpTypeToken.Comma))
             .Build();
     }
 }
