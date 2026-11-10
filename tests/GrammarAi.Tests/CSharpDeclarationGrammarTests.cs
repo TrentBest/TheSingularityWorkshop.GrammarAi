@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(39, grammar.Rules.Count);
+        Assert.Equal(46, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -73,6 +73,22 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OpenBracket]) &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CloseBracket]) &&
             rule.RightHandSide.Any(symbol => symbol.Id == 6) && rule.RightHandSide.Any(symbol => symbol.Id == 9));
+        // Field-like events and custom add/remove accessors are distinct from property accessors.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 1 &&
+            rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 15);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.EventKeyword]) &&
+            rule.RightHandSide.Last().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Semicolon]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 16) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OpenBrace]));
+        Assert.Equal(2, grammar.Rules.Count(rule => rule.LeftHandSide == 16 && rule.RightHandSide.Count == 2));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AddAccessor] &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.RemoveAccessor] &&
+            rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]));
     }
 
     [Fact]
