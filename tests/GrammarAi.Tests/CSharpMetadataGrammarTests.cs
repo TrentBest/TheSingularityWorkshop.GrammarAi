@@ -64,10 +64,10 @@ public sealed class CSharpMetadataGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
             rule.RightHandSide.Count == 2 && rule.RightHandSide[0].Id == 20 && rule.RightHandSide[1].Id == 15);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 &&
-            rule.RightHandSide.Single().ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.InKeyword]);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 &&
-            rule.RightHandSide.Single().ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.OutKeyword]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 && rule.RightHandSide.Count == 1 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.InKeyword]);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 && rule.RightHandSide.Count == 1 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpMetadataToken.OutKeyword]);
     }
 
     [Fact]
