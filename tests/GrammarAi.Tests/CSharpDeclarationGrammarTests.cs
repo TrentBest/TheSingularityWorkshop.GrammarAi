@@ -91,7 +91,7 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.RemoveAccessor] &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference] &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AddAccessor] &&
-            rule.RightHandSide[3].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]));
+            rule.RightHandSide[3].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
     }
 
     [Fact]
