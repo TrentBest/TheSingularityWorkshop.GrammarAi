@@ -1,0 +1,71 @@
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Xunit;
+
+namespace GrammarAi.Tests;
+
+/// <summary>Compiler-backed syntax/version fixtures for the declared C# 11 baseline. These validate dialect expectations, not GrammarAi parsing.</summary>
+public sealed class CSharp11CompilerCorpusTests
+{
+    private static readonly MetadataReference[] PlatformReferences =
+        ((string?)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") ?? string.Empty)
+        .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
+        .Select(path => MetadataReference.CreateFromFile(path))
+        .ToArray();
+
+    public static TheoryData<string, string> CSharp11PositiveCases => new()
+    {
+        { "init-only accessor", "public sealed class Sample { public int Value { get; init; } }" },
+        { "checked binary operator pair", "public sealed class Number { public static Number operator +(Number left, Number right) => left; public static Number operator checked +(Number left, Number right) => left; }" },
+        { "checked unary operator pair", "public sealed class Number { public static Number operator ++(Number value) => value; public static Number operator checked ++(Number value) => value; }" },
+        { "method expression body and optional parameter", "public sealed class Sample { public int Add(int value, int amount = 1) => value + amount; }" },
+        { "indexer with init accessor", "public sealed class Sample { public int this[int index] { get => index; init { } } }" },
+        { "custom event accessors", "public sealed class Sample { public event System.Action Changed { add { } remove { } } }" },
+        { "constructor initializer", "public class Base { public Base(int value) { } } public sealed class Sample : Base { public Sample() : base(1) { } }" }
+    };
+
+    public static TheoryData<string, string, string> VersionBoundaryCases => new()
+    {
+        { "init-only accessor requires C# 9", "8.0", "public sealed class Sample { public int Value { get; init; } }" },
+        { "checked operators require C# 11", "10.0", "public sealed class Number { public static Number operator +(Number left, Number right) => left; public static Number operator checked +(Number left, Number right) => left; }" }
+    };
+
+    [Theory]
+    [MemberData(nameof(CSharp11PositiveCases))]
+    public void Csharp11_positive_corpus_compiles(string name, string source)
+    {
+        var errors = Compile(source, LanguageVersion.CSharp11).GetDiagnostics()
+            .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
+        Assert.True(errors.Length == 0, $"{name} should compile under C# 11:{Environment.NewLine}{string.Join(Environment.NewLine, errors.Select(d => d.ToString()))}");
+    }
+
+    [Theory]
+    [MemberData(nameof(VersionBoundaryCases))]
+    public void Earlier_language_versions_reject_later_features(string name, string version, string source)
+    {
+        Assert.True(LanguageVersionFacts.TryParse(version, out var parsed), $"Invalid test language version '{version}'.");
+        var errors = Compile(source, parsed).GetDiagnostics()
+            .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
+        Assert.NotEmpty(errors);
+        Assert.Contains(errors, diagnostic => diagnostic.Id is "CS8773" or "CS8936" or "CS8400");
+    }
+
+    [Theory]
+    [InlineData("public sealed class Sample { public int this[int index { get; } }")]
+    [InlineData("public sealed class Number { public static Number operator +(Number left) => left; }")]
+    [InlineData("public sealed class Sample { public event System.Action Changed { add { } } }")]
+    [InlineData("public sealed class Sample { public Sample(int value) : this(value) { } }")]
+    public void Negative_corpus_rejects_malformed_or_incomplete_declarations(string source)
+    {
+        var errors = Compile(source, LanguageVersion.CSharp11).GetDiagnostics()
+            .Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToArray();
+        Assert.NotEmpty(errors);
+    }
+
+    private static CSharpCompilation Compile(string source, LanguageVersion version)
+    {
+        var tree = CSharpSyntaxTree.ParseText(source, new CSharpParseOptions(languageVersion: version, documentationMode: DocumentationMode.None));
+        return CSharpCompilation.Create("CSharpGrammarCorpus", new[] { tree }, PlatformReferences,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+    }
+}
