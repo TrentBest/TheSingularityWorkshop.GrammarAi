@@ -21,7 +21,9 @@ public enum CSharpDeclarationToken
     InitAccessor,
     ThisKeyword,
     BaseKeyword,
-    Colon
+    Colon,
+    OpenBracket,
+    CloseBracket
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -48,6 +50,7 @@ public static class CSharpDeclarationGrammar
     private const ulong ConstructorDeclaration = 11;
     private const ulong ConstructorInitializer = 12;
     private const ulong ConstructorArgumentList = 13;
+    private const ulong IndexerDeclaration = 14;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -136,6 +139,11 @@ public static class CSharpDeclarationGrammar
             .Rule(36, ConstructorArgumentList, T(CSharpDeclarationToken.ExpressionReference))
             .Rule(37, ConstructorArgumentList, T(CSharpDeclarationToken.ExpressionReference),
                 T(CSharpDeclarationToken.Comma), N(ConstructorArgumentList))
+            .Rule(38, MemberDeclaration, N(IndexerDeclaration))
+            .Rule(39, IndexerDeclaration, N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.ThisKeyword), T(CSharpDeclarationToken.OpenBracket),
+                N(ParameterList), T(CSharpDeclarationToken.CloseBracket), T(CSharpDeclarationToken.OpenBrace),
+                N(AccessorList), T(CSharpDeclarationToken.CloseBrace))
             .Build();
     }
 }
