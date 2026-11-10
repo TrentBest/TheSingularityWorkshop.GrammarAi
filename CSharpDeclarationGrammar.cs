@@ -62,7 +62,6 @@ public static class CSharpDeclarationGrammar
     private const ulong IndexerDeclaration = 14;
     private const ulong EventDeclaration = 15;
     private const ulong EventAccessorList = 16;
-    private const ulong OperatorDeclaration = 17;
     private const ulong ConversionDeclaration = 18;
     private const ulong UnaryOperatorDeclaration = 19;
     private const ulong BinaryOperatorDeclaration = 20;
