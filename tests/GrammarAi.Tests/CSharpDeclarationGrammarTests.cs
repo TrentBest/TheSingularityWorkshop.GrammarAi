@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(44, grammar.Rules.Count);
+        Assert.Equal(52, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -92,6 +92,24 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference] &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.AddAccessor] &&
             rule.RightHandSide[3].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
+        // Ordinary operators preserve the operator token and general parameter list; conversion
+        // operators distinguish implicit/explicit and require one conversion parameter.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 1 && rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 17);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OperatorKeyword]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OperatorToken]) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 6));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Arrow]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExpressionReference]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ImplicitKeyword]) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 8));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitKeyword]) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 8));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Arrow]));
     }
 
     [Fact]
