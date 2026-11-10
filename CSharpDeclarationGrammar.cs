@@ -30,7 +30,9 @@ public enum CSharpDeclarationToken
     OperatorKeyword,
     OperatorToken,
     ImplicitKeyword,
-    ExplicitKeyword
+    ExplicitKeyword,
+    CheckedKeyword,
+    CheckedOperatorToken
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -210,6 +212,28 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.Arrow), T(CSharpDeclarationToken.ExpressionReference),
                 T(CSharpDeclarationToken.Semicolon))
             .Rule(55, MemberDeclaration, N(ConversionDeclaration))
+            // C# checked user-defined operator forms use a distinct host vocabulary token.
+            // The host maps CheckedOperatorToken only to operators permitted in checked declarations.
+            .Rule(56, UnaryOperatorDeclaration, N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.CheckedKeyword),
+                T(CSharpDeclarationToken.CheckedOperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(57, UnaryOperatorDeclaration, N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.CheckedKeyword),
+                T(CSharpDeclarationToken.CheckedOperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(58, BinaryOperatorDeclaration, N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.CheckedKeyword),
+                T(CSharpDeclarationToken.CheckedOperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.Comma), N(Parameter),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(59, BinaryOperatorDeclaration, N(ModifierList), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.OperatorKeyword), T(CSharpDeclarationToken.CheckedKeyword),
+                T(CSharpDeclarationToken.CheckedOperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.Comma), N(Parameter),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
             .Build();
     }
 }
