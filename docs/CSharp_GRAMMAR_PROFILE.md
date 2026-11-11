@@ -38,3 +38,8 @@ The profile is metadata; it does not filter or rewrite productions. Future langu
 ## Member declaration attribute attachment (2026-11-11)
 
 The bounded member grammar now contains 90 productions. Declaration-level attribute sections are attached as opaque host references across all represented member families: methods, properties, fields, constructors (block, expression-body, and semicolon forms), indexers, field-like/custom events, ordinary and checked unary/binary operators, and implicit/explicit conversions (block and expression-body forms). Parameter attributes retain their distinct parameter-level slot. Attribute syntax remains owned by `CSharpMetadataGrammar`; the host resolves the references and validates target legality. This expands structural attachment coverage only and does not claim full C# 11 member grammar coverage.
+
+
+## Explicit-interface member implementations (2026-11-11)
+
+The member grammar adds six structural alternatives for explicit-interface methods (semicolon, block, and expression-body forms), properties, indexers, and custom events. Each consumes an opaque `ExplicitInterfaceSpecifierReference` representing the host-mapped interface specifier; ordinary modifier lists are intentionally absent from these forms. Event implementations use the existing paired add/remove accessor structure. The host remains responsible for resolving the interface, checking that the member is a valid implementation, and enforcing interface/member compatibility. This does not claim full explicit-interface syntax coverage beyond the listed forms.

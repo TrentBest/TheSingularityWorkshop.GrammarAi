@@ -36,7 +36,8 @@ public enum CSharpDeclarationToken
     AttributeSectionReference,
     GenericParameterListReference,
     ConstraintClauseReference,
-    ParameterAttributeSectionReference
+    ParameterAttributeSectionReference,
+    ExplicitInterfaceSpecifierReference
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -48,8 +49,7 @@ public enum CSharpDeclarationToken
 /// represented separately from property accessors. Ordinary operator overloads and implicit/explicit conversion operators
 /// are represented as distinct declaration shapes; operand and conversion semantics remain host-owned. Declaration-level
 /// attributes are composed for methods, properties, fields, constructors, indexers, events, operators, and conversions;
-/// generic method metadata and parameter attributes use opaque host references. Generic constraints, explicit interface
-/// implementations, and parameter modifiers are not composed into this member slice. The target language baseline is
+/// generic method metadata and parameter attributes use opaque host references. Generic constraints and parameter modifiers are not composed into this member slice. Explicit-interface specifiers are opaque host references; this slice does not resolve interface identity or implementation compatibility. The target language baseline is
 /// described separately by CSharpGrammarProfile; that metadata does not make this bounded slice a complete or
 /// compiler-conformance-validated C# grammar.
 /// </remarks>
