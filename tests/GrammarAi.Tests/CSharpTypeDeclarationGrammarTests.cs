@@ -44,7 +44,7 @@ public sealed class CSharpTypeDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 10 && rule.RightHandSide.Count == 1 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpTypeDeclarationToken.GenericParameterListReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 && rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpTypeDeclarationToken.ConstraintClauseReference]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 && rule.RightHandSide.Count == 0);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 17 &&
