@@ -262,6 +262,29 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
             .Rule(69, ParameterAttributes)
             .Rule(70, ParameterAttributes, N(ParameterAttributes), T(CSharpDeclarationToken.ParameterAttributeSectionReference))
+
+            // Declaration attributes are attached at the declaration boundary. The host still
+            // validates target legality and resolves the opaque attribute-section structures.
+            .Rule(71, PropertyDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier),
+                T(CSharpDeclarationToken.OpenBrace), N(AccessorList), T(CSharpDeclarationToken.CloseBrace))
+            .Rule(72, ConstructorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ParameterList), T(CSharpDeclarationToken.CloseParenthesis), N(ConstructorInitializer),
+                T(CSharpDeclarationToken.BlockReference))
+            .Rule(73, ConstructorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ParameterList), T(CSharpDeclarationToken.CloseParenthesis), N(ConstructorInitializer),
+                T(CSharpDeclarationToken.Arrow), T(CSharpDeclarationToken.ExpressionReference),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(74, ConstructorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.OpenParenthesis),
+                N(ParameterList), T(CSharpDeclarationToken.CloseParenthesis), N(ConstructorInitializer),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(75, IndexerDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.ThisKeyword),
+                T(CSharpDeclarationToken.OpenBracket), N(ParameterList), T(CSharpDeclarationToken.CloseBracket),
+                T(CSharpDeclarationToken.OpenBrace), N(AccessorList), T(CSharpDeclarationToken.CloseBrace))
             .Build();
     }
 }

@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(70, grammar.Rules.Count);
+        Assert.Equal(75, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -66,6 +66,15 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.InitAccessor] &&
             rule.RightHandSide[1].ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]);
+        // Properties, constructors, and indexers expose declaration-level attribute slots.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 3 &&
+            rule.RightHandSide.Count == 7 && rule.RightHandSide[0].Id == 21);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+            rule.RightHandSide[0].Id == 21 && rule.RightHandSide.Any(symbol =>
+                symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Identifier]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 &&
+            rule.RightHandSide[0].Id == 21 && rule.RightHandSide.Any(symbol =>
+                symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ThisKeyword]));
         // Constructors have no return-type slot; parameters and invocation arguments are distinct shapes.
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
             rule.RightHandSide.Any(symbol => symbol.Id == 12) &&
