@@ -147,7 +147,7 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
             rule.RightHandSide[0].Id == 21 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.EventKeyword]) &&
-            rule.RightHandSide.Last().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Semicolon]));
+            rule.RightHandSide.Last().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Semicolon]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
             rule.RightHandSide[0].Id == 21 && rule.RightHandSide.Any(symbol => symbol.Id == 16));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
