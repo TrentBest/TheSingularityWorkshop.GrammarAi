@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(75, grammar.Rules.Count);
+        Assert.Equal(90, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -140,6 +140,33 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide.Any(symbol => symbol.Id == 8));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Arrow]));
+        // Every existing declaration family now has an attribute-prefixed structural alternative.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 4 &&
+            rule.RightHandSide[0].Id == 21 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Semicolon]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
+            rule.RightHandSide[0].Id == 21 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.EventKeyword]) &&
+            rule.RightHandSide.Last().ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Semicolon]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
+            rule.RightHandSide[0].Id == 21 && rule.RightHandSide.Any(symbol => symbol.Id == 16));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
+            rule.RightHandSide[0].Id == 21 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.OperatorToken]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
+            rule.RightHandSide[0].Id == 21 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CheckedKeyword]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 &&
+            rule.RightHandSide[0].Id == 21 && rule.RightHandSide.Count(symbol => symbol.Id == 8) == 2);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 20 &&
+            rule.RightHandSide[0].Id == 21 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CheckedOperatorToken]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+            rule.RightHandSide[0].Id == 21 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ImplicitKeyword]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+            rule.RightHandSide[0].Id == 21 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitKeyword]));
         // Checked unary and binary forms are syntactically distinct and preserve exact operand counts.
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 19 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.CheckedKeyword]) &&

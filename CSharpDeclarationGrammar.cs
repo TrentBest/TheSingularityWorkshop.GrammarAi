@@ -46,10 +46,12 @@ public enum CSharpDeclarationToken
 /// and accessor tokens are likewise supplied by the host. Constructor argument lists use expression
 /// references, not parameter declarations. Field-like events and custom add/remove event accessors are
 /// represented separately from property accessors. Ordinary operator overloads and implicit/explicit conversion operators
-/// are represented as distinct declaration shapes; operand and conversion semantics remain host-owned. Attributes, generic parameters,
-/// constraints, explicit interface implementations, and parameter modifiers are excluded. Parameter attribute sections are opaque host references composed at each parameter slot. The
-/// target language baseline is described separately by CSharpGrammarProfile; that metadata does not
-/// make this bounded slice a complete or compiler-conformance-validated C# grammar.
+/// are represented as distinct declaration shapes; operand and conversion semantics remain host-owned. Declaration-level
+/// attributes are composed for methods, properties, fields, constructors, indexers, events, operators, and conversions;
+/// generic method metadata and parameter attributes use opaque host references. Generic constraints, explicit interface
+/// implementations, and parameter modifiers are not composed into this member slice. The target language baseline is
+/// described separately by CSharpGrammarProfile; that metadata does not make this bounded slice a complete or
+/// compiler-conformance-validated C# grammar.
 /// </remarks>
 public static class CSharpDeclarationGrammar
 {
@@ -285,6 +287,77 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.ThisKeyword),
                 T(CSharpDeclarationToken.OpenBracket), N(ParameterList), T(CSharpDeclarationToken.CloseBracket),
                 T(CSharpDeclarationToken.OpenBrace), N(AccessorList), T(CSharpDeclarationToken.CloseBrace))
+            // Complete the declaration-attribute attachment inventory for the existing member kinds.
+            .Rule(76, FieldDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.Identifier),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(77, EventDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.EventKeyword), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.Semicolon))
+            .Rule(78, EventDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.EventKeyword), T(CSharpDeclarationToken.TypeReference),
+                T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.OpenBrace),
+                N(EventAccessorList), T(CSharpDeclarationToken.CloseBrace))
+            .Rule(79, UnaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.OperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(80, UnaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.OperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(81, UnaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.CheckedKeyword), T(CSharpDeclarationToken.CheckedOperatorToken),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.CloseParenthesis),
+                T(CSharpDeclarationToken.BlockReference))
+            .Rule(82, UnaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.CheckedKeyword), T(CSharpDeclarationToken.CheckedOperatorToken),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.CloseParenthesis),
+                T(CSharpDeclarationToken.Arrow), T(CSharpDeclarationToken.ExpressionReference),
+                T(CSharpDeclarationToken.Semicolon))
+            .Rule(83, BinaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.OperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.Comma), N(Parameter),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(84, BinaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.OperatorToken), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.Comma), N(Parameter),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(85, BinaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.CheckedKeyword), T(CSharpDeclarationToken.CheckedOperatorToken),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.Comma),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(86, BinaryOperatorDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.CheckedKeyword), T(CSharpDeclarationToken.CheckedOperatorToken),
+                T(CSharpDeclarationToken.OpenParenthesis), N(Parameter), T(CSharpDeclarationToken.Comma),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(87, ConversionDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.ImplicitKeyword), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(88, ConversionDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.ImplicitKeyword), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
+            .Rule(89, ConversionDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.ExplicitKeyword), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(90, ConversionDeclaration, N(DeclarationAttributes), N(ModifierList),
+                T(CSharpDeclarationToken.ExplicitKeyword), T(CSharpDeclarationToken.OperatorKeyword),
+                T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.OpenParenthesis),
+                N(Parameter), T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
             .Build();
     }
 }
