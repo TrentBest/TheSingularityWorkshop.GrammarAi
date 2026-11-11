@@ -37,7 +37,8 @@ public enum CSharpDeclarationToken
     GenericParameterListReference,
     ConstraintClauseReference,
     ParameterAttributeSectionReference,
-    ExplicitInterfaceSpecifierReference
+    ExplicitInterfaceSpecifierReference,
+    Tilde
 }
 
 /// <summary>Builds a bounded grammar for selected C# member declaration shapes.</summary>
@@ -78,6 +79,7 @@ public static class CSharpDeclarationGrammar
     private const ulong GenericMethodMetadata = 22;
     private const ulong GenericMethodConstraintTail = 23;
     private const ulong ParameterAttributes = 24;
+    private const ulong DestructorDeclaration = 25;
 
     /// <summary>Creates the bounded declaration grammar over host-owned ProtocolAi identities.</summary>
     public static GrammarDefinition Create(
@@ -382,6 +384,15 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.TypeReference), T(CSharpDeclarationToken.ExplicitInterfaceSpecifierReference),
                 T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.OpenBrace),
                 N(EventAccessorList), T(CSharpDeclarationToken.CloseBrace))
+            // C# finalizers support block and expression-bodied implementations.
+            .Rule(96, MemberDeclaration, N(DestructorDeclaration))
+            .Rule(97, DestructorDeclaration, N(DeclarationAttributes), T(CSharpDeclarationToken.Tilde),
+                T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.OpenParenthesis),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.BlockReference))
+            .Rule(98, DestructorDeclaration, N(DeclarationAttributes), T(CSharpDeclarationToken.Tilde),
+                T(CSharpDeclarationToken.Identifier), T(CSharpDeclarationToken.OpenParenthesis),
+                T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Arrow),
+                T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
             .Build();
     }
 }

@@ -22,6 +22,7 @@ public sealed class CSharp11CompilerCorpusTests
         { "indexer with init accessor", "public sealed class Sample { public int this[int index] { get => index; init { } } }" },
         { "custom event accessors", "public sealed class Sample { public event System.Action Changed { add { } remove { } } }" },
         { "explicit-interface member implementations", "using System; public interface IContract { void Run(); int Value { get; } int this[int index] { get; } event Action Changed; } public sealed class Sample : IContract { void IContract.Run() { } int IContract.Value => 1; int IContract.this[int index] => index; event Action IContract.Changed { add { } remove { } } }" },
+        { "finalizer block and expression body", "public sealed class Sample { ~Sample() { } } public sealed class Other { ~Other() => System.GC.KeepAlive(this); }" },
         { "constructor initializer", "public class Base { public Base(int value) { } } public sealed class Sample : Base { public Sample() : base(1) { } }" },
         { "attributes and generic class constraints", "[System.Obsolete(\"sample\")] public sealed class Sample<T> where T : class, new() { }" },
         { "generic method unmanaged constraint", "public sealed class Sample { public void Use<TValue>() where TValue : unmanaged { } }" },

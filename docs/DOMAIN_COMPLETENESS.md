@@ -53,7 +53,7 @@ This audit deliberately separates implemented behavior from capabilities that ne
 | Grammar import/export formats | Not implemented | No EBNF, BNF, ABNF, PEG, ANTLR, or tree-sitter importer |
 | Lexer / tokenizer | Not implemented | No source-text scanning API |
 | Parser / parse tree / diagnostics | Not implemented | No source-text parsing API |
-| Bounded C# expression, type, declaration, attribute, and generic-constraint grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions), `CSharpTypeGrammar` (21), `CSharpDeclarationGrammar` (70), `CSharpMetadataGrammar` (40), and `CSharpTypeDeclarationGrammar` (25); host-supplied ProtocolAi identities; opaque cross-resource references; no parser or semantic analysis |
+| Bounded C# expression, type, declaration, attribute, and generic-constraint grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions), `CSharpTypeGrammar` (21), `CSharpDeclarationGrammar` (98), `CSharpMetadataGrammar` (40), and `CSharpTypeDeclarationGrammar` (25); host-supplied ProtocolAi identities; opaque cross-resource references; no parser or semantic analysis |
 | Common language/format catalogue | Not included | No versioned standard grammar catalogue |
 | Semantic analysis / type checking | Not implemented | Must remain distinct from syntax recognition |
 | Incremental parsing / error recovery | Not implemented | Requires a parser design and source-position model |
@@ -198,3 +198,11 @@ Lexical grammars, importers, parsers, source diagnostics, Roslyn, ANTLR, and tre
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
 <p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
+
+
+### Finalizer declaration follow-up (2026-11-11)
+
+- Extended `CSharpDeclarationGrammar` from 95 to 98 productions with a destructor nonterminal and block/expression-body finalizer alternatives.
+- Added the `Tilde` token role, structural assertions, and a Roslyn C# 11 fixture covering both body forms.
+- Static constructors remain representable by the existing constructor shape with host-supplied modifiers; host validation owns modifier and parameter legality.
+- Finalizer name/type-context legality remains host-owned.

@@ -14,7 +14,7 @@ public sealed class CSharpDeclarationGrammarTests
         var tokens = Tokens();
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
 
-        Assert.Equal(95, grammar.Rules.Count);
+        Assert.Equal(98, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
             .Where(symbol => symbol.ProtocolReference.HasValue),
@@ -201,6 +201,21 @@ public sealed class CSharpDeclarationGrammarTests
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitInterfaceSpecifierReference]) &&
             rule.RightHandSide.Any(symbol => symbol.Id == 16));
+    }
+
+    [Fact]
+    public void Finalizers_support_block_and_expression_body_forms()
+    {
+        var tokens = Tokens();
+        var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
+
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 1 && rule.RightHandSide.Count == 1 && rule.RightHandSide[0].Id == 25);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 25 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Tilde]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.BlockReference]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 25 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.Arrow]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExpressionReference]));
     }
 
     [Fact]

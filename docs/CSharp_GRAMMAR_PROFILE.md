@@ -42,4 +42,9 @@ The bounded member grammar now contains 90 productions. Declaration-level attrib
 
 ## Explicit-interface member implementations (2026-11-11)
 
-The member grammar adds six structural alternatives for explicit-interface methods (semicolon, block, and expression-body forms), properties, indexers, and custom events. Each consumes an opaque `ExplicitInterfaceSpecifierReference` representing the host-mapped interface specifier; ordinary modifier lists are intentionally absent from these forms. Event implementations use the existing paired add/remove accessor structure. The host remains responsible for resolving the interface, checking that the member is a valid implementation, and enforcing interface/member compatibility. This does not claim full explicit-interface syntax coverage beyond the listed forms.
+The member grammar adds five structural alternatives for explicit-interface methods (block and expression-body forms), properties, indexers, and custom events. Each consumes an opaque `ExplicitInterfaceSpecifierReference` representing the host-mapped interface specifier; ordinary modifier lists are intentionally absent from these forms. Event implementations use the existing paired add/remove accessor structure. The host remains responsible for resolving the interface, checking that the member is a valid implementation, and enforcing interface/member compatibility. This does not claim full explicit-interface syntax coverage beyond the listed forms.
+
+
+## Finalizer declarations (2026-11-11)
+
+The member grammar now includes block-bodied and expression-bodied C# finalizer declarations. The finalizer name and declaration context are represented structurally; the host remains responsible for validating that the name matches the containing type and enforcing finalizer restrictions. Static constructors are already structurally representable through the constructor shape and host-supplied modifier vocabulary; constructor modifier/parameter legality remains host validation.
