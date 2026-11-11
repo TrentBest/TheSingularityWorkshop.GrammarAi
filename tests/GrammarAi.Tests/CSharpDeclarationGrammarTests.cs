@@ -196,7 +196,7 @@ public sealed class CSharpDeclarationGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitInterfaceSpecifierReference]) &&
-            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ThisKeyword])));
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ThisKeyword]));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitInterfaceSpecifierReference]) &&
