@@ -360,7 +360,7 @@ public static class CSharpDeclarationGrammar
                 T(CSharpDeclarationToken.ExpressionReference), T(CSharpDeclarationToken.Semicolon))
             // Explicit-interface member names are represented by one opaque host-owned
             // specifier reference (interface type plus separator), not reparsed here.
-            .Rule(91, MethodDeclaration, N(DeclarationAttributes),
+            .Rule(91, MethodDeclaration, N(DeclarationAttributes), T(CSharpDeclarationToken.TypeReference),
                 T(CSharpDeclarationToken.ExplicitInterfaceSpecifierReference), T(CSharpDeclarationToken.Identifier),
                 N(GenericMethodMetadata), T(CSharpDeclarationToken.OpenParenthesis), N(ParameterList),
                 T(CSharpDeclarationToken.CloseParenthesis), T(CSharpDeclarationToken.Semicolon))
@@ -376,7 +376,7 @@ public static class CSharpDeclarationGrammar
             .Rule(94, PropertyDeclaration, N(DeclarationAttributes),
                 T(CSharpDeclarationToken.ExplicitInterfaceSpecifierReference), T(CSharpDeclarationToken.Identifier),
                 T(CSharpDeclarationToken.OpenBrace), N(AccessorList), T(CSharpDeclarationToken.CloseBrace))
-            .Rule(95, IndexerDeclaration, N(DeclarationAttributes),
+            .Rule(95, IndexerDeclaration, N(DeclarationAttributes), T(CSharpDeclarationToken.TypeReference),
                 T(CSharpDeclarationToken.ExplicitInterfaceSpecifierReference), T(CSharpDeclarationToken.ThisKeyword),
                 T(CSharpDeclarationToken.OpenBracket), N(ParameterList), T(CSharpDeclarationToken.CloseBracket),
                 T(CSharpDeclarationToken.OpenBrace), N(AccessorList), T(CSharpDeclarationToken.CloseBrace))

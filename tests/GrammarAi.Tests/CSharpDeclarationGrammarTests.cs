@@ -180,6 +180,30 @@ public sealed class CSharpDeclarationGrammarTests
     }
 
     [Fact]
+    public void Explicit_interface_member_shapes_use_host_owned_specifiers()
+    {
+        var tokens = Tokens();
+        var grammar = CSharpDeclarationGrammar.Create(3004, 1001, tokens);
+
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 2 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitInterfaceSpecifierReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 22));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 3 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitInterfaceSpecifierReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 9));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitInterfaceSpecifierReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ThisKeyword])));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.TypeReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == tokens[CSharpDeclarationToken.ExplicitInterfaceSpecifierReference]) &&
+            rule.RightHandSide.Any(symbol => symbol.Id == 16));
+    }
+
+    [Fact]
     public void Empty_and_repeated_lists_are_representable()
     {
         var grammar = CSharpDeclarationGrammar.Create(3004, 1001, Tokens());
