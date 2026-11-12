@@ -200,3 +200,21 @@ The typed structural schema, graph instance model, versioned integer-first propo
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
 <p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
+
+
+## Current C# mapping inventory (verified 2026-11-11)
+
+The following production counts and composition boundaries supersede the earlier preliminary counts and gap statements in this document:
+
+| Resource | Current productions | Scope |
+|---|---:|---|
+| `CSharpExpressionGrammar` | 39 | Bounded precedence/associativity hierarchy with recursive postfix member access, invocation, and element access |
+| `CSharpTypeGrammar` | 21 | Qualified/generic/nullable/array/tuple type shapes |
+| `CSharpDeclarationGrammar` | 98 | Selected member declarations, including attributes, explicit-interface forms, and block/expression-bodied finalizers |
+| `CSharpMetadataGrammar` | 40 | Attribute syntax, generic parameter lists/variance, and constraint families |
+| `CSharpTypeDeclarationGrammar` | 25 | Class, struct, interface, record class/struct, and delegate declaration shapes composed through opaque references |
+
+The metadata grammar exposes reusable roots. They are not automatically attached to every declaration production: member declaration attribute attachment is explicit for the represented member families, parameter attributes have a distinct slot, and type-declaration composition consumes host-owned metadata references. Generic parameter variance is represented syntactically; declaration-context legality remains host-owned. The member grammar now includes explicit-interface method (block/expression-body), property, indexer, and custom-event forms, plus block/expression-bodied finalizers. The C# 11 profile and test-only Roslyn 4.11.0 corpus cover representative examples, not complete language conformance.
+
+The host/compiler remains responsible for name and type resolution, legal attribute targets, explicit-interface compatibility, finalizer name/context restrictions, modifier and parameter legality, constraint ordering/satisfiability, and semantic correctness. GrammarAi validates structure; it does not parse source or establish that a proposal is executable.
+
