@@ -11,7 +11,11 @@ GrammarAi sits after semantic identity and before host policy. ProtocolAi establ
 
 This is a structural contract—not a claim that GrammarAi constrains a model, parses generated text, or executes a command by itself.
 
-## Knowledge mapping direction\n\nThe intended domain is an integer-first knowledge map, not a compiler. See [Knowledge Mapping Model](KNOWLEDGE_MAPPING_MODEL.md) for the ProtocolAi identity boundary, GrammarAi structural roles, host-owned identifier lifecycle, compact proposal exchange, and the conceptual C# control-flow example.\n\n## Textbook chapters
+## Knowledge mapping direction
+
+The intended domain is an integer-first knowledge map, not a compiler. See [Knowledge Mapping Model](KNOWLEDGE_MAPPING_MODEL.md) for the ProtocolAi identity boundary, GrammarAi structural roles, host-owned identifier lifecycle, compact proposal exchange, and the conceptual C# control-flow example.
+
+## Textbook chapters
 
 Read these chapters in order. Each chapter introduces a concept, explains its practical consequence, and points to the source and tests that demonstrate the current implementation.
 
@@ -21,7 +25,8 @@ Read these chapters in order. Each chapter introduces a concept, explains its pr
 | [2. The grammar model](theory/02-grammar-model.md) | Definitions, productions, symbols, builder | How the public structural model fits together |
 | [3. Productions, recursion, and reachability](theory/03-productions-recursion.md) | Alternatives, sequences, epsilon, recursion, graph reachability | How to read and inspect grammar structure |
 | [4. Structural validation and ownership boundaries](theory/04-validation-and-ownership.md) | Construction invariants, resource bounds, external references | What GrammarAi checks and what remains host-owned |
-| [5. Worked example: a small command language](theory/05-worked-example.md) | End-to-end structural example | How a consumer builds a grammar without confusing it with authorization or execution |\n| [6. Advanced implications and architectural boundaries](theory/06-advanced-implications.md) | Deprobabilization, CFG foundations, provider neutrality, ownership, and open questions | What deterministic structure can contribute—and what it cannot guarantee |
+| [5. Worked example: a small command language](theory/05-worked-example.md) | End-to-end structural example | How a consumer builds a grammar without confusing it with authorization or execution |
+| [6. Advanced implications and architectural boundaries](theory/06-advanced-implications.md) | Deprobabilization, CFG foundations, provider neutrality, ownership, and open questions | What deterministic structure can contribute—and what it cannot guarantee |
 
 ## Architectural model
 
