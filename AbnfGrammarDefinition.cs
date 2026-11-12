@@ -78,7 +78,7 @@ public sealed class AbnfCharacterValue : AbnfExpression
     {
         ArgumentNullException.ThrowIfNull(value);
         if (value.Length > AbnfLimits.MaxCharacterValueCharacters) throw new ArgumentOutOfRangeException(nameof(value));
-        if (value.Any(c => c > 0x7f)) throw new ArgumentException("ABNF character values are ASCII; Unicode/UTF-8 conversion is not implicit.", nameof(value));
+        if (value.Any(c => c < 0x20 || c == '"' || c > 0x7e)) throw new ArgumentException("ABNF character values must use the RFC quoted-string ASCII range; Unicode/UTF-8 conversion is not implicit.", nameof(value));
         if (!Enum.IsDefined(caseMode)) throw new ArgumentOutOfRangeException(nameof(caseMode));
         Value = value; CaseMode = caseMode;
     }
