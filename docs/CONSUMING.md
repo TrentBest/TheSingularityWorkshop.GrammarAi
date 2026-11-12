@@ -203,6 +203,10 @@ execution
 
 The current alpha provides the vocabulary-reference and grammar representations, including an optional host-driven check that external references exist. The adapter, model integration, compatibility policy, and execution layers remain outside this package.
 
+### Workshop workflow integration
+
+When used inside the Workshop runtime, FSM_Foundry owns Hub workflow lifecycle and invokes registered handlers. A handler may consume GrammarAi for structural validation, but GrammarAi does not own workflow registration, event delivery, scheduling, retries, persistence, authorization, or execution. The host may add GUI presentation independently; GrammarAi has no GUI or FSM_Foundry dependency.
+
 ## 9. Complete small example
 
 ```csharp
