@@ -36,7 +36,7 @@ The profile must identify the standard revision and the exact supported feature 
 
 ## Proposed typed representation
 
-The following public API is implemented in `AbnfGrammarDefinition.cs`:
+The public API in `AbnfGrammarDefinition.cs` implements the following type shape. The compact record-style sketch below is explanatory; the actual API uses constructor-validated sealed classes with immutable read-only properties.
 
 ~~~csharp
 public enum AbnfRuleOperator : byte
