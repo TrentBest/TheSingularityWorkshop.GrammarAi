@@ -3,13 +3,13 @@
 
 # ABNF representation boundary
 
-**Status:** design decision for a future ABNF resource; no ABNF API, importer, parser, or HTTP grammar is claimed as implemented.
+**Status:** immutable expression model and bounded structural validator implemented on `development`; source importer, parser/recognizer, lowering adapter, and HTTP grammar are not implemented.
 
 ## Decision
 
 Do not lower Internet-protocol ABNF directly into the existing `GrammarDefinition` CFG model and call the result equivalent. The current CFG model remains useful for production resources whose terminals have already been classified by a host. ABNF needs a distinct, typed expression representation if GrammarAi is to preserve the source formalism faithfully.
 
-The first deliverable should be an immutable ABNF syntax/semantic model and bounded validation contract. A source-text importer is a separate later adapter. An HTTP grammar resource should be built only after that model has explicit conformance tests.
+The first deliverable is an immutable ABNF syntax/semantic model and bounded validation contract. That model is now implemented and covered by focused tests. A source-text importer is a separate later adapter. An HTTP grammar resource should be built only after that model has explicit conformance tests.
 
 ## Why the existing CFG is not a lossless ABNF representation
 
@@ -36,7 +36,7 @@ The profile must identify the standard revision and the exact supported feature 
 
 ## Proposed typed representation
 
-The following is a conceptual API shape, not committed public API:
+The following public API is implemented in `AbnfGrammarDefinition.cs`:
 
 ~~~csharp
 public enum AbnfRuleOperator : byte
@@ -79,7 +79,7 @@ public sealed record AbnfNumericValue(
 public sealed record AbnfProseValue(string Description) : AbnfExpression;
 ~~~
 
-The concrete implementation should use immutable bounded collections and validate all enum values, names, lengths, nesting depth, and repetition bounds. The model must preserve enough structure to distinguish an explicitly grouped expression from an equivalent ungrouped expression when source fidelity or diagnostics require it. Optional `[ elements ]` can be represented as repetition with bounds 0..1, but a source-preserving importer may retain an explicit option node.
+The implementation uses defensive immutable collection copies, validates enum values, ASCII names and character values, value lengths, nesting depth, expression-node counts, and repetition bounds. `AbnfGroup` and `AbnfOption` preserve explicit source structure. `AbnfLimits` publishes the finite budgets. `AbnfGrammarDefinition.Validate()` checks case-insensitive rule linking, initial/incremental definition ordering, duplicate initial definitions, unresolved references, and expression budgets. The validator does not parse source text, recognize input, or interpret prose values.
 
 ### Required semantic distinctions
 
