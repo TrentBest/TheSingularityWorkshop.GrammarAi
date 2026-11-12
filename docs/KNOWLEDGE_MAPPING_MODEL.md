@@ -170,6 +170,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 | Identifier lifecycle and scope | Example demonstrates host-owned scoped reuse; no production registry service is included | Host owns persistence, collision handling, scope, and context manifest |
 | Structural proposal validation | Implemented for identity, slots, cardinality, order, definition version, and resource limits | Add host-specific scope and policy validation outside GrammarAi |
 | C# mapping resources | Five independently composable slices are implemented: expression (39), type (21), member declaration (98), metadata (40), and type declaration (25) productions; the C# 11 profile and pinned representative Roslyn 4.11.0 corpus are also implemented | Extend only for concrete consumer needs; keep compiler parsing and semantics outside GrammarAi, and state the bounded coverage explicitly |
+| JSON grammar resource | Implemented as a bounded RFC 8259 production grammar (16 rules) over host-supplied ProtocolAi token identities | Lexing, string/number token validation, source parsing, and semantic policy remain host responsibilities; add conformance evidence before claiming full RFC validation |
 | Cross-request continuity | Later turns must reuse known identities | Host supplies the active mapping/context on each request |
 
 ## 10. Recommended implementation sequence
@@ -180,7 +181,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 4. **Completed first vertical slice:** define and test IfStatement, ElseIfClause, ElseClause, Condition, and Body.
 5. **Example added:** demonstrate host-owned scoped identifier reuse across requests. This is illustrative; production persistence and allocation remain host responsibilities.
 6. **Implemented:** add independently composable expression, type, and member-declaration grammar resources over host-supplied ProtocolAi token identities. Continue with additional declaration families and a pinned positive/negative C# 11 conformance corpus; do not attempt a full compiler grammar.
-7. Add other common domains using the same reusable structural model: JSON, HTTP/URI, SQL dialects, Python, JavaScript/TypeScript, XML, YAML, and domain-specific command formats.
+7. Add other common domains using the same reusable model. The first JSON production grammar is now implemented; next candidates remain URI/HTTP, XML, SQL dialects, Python, JavaScript/TypeScript, YAML, and domain-specific command formats.
 
 ## 11. Explicit non-goals
 
