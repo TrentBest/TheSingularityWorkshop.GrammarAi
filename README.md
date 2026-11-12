@@ -5,7 +5,6 @@
   </a>
 </p>
 
-[![Sith Policy](assets/sith-policy.svg)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/sith-policy.yml)
 
 # TheSingularityWorkshop.GrammarAi
 
@@ -13,6 +12,7 @@
 [![NuGet version](https://img.shields.io/nuget/v/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
 [![NuGet downloads](https://img.shields.io/nuget/dt/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
 [![Code Coverage](https://img.shields.io/codecov/c/github/TrentBest/TheSingularityWorkshop.GrammarAi?style=flat-square)](https://codecov.io/gh/TrentBest/TheSingularityWorkshop.GrammarAi)
+[![Sith Policy](assets/sith-policy.svg)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/sith-policy.yml)
 [![Last commit](https://img.shields.io/github/last-commit/TrentBest/TheSingularityWorkshop.GrammarAi?style=flat-square)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commits/development)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -815,7 +815,7 @@ dotnet test TheSingularityWorkshop.GrammarAi.slnx --configuration Release
 dotnet pack TheSingularityWorkshop.GrammarAi.csproj --configuration Release --output ./artifacts
 ```
 
-The public workflow restores, builds, tests with coverage, packs the NuGet artifact, and publishes it through NuGet Trusted Publishing.
+The public workflow restores, builds, tests with coverage, packs the NuGet artifact, verifies packaged documentation and a clean consumer install, then uploads build artifacts. The NuGet publication job remains disabled until the repository owner explicitly authorizes a release.
 
 ---
 
@@ -899,4 +899,4 @@ Everything else composes around it rather than blurring it.
 ---
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
-<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop avatar" width="200" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
