@@ -110,10 +110,47 @@ jobs:
           name: grammar-ai-test-results
           path: ./TestResults/*
 
-  publish_nuget:
-    needs: build-and-test
+  sith_policy_gate:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish }}
     runs-on: ubuntu-24.04
-    # Publication remains deliberately disabled until Trent explicitly authorizes a release.
+    permissions:
+      contents: read
+    steps:
+      - name: Check out the policy evidence branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: development
+      - name: Verify live branch inventory and fresh Sith evidence
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mapfile -t actual_branches < <(gh api --paginate "repos/$GH_REPO/branches?per_page=100" --jq '.[].name' | sort -u)
+          expected_branches=(development master)
+          if [[ "${actual_branches[*]}" != "${expected_branches[*]}" ]]; then
+            printf 'Expected exactly: %s\nActual: %s\n' "${expected_branches[*]}" "${actual_branches[*]}"
+            echo "Sith branch inventory is not exactly master + development."
+            exit 1
+          fi
+
+          actual_json="$(printf '%s\n' "${actual_branches[@]}" | jq -R . | jq -s .)"
+          jq -e --argjson actual "$actual_json" '
+            .policy == "exactly-master-and-development" and
+            .status == "COMPLIANT" and
+            .required_branches == ["development", "master"] and
+            .actual_branches == $actual and
+            .branch_count == 2 and
+            (.evaluated_at | fromdateiso8601) >= (now - 86400) and
+            (.workflow_run | type == "string" and length > 0)
+          ' assets/sith-policy.json >/dev/null
+          echo "Live branch inventory and Sith evidence are compliant and no older than 24 hours."
+
+  publish_nuget:
+    needs: [build-and-test, sith_policy_gate]
+    runs-on: ubuntu-24.04
+    # Publication remains deliberately disabled until Trent explicitly authorizes a release. The live Sith gate is defense in depth, not authorization.
     if: ${{ false }}
     permissions:
       contents: read
