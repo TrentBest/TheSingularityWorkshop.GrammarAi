@@ -325,6 +325,38 @@ GrammarAI's role is therefore stable even as the transport changes.
 
 ---
 
+## FSM_Foundry owns workflow lifecycle
+
+Within the Workshop runtime, **FSM_Foundry owns Hub workflow execution and lifecycle**. GrammarAi is a reusable structural capability that a Foundry-registered handler may call when it needs to validate a grammar definition or a bounded structural proposal.
+
+The ownership boundary is deliberately one-way:
+
+```text
+ProtocolAi events / identities
+             |
+             v
+FSM_Foundry Hub
+  workflow lifecycle, routing,
+  replay, scheduling, persistence
+             |
+             v
+Foundry-registered handler
+             |
+             +----> GrammarAi
+             |      grammar structure and
+             |      deterministic structural validation
+             |
+             v
+Foundry / host policy
+  authorization, approval, execution
+```
+
+GrammarAi does not register or own workflows, subscribe to events, schedule work, maintain workflow state, replay or retry deliveries, persist gates, dispatch commands, or execute handlers. It has no dependency on FSM_Foundry or GUI. GUI is optional presentation chosen by the host; it is not part of the grammar capability.
+
+A handler may use GrammarAi as a library, but the workflow remains a Foundry concern from admission through completion. Structural validity is only an input to the host's independent evidence, policy, authorization, and execution decisions.
+
+---
+
 ## Command proposals sit above grammar
 
 GrammarAi defines **HOW protocol identities may legally compose**. It does not decide what an application should execute.
