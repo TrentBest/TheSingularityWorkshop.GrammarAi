@@ -108,7 +108,9 @@ public sealed class AbnfProseValue : AbnfExpression
     public AbnfProseValue(string description)
     {
         ArgumentNullException.ThrowIfNull(description);
-        if (description.Length == 0 || description.Length > AbnfLimits.MaxProseValueCharacters) throw new ArgumentOutOfRangeException(nameof(description));
+        if (description.Length > AbnfLimits.MaxProseValueCharacters) throw new ArgumentOutOfRangeException(nameof(description));
+        if (description.Any(c => c < 0x20 || c > 0x7e || c == '>'))
+            throw new ArgumentException("ABNF prose values must use the RFC prose-value ASCII range and cannot contain the closing delimiter.", nameof(description));
         Description = description;
     }
     public string Description { get; }
