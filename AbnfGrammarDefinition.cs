@@ -175,7 +175,6 @@ public sealed class AbnfGrammarDefinition
             else if (!declared.Contains(definition.Name))
                 issues.Add(new(AbnfValidationCode.IncrementalDefinitionWithoutBase, $"Rule '{definition.Name}' uses '=/’ before an initial '=' definition.", definition.Name));
 
-            Walk(definition.Expression, definition.Name, 1, ref nodeCount, issues, null);
         }
 
         foreach (var definition in _definitions)
