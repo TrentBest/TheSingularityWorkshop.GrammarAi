@@ -107,6 +107,8 @@ public sealed class AbnfGrammarDefinitionTests
         var grammar = new AbnfGrammarDefinition([new("root", AbnfRuleOperator.Define, prose)]);
         Assert.Empty(grammar.Validate());
         Assert.Equal("application-defined meaning", prose.Description);
+        Assert.Equal(string.Empty, new AbnfProseValue(string.Empty).Description);
+        Assert.Throws<ArgumentException>(() => new AbnfProseValue("invalid>delimiter"));
     }
 
     [Fact]
