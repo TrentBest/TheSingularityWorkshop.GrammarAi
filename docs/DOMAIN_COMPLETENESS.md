@@ -209,3 +209,10 @@ Lexical grammars, importers, parsers, source diagnostics, Roslyn, ANTLR, and tre
 - Added the `Tilde` token role, structural assertions, and a Roslyn C# 11 fixture covering both body forms.
 - Static constructors remain representable by the existing constructor shape with host-supplied modifiers; host validation owns modifier and parameter legality.
 - Finalizer name/type-context legality remains host-owned.
+
+
+## SQL SELECT core: bounded dialect-neutral structural slice
+
+`SqlSelectGrammar` adds a 40-production, dialect-neutral SELECT core over host-supplied ProtocolAi token identities. It models ordered projection lists, wildcard and expression items, a single FROM source, optional aliases, repeated INNER/LEFT OUTER/RIGHT OUTER joins with ON predicates, optional WHERE clauses, boolean AND/OR/NOT composition, parenthesized predicates, six comparison operators, and IS [NOT] NULL.
+
+This is a reusable structural slice, not a complete SQL standard or vendor dialect. It intentionally does not claim precedence-correct boolean semantics, lexical recognition, quoted-identifier or literal syntax, subqueries, grouping, ordering, aggregation, window functions, mutation statements, or dialect conformance. Tokenization, name/type resolution, operator semantics, query planning, authorization, and execution remain host responsibilities. Dialect-specific resources must pin their dialect and version rather than silently extending this shared core.
