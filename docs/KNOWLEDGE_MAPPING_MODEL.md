@@ -207,6 +207,14 @@ The grammar has 26 productions and is independently composable. It does not add 
 
 The component tokens are intentionally opaque. In particular, matching start/end element names, XML name and character productions, attribute uniqueness, namespace constraints, entity/reference expansion, DTD processing and validity, and XML well-formedness constraints that cross token boundaries remain host responsibilities. This is a structural composition resource, not an XML tokenizer, parser, DTD processor, or full XML conformance claim.
 
+## 14. ABNF representation boundary
+
+Internet-protocol ABNF is not silently normalized into the current CFG production model. The current model has ordered sequences, alternatives, recursion, and epsilon, but does not natively preserve ABNF repetition operators, octet ranges/sequences, case-sensitive string modes, case-insensitive rule names, incremental alternatives, or opaque prose values.
+
+The proposed next step is a separate immutable ABNF expression representation pinned to RFC 5234 plus RFC 7405, with bounded structural validation. It is not an importer, parser, or HTTP grammar implementation. Any future lowering to `GrammarDefinition` must be explicit, budgeted, and semantics-preserving; octet matching, case modes, unresolved references, and prose values must not be approximated.
+
+See [ABNF Representation Boundary](ABNF_REPRESENTATION_BOUNDARY.md) for the proposed expression model, semantic distinctions, bounds, conversion rules, HTTP version boundaries, and implementation sequence. HTTP field syntax, HTTP/1.1 message syntax, and HTTP/2/3 framing remain separate resources. The existing RFC 3986 URI-reference grammar remains independent.
+
 ## Verification status
 
 The typed structural schema, graph instance model, versioned integer-first proposal codec, and scoped host-registry example are implemented and covered by repository CI. The C# map consists of five independently composable slices (39 expression, 21 type, 98 member-declaration, 40 metadata, and 25 type-declaration productions), with a C# 11 profile and a pinned, representative Roslyn 4.11.0 test corpus. These are bounded structural resources, not a complete C# language map or a GrammarAi source parser; the compiler corpus validates selected dialect expectations only. The If/ElseIf/Else graph is likewise a focused structural slice. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
