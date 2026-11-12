@@ -190,11 +190,14 @@ public sealed class GrammarStructureInstanceTests
     }
 
     [Fact]
-    public void Proposal_codec_rejects_a_stale_definition_version()
+    public void Proposal_codec_rejects_a_stale_definition_version_for_legacy_and_current_wire_formats()
     {
         var schema = CreateConditionalSchema();
-        var proposal = "{\"v\":1,\"g\":9001,\"gv\":2,\"n\":[],\"r\":[]}";
-        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(proposal, schema));
+        var legacyProposal = "{\"v\":1,\"g\":9001,\"gv\":2,\"n\":[],\"r\":[]}";
+        var currentProposal = "{\"v\":2,\"g\":9001,\"gv\":2,\"n\":[],\"r\":[]}";
+
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(legacyProposal, schema));
+        Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(currentProposal, schema));
     }
 
     [Fact]
