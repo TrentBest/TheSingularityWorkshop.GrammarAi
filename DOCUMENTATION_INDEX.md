@@ -29,13 +29,14 @@ GrammarAi defines how symbols can be arranged into grammar productions. The gram
 
 ## Theory learning path
 
-The explanatory material is split into five progressive chapters:
+The explanatory material is split into six progressive chapters:
 
 1. [From vocabulary to language](docs/theory/01-why-grammar.md)
 2. [The grammar model](docs/theory/02-grammar-model.md)
 3. [Productions, recursion, and reachability](docs/theory/03-productions-recursion.md)
 4. [Structural validation and ownership boundaries](docs/theory/04-validation-and-ownership.md)
 5. [Worked example: a small command language](docs/theory/05-worked-example.md)
+6. [Advanced implications and architectural boundaries](docs/theory/06-advanced-implications.md)
 
 The theory pages explain concepts and map claims to current source and tests. Operational setup remains in the consuming guide; public type contracts remain in the class guides below.
 
