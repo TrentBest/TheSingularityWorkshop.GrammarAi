@@ -87,7 +87,7 @@ The catalogue should be modular and versioned. It should not mean that every gra
 
 | Priority | Grammar family | Why it matters | Important qualification |
 |---|---|---|---|
-| 1 | JSON | Small, bounded, ubiquitous structured data format | Excellent first end-to-end grammar/import/parse test |
+| 1 | JSON | Small, bounded, ubiquitous structured data format | The RFC 8259 production grammar is implemented over host-owned token identities; lexing, parsing, and lexical conformance remain outside GrammarAi |
 | 1 | URI / HTTP field and message syntax (ABNF) | Real-world internet protocol syntax | ABNF, byte/text boundaries, and protocol-version differences matter |
 | 1 | XML | Common document markup and structured data | XML well-formedness includes constraints beyond a naïve CFG |
 | 2 | SQL | Common query language | Must be dialect-specific: SQL standard, PostgreSQL, SQLite, SQL Server, etc. |
@@ -120,7 +120,7 @@ The recommended first delivery is a separately versioned C# grammar resource/pac
 1. Continue coordinating category metadata with ProtocolAi. GrammarAi now consumes opaque category/member identities; ProtocolAi remains the identity owner and no category metadata is duplicated here.
 2. Define compatibility and migration policy between schema versions; the current codec rejects mismatches rather than migrating them.
 3. The QuickStart now demonstrates a host resolver bound to one illustrative catalog snapshot and keeps snapshot identity in a host exchange envelope. Replace the sample data with real ProtocolAi identity allocation, persistence, and cross-request context in a consuming host.
-4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice. The bounded C# expression and type resources are now separate, independently composable grammar slices; additional declaration families, declaration-slot composition for attributes/generic parameters, and broader language conformance remain open; CSharpGrammarProfile pins the declared baseline to C# 11.
+4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice. The RFC 8259 JSON production grammar is now the first non-C# domain resource; URI/HTTP, XML, SQL dialects, Python, JavaScript/TypeScript, and YAML remain candidates. The bounded C# resources remain independent structural slices, not a parser or full language conformance claim.
 5. Define a stable root/entry-point and graph-profile policy only where a consuming domain requires one; the core graph model intentionally allows shared nodes and cycles.
 6. Expand proposal diagnostics and adversarial tests while keeping semantic validation, authorization, and execution in the host.
 
