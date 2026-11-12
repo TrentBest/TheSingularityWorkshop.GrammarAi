@@ -92,7 +92,7 @@ public sealed class AbnfNumericValue : AbnfExpression
     {
         if (!Enum.IsDefined(numberBase)) throw new ArgumentOutOfRangeException(nameof(numberBase));
         if (!Enum.IsDefined(form)) throw new ArgumentOutOfRangeException(nameof(form));
-        var copy = AbnfCollections.Copy(values, nameof(values), 1);
+        var copy = AbnfCollections.Copy(values, nameof(values), 1, AbnfLimits.MaxNumericComponents);
         if (copy.Count > AbnfLimits.MaxNumericComponents) throw new ArgumentOutOfRangeException(nameof(values));
         if (form == AbnfNumericForm.Single && copy.Count != 1) throw new ArgumentException("A single numeric value contains exactly one octet.", nameof(values));
         if (form == AbnfNumericForm.Range && (copy.Count != 2 || copy[0] > copy[1])) throw new ArgumentException("A numeric range contains exactly two ordered inclusive endpoints.", nameof(values));
