@@ -337,7 +337,7 @@ public sealed class ObserverGrammarTests
     public void Observer_json_rejects_wrongly_typed_schema_fields_with_format_error()
     {
         Assert.Throws<FormatException>(() => ObserverGrammarJson.Deserialize(
-            "{\\"schema\\":42,\\"schemaVersion\\":1}"));
+            "{\"schema\":42,\"schemaVersion\":1}"));
     }
 
     [Fact]
