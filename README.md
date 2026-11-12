@@ -833,7 +833,7 @@ The linked documents are the **rooms**.
 | Visual tour and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
 | Visual overview | [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
 | Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
-| Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
+| Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |\n| ABNF expression model and RFC 5234 / RFC 7405 boundary | [ABNF representation](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/ABNF_REPRESENTATION_BOUNDARY.md) |
 | Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
 | Package | [NuGet](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi) |
 | Source | [GitHub](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi) |
