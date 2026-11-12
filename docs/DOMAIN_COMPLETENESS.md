@@ -54,6 +54,7 @@ This audit deliberately separates implemented behavior from capabilities that ne
 | Lexer / tokenizer | Not implemented | No source-text scanning API |
 | Parser / parse tree / diagnostics | Not implemented | No source-text parsing API |
 | Bounded C# expression, type, declaration, attribute, and generic-constraint grammar resources | Partially implemented | `CSharpExpressionGrammar` (39 productions), `CSharpTypeGrammar` (21), `CSharpDeclarationGrammar` (98), `CSharpMetadataGrammar` (40), and `CSharpTypeDeclarationGrammar` (25); host-supplied ProtocolAi identities; opaque cross-resource references; no parser or semantic analysis |
+| URI-reference grammar resource | Implemented as a bounded RFC 3986 URI-reference component grammar (26 productions) over host-owned token identities | Opaque authority/path/query/fragment tokenization and component lexical conformance remain host responsibilities; this is not an ABNF importer or full RFC validator |
 | Common language/format catalogue | Not included | No versioned standard grammar catalogue |
 | Semantic analysis / type checking | Not implemented | Must remain distinct from syntax recognition |
 | Incremental parsing / error recovery | Not implemented | Requires a parser design and source-position model |
@@ -120,7 +121,7 @@ The recommended first delivery is a separately versioned C# grammar resource/pac
 1. Continue coordinating category metadata with ProtocolAi. GrammarAi now consumes opaque category/member identities; ProtocolAi remains the identity owner and no category metadata is duplicated here.
 2. Define compatibility and migration policy between schema versions; the current codec rejects mismatches rather than migrating them.
 3. The QuickStart now demonstrates a host resolver bound to one illustrative catalog snapshot and keeps snapshot identity in a host exchange envelope. Replace the sample data with real ProtocolAi identity allocation, persistence, and cross-request context in a consuming host.
-4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice. The RFC 8259 JSON production grammar is now the first non-C# domain resource; URI/HTTP, XML, SQL dialects, Python, JavaScript/TypeScript, and YAML remain candidates. The bounded C# resources remain independent structural slices, not a parser or full language conformance claim.
+4. Add more reusable domain maps beyond the If/ElseIf/Else control-flow slice. The RFC 8259 JSON grammar and bounded RFC 3986 URI-reference grammar are now non-C# domain resources; HTTP field/message ABNF, XML, SQL dialects, Python, JavaScript/TypeScript, and YAML remain candidates. The bounded C# resources remain independent structural slices, not a parser or full language conformance claim.
 5. Define a stable root/entry-point and graph-profile policy only where a consuming domain requires one; the core graph model intentionally allows shared nodes and cycles.
 6. Expand proposal diagnostics and adversarial tests while keeping semantic validation, authorization, and execution in the host.
 
