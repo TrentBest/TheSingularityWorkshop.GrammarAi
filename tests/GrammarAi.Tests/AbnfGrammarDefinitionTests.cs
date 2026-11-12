@@ -120,6 +120,20 @@ public sealed class AbnfGrammarDefinitionTests
     }
 
     [Fact]
+    public void Expression_nesting_depth_is_bounded_during_validation()
+    {
+        AbnfExpression expression = new AbnfCharacterValue("x", AbnfCharacterCase.Insensitive);
+        for (var i = 0; i < AbnfLimits.MaxExpressionDepth; i++)
+            expression = new AbnfGroup(expression);
+
+        var grammar = new AbnfGrammarDefinition([
+            new("root", AbnfRuleOperator.Define, expression)
+        ]);
+
+        Assert.Contains(grammar.Validate(), x => x.Code == AbnfValidationCode.ResourceLimitExceeded);
+    }
+
+    [Fact]
     public void Constructor_enforces_expression_collection_and_profile_limits()
     {
         Assert.Throws<ArgumentException>(() => new AbnfAlternation([new AbnfCharacterValue("a", AbnfCharacterCase.Insensitive)]));
