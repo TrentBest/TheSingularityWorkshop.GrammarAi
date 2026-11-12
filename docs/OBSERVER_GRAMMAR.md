@@ -131,6 +131,22 @@ The JSON codec rejects:
 
 CommandAi integration remains intentionally separate. The current CommandAi/1 proposal representation is not silently expanded here; GrammarAi will bind to its actual public shape once the cross-repository contract is settled.
 
+## Consumer integration status
+
+The observer schema and its local structural checks are implemented in GrammarAi. That is not yet proof that a host consumes the schema correctly.
+
+The remaining cross-repository acceptance belongs in the consumer/host integration:
+
+- CiAi issue [#59 — Integrate GrammarAi as CiAi's typed CI workflow knowledge-mapping layer](https://github.com/TrentBest/TheSingularityWorkshop.CiAi/issues/59) tracks the actual GrammarAi dependency, pinned source revision, and exercised CI-domain grammar/codec.
+- CiAi issue [#52 — Migrate AiCi to enriched CommandAi/1](https://github.com/TrentBest/TheSingularityWorkshop.CiAi/issues/52) separately tracks the existing repository-command composer migration. Its generic command fields must not be duplicated in this observer model.
+- CommandAi owns the generic atomic-command identity, target, scope, idempotency, expected-outcome, typed arguments, and optional grammar-versioned preconditions. GrammarAi owns the referenced grammar definition and structural validation; it does not evaluate the precondition or authorize the command.
+
+A complete observer consumer contract test must use the actual pinned GrammarAi definition and the consumer's real protocol/command adapters. It must prove that a matching, complete, exact-candidate success can produce only the declared transition intent, while mismatched candidate scope and False, Unknown, or Incomplete evidence cannot be treated as success. It must also prove that the CommandAi precondition's grammar identity/version resolves to the intended GrammarAi definition. Do not substitute duplicated DTOs or a test-only imitation of the host adapter for this evidence.
+
+Until that test passes on the exact consumer dependency revisions, observer grammar v1 is a locally validated structural contract—not an end-to-end integrated observer workflow.
+
+---
+
 ## Deliberate non-goals
 
 This model does not implement observer registration delivery, durable subscriptions, scheduling, replay or deduplication, stale-event ordering, CI evidence evaluation, provider authentication, authorization, human approval, command execution, or gate persistence. Those responsibilities remain with CiAi and the host/Foundry.
