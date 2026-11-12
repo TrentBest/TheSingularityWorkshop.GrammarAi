@@ -193,6 +193,14 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 - Assuming every programming language shares one universal grammar.
 - Making a diagnostic Describe() string into a wire format without a separately versioned contract.
 
+## 12. URI reference grammar: bounded RFC 3986 structure
+
+`UriReferenceGrammar` is the next non-C# domain resource. It models the RFC 3986 URI-reference alternatives (absolute URI and relative reference), hierarchical/relative path forms, authority paths, ordered path segments, and optional query and fragment suffixes. It consumes opaque host-supplied ProtocolAi token identities.
+
+This is deliberately a **bounded structural map**, not an ABNF importer or URI implementation. Authority, scheme, path-segment, query, and fragment tokens are already lexically classified by the host. In particular, the host remains responsible for RFC character classes, percent-encoding validity, IP literals, registered names, port syntax, normalization, and complete RFC conformance. The distinct `SegmentNzNoColon` token role preserves the no-scheme relative-path boundary without making GrammarAi a lexer.
+
+The grammar has 26 productions and is independently composable. It does not add a ProtocolAi dependency or introduce an ABNF formalism into the core model.
+
 ## Verification status
 
 The typed structural schema, graph instance model, versioned integer-first proposal codec, and scoped host-registry example are implemented and covered by repository CI. The C# map consists of five independently composable slices (39 expression, 21 type, 98 member-declaration, 40 metadata, and 25 type-declaration productions), with a C# 11 profile and a pinned, representative Roslyn 4.11.0 test corpus. These are bounded structural resources, not a complete C# language map or a GrammarAi source parser; the compiler corpus validates selected dialect expectations only. The If/ElseIf/Else graph is likewise a focused structural slice. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
