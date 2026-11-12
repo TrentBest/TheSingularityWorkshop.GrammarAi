@@ -15,7 +15,7 @@ public sealed class SqlSelectGrammarTests
 
         Assert.Equal("SQL-SELECT-Core-Bounded", grammar.Name);
         Assert.Equal(1UL, grammar.StartSymbol);
-        Assert.Equal(40, grammar.Rules.Count);
+        Assert.Equal(45, grammar.Rules.Count);
         Assert.Empty(grammar.FindUnreachableNonTerminals());
 
         Assert.All(grammar.Rules.SelectMany(rule => rule.RightHandSide)
@@ -29,7 +29,7 @@ public sealed class SqlSelectGrammarTests
             rule.RightHandSide[1].ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Comma] &&
             rule.RightHandSide[2].IsNonTerminal && rule.RightHandSide[2].Id == 5);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 5 &&
-            rule.RightHandSide.SingleOrDefault()?.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Star]);
+            rule.RightHandSide.Count == 1 && rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Star]);
 
         // Join and WHERE clauses are optional/repeated structural components.
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 8 && rule.RightHandSide.Count == 0);
@@ -38,11 +38,18 @@ public sealed class SqlSelectGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Where]);
 
-        // Boolean operators, grouping, comparisons, and NULL predicates remain explicit.
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
+        // OR is lower precedence than AND; NOT binds at the next tighter level. Grouping, comparisons, and NULL predicates remain explicit.
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 15 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.And]));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Or]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.And]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 16 &&
+            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Not]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 && rule.RightHandSide.Count == 0);
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Outer]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Is]));
     }
