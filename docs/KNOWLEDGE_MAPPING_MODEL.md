@@ -169,7 +169,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 | Compact deterministic exchange | Implemented by GrammarStructureProposalCodec | Keep canonical encoding stable within a wire version |
 | Identifier lifecycle and scope | Example demonstrates host-owned scoped reuse; no production registry service is included | Host owns persistence, collision handling, scope, and context manifest |
 | Structural proposal validation | Implemented for identity, slots, cardinality, order, definition version, and resource limits | Add host-specific scope and policy validation outside GrammarAi |
-| C# mapping resources | Core expression (39), type (21), and member declaration (59) production slices plus If/ElseIf/Else structure are implemented | C# 11 target baseline is now explicit through CSharpGrammarProfile; expand declaration families and add a conformance corpus while keeping compiler semantics outside GrammarAi |
+| C# mapping resources | Five independently composable slices are implemented: expression (39), type (21), member declaration (98), metadata (40), and type declaration (25) productions; the C# 11 profile and pinned representative Roslyn 4.11.0 corpus are also implemented | Extend only for concrete consumer needs; keep compiler parsing and semantics outside GrammarAi, and state the bounded coverage explicitly |
 | Cross-request continuity | Later turns must reuse known identities | Host supplies the active mapping/context on each request |
 
 ## 10. Recommended implementation sequence
@@ -194,7 +194,7 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 
 ## Verification status
 
-The typed structural schema, graph instance model, versioned integer-first proposal codec, scoped host-registry example, and expanded 39-production C# core expression grammar are implemented and covered by repository CI. The If/ElseIf/Else graph and expression grammar are focused slices, not a complete C# language map. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
+The typed structural schema, graph instance model, versioned integer-first proposal codec, and scoped host-registry example are implemented and covered by repository CI. The C# map consists of five independently composable slices (39 expression, 21 type, 98 member-declaration, 40 metadata, and 25 type-declaration productions), with a C# 11 profile and a pinned, representative Roslyn 4.11.0 test corpus. These are bounded structural resources, not a complete C# language map or a GrammarAi source parser; the compiler corpus validates selected dialect expectations only. The If/ElseIf/Else graph is likewise a focused structural slice. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
 
 ---
 
