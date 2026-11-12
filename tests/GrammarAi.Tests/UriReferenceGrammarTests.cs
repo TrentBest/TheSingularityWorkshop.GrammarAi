@@ -35,10 +35,10 @@ public sealed class UriReferenceGrammarTests
 
         // Query and fragment are independent optional suffixes.
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 && rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[UriReferenceGrammarToken.QuestionMark]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 && rule.RightHandSide.Count == 0);
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 &&
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 && rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[UriReferenceGrammarToken.Hash]);
 
         // A no-scheme relative path uses its distinct segment-nz-nc lexical class.
