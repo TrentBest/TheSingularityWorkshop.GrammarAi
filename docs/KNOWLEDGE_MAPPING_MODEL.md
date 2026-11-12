@@ -201,6 +201,12 @@ This is deliberately a **bounded structural map**, not an ABNF importer or URI i
 
 The grammar has 26 productions and is independently composable. It does not add a ProtocolAi dependency or introduce an ABNF formalism into the core model.
 
+## 13. XML 1.0 document structure: bounded component grammar
+
+`XmlDocumentGrammar` adds a bounded XML 1.0 document-structure resource with 19 productions. It represents the document root, optional declaration/doctype prolog arrangements, comments and processing instructions in miscellaneous positions, empty and paired elements, recursive nested content, character data, references, and CDATA sections. Its terminal identities are supplied by the host through ProtocolAi.
+
+The component tokens are intentionally opaque. In particular, matching start/end element names, XML name and character productions, attribute uniqueness, namespace constraints, entity/reference expansion, DTD processing and validity, and XML well-formedness constraints that cross token boundaries remain host responsibilities. This is a structural composition resource, not an XML tokenizer, parser, DTD processor, or full XML conformance claim.
+
 ## Verification status
 
 The typed structural schema, graph instance model, versioned integer-first proposal codec, and scoped host-registry example are implemented and covered by repository CI. The C# map consists of five independently composable slices (39 expression, 21 type, 98 member-declaration, 40 metadata, and 25 type-declaration productions), with a C# 11 profile and a pinned, representative Roslyn 4.11.0 test corpus. These are bounded structural resources, not a complete C# language map or a GrammarAi source parser; the compiler corpus validates selected dialect expectations only. The If/ElseIf/Else graph is likewise a focused structural slice. A structurally valid proposal remains untrusted data: semantic interpretation, identifier persistence, scope, authorization, and execution belong to the host.
