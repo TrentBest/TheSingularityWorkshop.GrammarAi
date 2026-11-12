@@ -64,9 +64,17 @@ public sealed record AbnfCharacterValue(
     string Value,
     AbnfCharacterCase CaseMode) : AbnfExpression;
 
+public enum AbnfNumericForm : byte
+{
+    Single = 0,
+    Sequence = 1,
+    Range = 2
+}
+
 public sealed record AbnfNumericValue(
     AbnfNumericBase Base,
-    IReadOnlyList<AbnfNumericComponent> Components) : AbnfExpression;
+    AbnfNumericForm Form,
+    IReadOnlyList<byte> Values) : AbnfExpression;
 
 public sealed record AbnfProseValue(string Description) : AbnfExpression;
 ~~~
@@ -91,9 +99,11 @@ The concrete implementation should use immutable bounded collections and validat
 | `%b`, `%d`, `%x` | Numeric octet sequence or inclusive range, with base retained |
 | `<prose>` | Opaque, non-executable prose annotation; not a recognizer |
 
-Rule references must be linked case-insensitively while preserving the source spelling for diagnostics. Incremental alternatives must be accumulated in source order, and a `=/` without a preceding definition must be rejected. Core rules are ordinary named definitions supplied by the selected profile, not hard-coded special cases in the expression evaluator.
+Rule references must be linked case-insensitively while preserving the source spelling for diagnostics. Rule names follow the ABNF ASCII rule-name shape: an initial letter followed by letters, digits, or hyphens. Incremental alternatives must be accumulated in source order, and a `=/` without a preceding definition must be rejected. Core rules are ordinary named definitions supplied by the selected profile, not hard-coded special cases in the expression evaluator.
 
-Numeric values are octets (0..255), not Unicode scalar values. A range is inclusive. A numeric sequence is an exact ordered octet sequence. Character-value encoding and matching must be explicitly ASCII/octet-based; no implicit UTF-8 or Unicode normalization is permitted.
+Alternation is language union, not PEG-style prioritized choice. Preserve source order for deterministic descriptions and provenance, but never give an earlier ABNF alternative a parsing priority that changes recognition. A numeric value must have exactly one form: a single octet, a nonempty sequence of octets, or an inclusive two-endpoint range. Do not mix sequence and range forms in one numeric value.
+
+Numeric values are octets (0..255), not Unicode scalar values. A range is inclusive and must have exactly two ordered endpoints. A numeric sequence is an exact ordered octet sequence and must be nonempty. A single numeric value has exactly one octet. Character-value encoding and matching must be explicitly ASCII/octet-based; no implicit UTF-8 or Unicode normalization is permitted.
 
 ## Bounds and validation
 
