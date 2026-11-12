@@ -37,15 +37,20 @@ public sealed class XmlDocumentGrammarTests
             rule.RightHandSide.Count == 1 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[XmlDocumentGrammarToken.EmptyElementTag]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 5 &&
-            rule.RightHandSide.Select(symbol => symbol.Id).SequenceEqual(new[] { 0UL, 6UL, 0UL }) &&
+            rule.RightHandSide.Count == 3 &&
+            rule.RightHandSide[0].IsProtocolSymbol &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[XmlDocumentGrammarToken.StartTag] &&
+            rule.RightHandSide[1].IsNonTerminal && rule.RightHandSide[1].Id == 6 &&
+            rule.RightHandSide[2].IsProtocolSymbol &&
             rule.RightHandSide[2].ProtocolReference?.SymbolId == Tokens()[XmlDocumentGrammarToken.EndTag]);
 
         // Nested elements and all XML content component families remain composable.
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 7 && rule.RightHandSide.Count == 1 &&
             rule.RightHandSide[0].Id == 5);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 6 &&
-            rule.RightHandSide.Select(symbol => symbol.Id).SequenceEqual(new[] { 6UL, 7UL }));
+            rule.RightHandSide.Count == 2 &&
+            rule.RightHandSide[0].IsNonTerminal && rule.RightHandSide[0].Id == 6 &&
+            rule.RightHandSide[1].IsNonTerminal && rule.RightHandSide[1].Id == 7);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 7 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[XmlDocumentGrammarToken.CDataSection]);
     }
