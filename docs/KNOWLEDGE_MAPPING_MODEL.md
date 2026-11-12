@@ -165,13 +165,35 @@ The upstream C# language version and provenance still matter for accuracy. Compi
 | Cross-repository category metadata | GrammarAi consumes opaque category/member IDs; ProtocolAi remains the identity owner | Coordinate the concrete ProtocolAi category metadata contract; GrammarAi must not duplicate it |
 | Typed grammar nodes and slots | Implemented as grammar-owned node kinds and contextual slots | Extend the map with domain-specific structural definitions |
 | Optional/repeated relationships | Implemented through slot cardinality and ordered graph relationships | Preserve ordering and constraints in future domain maps |
-| Stable grammar and mapping versions | Definition ID/version and independent wire version are implemented | Define compatibility and explicit migration policy between versions |
+| Stable grammar and mapping versions | Definition ID/version and independent wire version are implemented | Exact schema matching; legacy wire-v1 read compatibility; canonical wire-v2 output; no implicit schema migration |
 | Compact deterministic exchange | Implemented by GrammarStructureProposalCodec | Keep canonical encoding stable within a wire version |
 | Identifier lifecycle and scope | Example demonstrates host-owned scoped reuse; no production registry service is included | Host owns persistence, collision handling, scope, and context manifest |
 | Structural proposal validation | Implemented for identity, slots, cardinality, order, definition version, and resource limits | Add host-specific scope and policy validation outside GrammarAi |
 | C# mapping resources | Five independently composable slices are implemented: expression (39), type (21), member declaration (98), metadata (40), and type declaration (25) productions; the C# 11 profile and pinned representative Roslyn 4.11.0 corpus are also implemented | Extend only for concrete consumer needs; keep compiler parsing and semantics outside GrammarAi, and state the bounded coverage explicitly |
 | JSON grammar resource | Implemented as a bounded RFC 8259 production grammar (16 rules) over host-supplied ProtocolAi token identities | Lexing, string/number token validation, source parsing, and semantic policy remain host responsibilities; add conformance evidence before claiming full RFC validation |
 | Cross-request continuity | Later turns must reuse known identities | Host supplies the active mapping/context on each request |
+
+### Version compatibility and migration policy
+
+GrammarAi deliberately separates the **grammar definition version** from the **proposal wire version**. They answer different questions and must never be treated as interchangeable.
+
+- The definition identity is the exact pair `(g, gv)`. A consumer supplies the active `GrammarStructureDefinition`; deserialization rejects a proposal whose grammar ID or definition version differs. A matching numeric ID with a different version is stale, not “close enough.”
+- The wire version (`v`) describes only the serialized tuple layout. The current writer emits wire version 2. The reader retains bounded compatibility with legacy wire version 1.
+- Wire version 1 contains only nested-node relationships. Wire version 2 uses explicit relationship tags for nested nodes and qualified external protocol references. Reading a valid v1 proposal and serializing the resulting instance emits canonical v2. This is a wire-format upgrade, not a grammar-schema migration.
+- GrammarAi does not guess, upgrade, downgrade, or transform one definition version into another. A structural schema change that is not backward-compatible requires the owner to publish a new definition version. Consumers must pin the intended definition ID/version and reject stale proposals.
+- If a host needs to migrate stored proposals or definitions, it must implement an explicit, separately versioned migration adapter with declared source and target definition identities, bounded inputs, deterministic behavior, and positive/negative contract tests. The adapter must not reinterpret unknown identities or silently discard relationships.
+- Unknown wire versions, mismatched definition identities/versions, malformed tuples, and structurally invalid graphs fail closed. External references must still resolve against the host's exact active catalog/capability snapshot.
+
+The compatibility matrix is therefore:
+
+| Dimension | Supported behavior |
+|---|---|
+| Definition identity/version | Exact match only |
+| Wire v1 input | Read legacy node-only relationship tuples |
+| Wire v2 input | Read tagged node and external-reference tuples |
+| Serialization | Always emit canonical wire v2 |
+| Automatic schema migration | Not supported |
+| Host migration | Explicit adapter outside GrammarAi |
 
 ## 10. Recommended implementation sequence
 
