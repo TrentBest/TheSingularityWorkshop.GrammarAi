@@ -95,7 +95,7 @@ public sealed class AbnfGrammarDefinitionTests
         Assert.Equal(AbnfCharacterCase.Sensitive,
             new AbnfCharacterValue("HTTP", AbnfCharacterCase.Sensitive).CaseMode);
         Assert.Throws<ArgumentException>(() => new AbnfCharacterValue("café", AbnfCharacterCase.Sensitive));
-        Assert.Throws<ArgumentException>(() => new AbnfCharacterValue("line\nbreak", AbnfCharacterCase.Sensitive));
+        Assert.Throws<ArgumentException>(() => new AbnfCharacterValue(new string(new[] { 'l', (char)10, 'b' }), AbnfCharacterCase.Sensitive));
         Assert.Throws<ArgumentException>(() => new AbnfCharacterValue("quote" + (char)34 + "inside", AbnfCharacterCase.Sensitive));
         Assert.Throws<ArgumentOutOfRangeException>(() => new AbnfCharacterValue("x", (AbnfCharacterCase)99));
     }
