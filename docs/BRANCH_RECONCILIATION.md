@@ -7,46 +7,59 @@
 
 # Branch Reconciliation Ledger
 
-**Review date:** 2026-11-07 UTC  
-**Scope:** permanent branches only  
-**Disposition:** audit only. No merge, reset, force-push, or branch deletion has been performed.
+**Review date:** 2026-11-12 UTC  
+**Scope:** permanent branches and master-only history  
+**Disposition:** audit and preservation only. No merge, reset, force-push, or branch deletion has been performed.
 
 ## Live branch evidence
 
-- `master`: `c336e5271c87e8e3be517d4cf695a540921ffd07`
-- `development`: `2fa7d5e9056dca0f46f1bc190ecdd4d097fbb718`
-- GitHub comparison: development is **223 commits ahead** and **21 commits behind** master.
-- Merge base: `0455d9d180b10b86bce5ab13b5aa6ee0a133b60a`.
-- Live branch inventory: exactly `master` and `development`.
+- `master`: `5d8ffa0cc80d570380ecbab3b10e79a9f695dcba`
+- `development`: `3a43bd0237ac19f04a574b40d8edb884a3c7c70d`
+- Live branch inventory: exactly `master` and `development` (pagination exhausted; no further branches).
 - Live open pull requests: zero.
+- GitHub comparison from the merge base `0455d9d180b10b86bce5ab13b5aa6ee0a133b60a`: development is **451 commits ahead** and **29 commits behind** master.
+- The branch count is compliant; the histories are **not reconciled**. The ahead/behind counts are history facts, not permission or evidence that merging is safe.
 
-The two-branch policy is compliant, but the branch histories are not reconciled. The 21 commits on master must be inspected and intentionally preserved or superseded before any fast-forward/merge plan is proposed. Do not infer that the large ahead count makes the histories safe to combine.
+## Master-only history and net file differences
 
-## Development work represented by the current head
+The 29 master-only commits were enumerated. Most are repeated Sith evidence refreshes; the distinct changes include the initial Sith evaluator/badge, README badge/documentation changes, shared Workshop identity/standard links, a ProtocolAi usage-map link, and an earlier C# expression grammar test. The branch comparison shows a small net set of file differences rather than 29 independent source changes.
 
-- Integer-first production grammar and external ProtocolAi terminal references.
-- Typed structural node kinds, contextual slots, graph instances, occurrence validation, and bounded deterministic proposal encoding.
-- Observer-condition and gate-transition-intent schema.
-- External category slots with qualified ProtocolAi references, host-supplied resolution, tagged v2 proposal tuples, and legacy v1 nested-node read compatibility.
-- Expanded domain, schema, AI exchange, observer, and ecosystem integration documentation.
+The relevant content was inspected and dispositioned:
 
-## Verification and workflow note
+- `.github/workflows/sith-policy.yml`: the master version checks out the default branch for every push. The development version is the corrected branch-aware workflow: push events check out/update the pushed branch, delete events use the default branch, and schedule/manual runs use the default branch. Preserve the development implementation; do not copy the older master workflow over it.
+- `README.md`: master has the earlier long-form README. Development has the newer 22-section guide and current API/domain links. The Sith badge has now been placed in the development README badge group, and the README's release description and footer alt text were corrected.
+- `assets/sith-policy.json`: master evidence is stale (2026-11-11); development evidence is current for the successful 2026-11-12 evaluation. Do not copy stale evidence.
+- `assets/sith-policy.svg`: the inspected master and development assets are identical.
+- `docs/SITH_POLICY.md`: policy documentation has been carried into development and corrected to describe branch-aware evidence updates and the separate explicit NuGet authorization boundary.
+- `tests/GrammarAi.Tests/CSharpExpressionGrammarTests.cs`: master has an older 20-production expression test; development has the current 39-production expression grammar tests covering postfix member access, invocation, and element access. Preserve the development tests; do not restore the older test file.
 
-The Package GrammarAI workflow passed for the external-category implementation increment before the final legacy-compatibility tests were added. The latest verification run for the current head must be checked in Actions before treating the newest test commit as verified.
+No master-only content discovered in this audit justifies merging or resetting either permanent branch. This is a content disposition, not a claim that the histories have been reconciled.
 
-The Sith Policy workflow originally attempted to push a development evaluation's badge evidence to master. That push was rejected as non-fast-forward and did not update master. The workflow was corrected to write evidence to the permanent branch being evaluated for push events; schedule/manual evaluations use the default branch. Confirm the corrected run before treating the workflow repair as verified.
+## Development work represented by the current line
 
-## Remaining reconciliation work
+- Integer-first production grammar and external ProtocolAi references.
+- Typed structural node kinds, contextual slots, graph instances, cardinality/order validation, and bounded deterministic proposal encoding.
+- External category slots with qualified identities, host-supplied resolution, tagged v2 tuples, and legacy v1 read compatibility.
+- Observer-condition and gate-transition-intent schema, with evidence evaluation and authorization remaining host-owned.
+- Bounded composable C# expression, type, metadata, declaration, and type-declaration grammar resources.
+- Updated observer integration boundaries, Sith policy documentation, and current branch reconciliation evidence.
 
-- [ ] Inspect all 21 master-only commits and preserve any unique README, workflow, package, or documentation improvements.
-- [ ] Confirm current Package GrammarAI and Sith Policy runs.
-- [ ] Verify the v1 decoder compatibility tests and external-category v2 tests on the current head.
-- [ ] Audit the complete public API and package contents.
+## Verification
+
+- Package GrammarAI run [#43156901615](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/43156901615) on code commit `663aa173e07dce6a60fa488f0a0a04b2a1762005`: **success**. Build, tests with coverage, package creation, packaged-documentation checks, clean-consumer installation, and artifact uploads all passed. The NuGet publish job was **skipped**.
+- Sith Policy run [#43156901635](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/43156901635) on the same code commit: **success**.
+- Documentation-only follow-up commits `525977d` and `3a43bd0` are now on development. Their push-triggered workflow runs were still queued/in progress at the time of this ledger update; do not describe those later commits as CI-verified until their runs complete.
+- No package was published. No merge, release, deployment, or branch deletion occurred.
+
+## Remaining work
+
+- [ ] Review the full patch-level history of the 29 master-only commits if a future reconciliation/merge is proposed; this ledger records the enumerated commit subjects and the net content dispositions above.
+- [ ] Confirm the documentation follow-up workflow runs on the exact latest development head.
+- [ ] Audit the complete public API and package contents before any future release candidate.
 - [ ] Reconcile version/readme/release notes only after the public contract is stable.
-- [ ] Re-run the complete workflow on the exact candidate.
-- [ ] Obtain explicit repository-owner approval before merging, resetting, or deleting anything.
+- [ ] Obtain explicit repository-owner approval before merging, resetting, force-pushing, or deleting anything.
 
-**The permanent branch count is compliant. Branch reconciliation is not complete. No release or publication is authorized by this ledger.**
+**Branch inventory is compliant. Branch history is divergent. The owner must retain control of reconciliation and branch deletion. NuGet publication remains separately gated by explicit authorization.**
 
 <!-- THE SINGULARITY WORKSHOP FOOTER -->
 <p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
