@@ -265,6 +265,10 @@ public static class ObserverGrammarJson
         {
             throw new FormatException("Observer grammar JSON is malformed or contains unknown fields.", ex);
         }
+        catch (InvalidOperationException ex)
+        {
+            throw new FormatException("Observer grammar JSON contains a value of an unexpected type.", ex);
+        }
     }
 
     private static void RejectDuplicateProperties(JsonElement element)
