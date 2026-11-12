@@ -147,7 +147,7 @@ public sealed class AbnfGrammarDefinition
     public AbnfGrammarDefinition(IEnumerable<AbnfRuleDefinition> definitions, AbnfProfile profile = AbnfProfile.Rfc5234Rfc7405)
     {
         if (!Enum.IsDefined(profile)) throw new ArgumentOutOfRangeException(nameof(profile));
-        _definitions = AbnfCollections.Copy(definitions, nameof(definitions), 1);
+        _definitions = AbnfCollections.Copy(definitions, nameof(definitions), 1, AbnfLimits.MaxRules);
         if (_definitions.Count > AbnfLimits.MaxRules) throw new ArgumentOutOfRangeException(nameof(definitions));
         Profile = profile;
     }
@@ -225,14 +225,14 @@ internal static class AbnfNames
 
 internal static class AbnfCollections
 {
-    public static IReadOnlyList<T> Copy<T>(IEnumerable<T> values, string parameter, int minimum)
+    public static IReadOnlyList<T> Copy<T>(IEnumerable<T> values, string parameter, int minimum, int maximum = AbnfLimits.MaxElementsPerExpression)
     {
         ArgumentNullException.ThrowIfNull(values);
-        var list = new List<T>(Math.Min(AbnfLimits.MaxElementsPerExpression, 16));
+        var list = new List<T>(Math.Min(maximum, 16));
         foreach (var value in values)
         {
             if (value is null) throw new ArgumentException("Collections cannot contain null values.", parameter);
-            if (list.Count == AbnfLimits.MaxElementsPerExpression) throw new ArgumentOutOfRangeException(parameter);
+            if (list.Count == maximum) throw new ArgumentOutOfRangeException(parameter);
             list.Add(value);
         }
         if (list.Count < minimum) throw new ArgumentException($"At least {minimum} item(s) are required.", parameter);
