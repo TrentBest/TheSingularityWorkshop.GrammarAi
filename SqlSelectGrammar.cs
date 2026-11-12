@@ -62,6 +62,10 @@ public static class SqlSelectGrammar
     private const ulong BooleanExpression = 12;
     private const ulong Predicate = 13;
     private const ulong ComparisonOperator = 14;
+    private const ulong AndExpression = 15;
+    private const ulong NotExpression = 16;
+    private const ulong PrimaryBoolean = 17;
+    private const ulong JoinOuterOptional = 18;
 
     /// <summary>Creates the bounded SQL SELECT grammar using host-supplied token identities.</summary>
     /// <param name="grammarId">Nonzero identity assigned by the host to this grammar resource.</param>
@@ -117,26 +121,31 @@ public static class SqlSelectGrammar
                 T(SqlSelectGrammarToken.On), N(BooleanExpression))
             .Rule(21, JoinType)
             .Rule(22, JoinType, T(SqlSelectGrammarToken.Inner))
-            .Rule(23, JoinType, T(SqlSelectGrammarToken.Left), T(SqlSelectGrammarToken.Outer))
-            .Rule(24, JoinType, T(SqlSelectGrammarToken.Right), T(SqlSelectGrammarToken.Outer))
+            .Rule(23, JoinType, T(SqlSelectGrammarToken.Left), N(JoinOuterOptional))
+            .Rule(24, JoinType, T(SqlSelectGrammarToken.Right), N(JoinOuterOptional))
             .Rule(25, WhereOptional)
             .Rule(26, WhereOptional, T(SqlSelectGrammarToken.Where), N(BooleanExpression))
-            .Rule(27, BooleanExpression, N(Predicate))
-            .Rule(28, BooleanExpression, N(BooleanExpression), T(SqlSelectGrammarToken.And), N(BooleanExpression))
-            .Rule(29, BooleanExpression, N(BooleanExpression), T(SqlSelectGrammarToken.Or), N(BooleanExpression))
-            .Rule(30, BooleanExpression, T(SqlSelectGrammarToken.Not), N(BooleanExpression))
-            .Rule(31, BooleanExpression, T(SqlSelectGrammarToken.OpenParen),
+            .Rule(27, BooleanExpression, N(AndExpression))
+            .Rule(28, BooleanExpression, N(BooleanExpression), T(SqlSelectGrammarToken.Or), N(AndExpression))
+            .Rule(29, AndExpression, N(NotExpression))
+            .Rule(30, AndExpression, N(AndExpression), T(SqlSelectGrammarToken.And), N(NotExpression))
+            .Rule(31, NotExpression, T(SqlSelectGrammarToken.Not), N(NotExpression))
+            .Rule(32, NotExpression, N(PrimaryBoolean))
+            .Rule(33, PrimaryBoolean, T(SqlSelectGrammarToken.OpenParen),
                 N(BooleanExpression), T(SqlSelectGrammarToken.CloseParen))
-            .Rule(32, Predicate, N(Expression), N(ComparisonOperator), N(Expression))
-            .Rule(33, Predicate, N(Expression), T(SqlSelectGrammarToken.Is), T(SqlSelectGrammarToken.Null))
-            .Rule(34, Predicate, N(Expression), T(SqlSelectGrammarToken.Is),
+            .Rule(34, PrimaryBoolean, N(Predicate))
+            .Rule(35, Predicate, N(Expression), N(ComparisonOperator), N(Expression))
+            .Rule(36, Predicate, N(Expression), T(SqlSelectGrammarToken.Is), T(SqlSelectGrammarToken.Null))
+            .Rule(37, Predicate, N(Expression), T(SqlSelectGrammarToken.Is),
                 T(SqlSelectGrammarToken.Not), T(SqlSelectGrammarToken.Null))
-            .Rule(35, ComparisonOperator, T(SqlSelectGrammarToken.Equals))
-            .Rule(36, ComparisonOperator, T(SqlSelectGrammarToken.NotEquals))
-            .Rule(37, ComparisonOperator, T(SqlSelectGrammarToken.LessThan))
-            .Rule(38, ComparisonOperator, T(SqlSelectGrammarToken.LessThanOrEqual))
-            .Rule(39, ComparisonOperator, T(SqlSelectGrammarToken.GreaterThan))
-            .Rule(40, ComparisonOperator, T(SqlSelectGrammarToken.GreaterThanOrEqual))
+            .Rule(38, ComparisonOperator, T(SqlSelectGrammarToken.Equals))
+            .Rule(39, ComparisonOperator, T(SqlSelectGrammarToken.NotEquals))
+            .Rule(40, ComparisonOperator, T(SqlSelectGrammarToken.LessThan))
+            .Rule(41, ComparisonOperator, T(SqlSelectGrammarToken.LessThanOrEqual))
+            .Rule(42, ComparisonOperator, T(SqlSelectGrammarToken.GreaterThan))
+            .Rule(43, ComparisonOperator, T(SqlSelectGrammarToken.GreaterThanOrEqual))
+            .Rule(44, JoinOuterOptional)
+            .Rule(45, JoinOuterOptional, T(SqlSelectGrammarToken.Outer))
             .Build();
     }
 }
