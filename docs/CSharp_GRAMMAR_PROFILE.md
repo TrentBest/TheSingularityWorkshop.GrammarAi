@@ -16,17 +16,21 @@ The bounded C# grammar resources in GrammarAi declare **C# 11** as their current
 
 ## Bounded structural slices
 
-The declaration grammar now has a separate composable metadata grammar, `CSharpMetadataGrammar`, for:
+The C# mapping is split into independently composable resources:
 
-- Attribute sections, optional target specifiers, comma-separated attributes, qualified attribute names, and optional argument lists.
-- Generic parameter lists with optional `in`/`out` variance markers, and constraint clauses.
-- Primary constraint families represented here: `class`, `class?`, `struct`, `unmanaged`, `notnull`, and `default`; type constraints and `new()` are separate alternatives.
+- `CSharpExpressionGrammar`: 39 productions for a bounded precedence/associativity hierarchy, including assignment, conditional/null-coalescing, logical/bitwise, equality/relational/shift/arithmetic, unary, and recursive postfix member/invocation/element access.
+- `CSharpTypeGrammar`: 21 productions for qualified names, generic arguments, nullable forms, array ranks, and tuple types.
+- `CSharpDeclarationGrammar`: 98 productions for selected member declarations. It includes methods, properties, fields, constructors and initializers, parameters/defaults, indexers, field-like/custom events, ordinary and checked unary/binary operators, implicit/explicit conversions, explicit-interface methods/properties/indexers/custom events, and block/expression-bodied finalizers.
+- `CSharpMetadataGrammar`: 40 productions for attribute sections/targets, qualified attribute names and argument boundaries, generic parameter lists with optional `in`/`out` variance, and constraint families including `class`, `class?`, `struct`, `unmanaged`, `notnull`, `default`, type constraints, and `new()`.
+- `CSharpTypeDeclarationGrammar`: 25 productions composing opaque host-owned attribute-section, generic-parameter-list, constraint-clause, base-type-list, type-body, and delegate-parameter-list references into class, struct, interface, record class/struct, and delegate shapes. Positional record parameter lists are represented explicitly.
 
-The metadata grammar deliberately exposes attributes, generic parameter lists, and constraint clauses as independent roots. A separate `CSharpTypeDeclarationGrammar` composes those roots into class, struct, interface, record class/struct, and delegate declaration shapes. It represents optional base-list references, repeated constraints, and positional record parameter lists as host-owned references; delegate parameter lists are likewise opaque. `CSharpDeclarationGrammar` composes declaration-level attribute sections, generic parameter lists, and zero or more constraint clauses into generic method shapes through opaque host-vocabulary references; it does not duplicate metadata productions. Generic parameter syntax includes optional variance markers; the host must restrict variance to legal declaration contexts (such as interfaces and delegates) and must not treat the grammar fragment as a declaration-kind validator. A host composes them into the correct declaration slots, supplies attribute arguments and type references as opaque structures, and handles declaration-specific placement. Type-declaration composition now covers the listed type kinds. The member declaration grammar has declaration-level attribute attachment alternatives for methods, properties, fields, constructors, indexers, field-like and custom events, ordinary and checked unary/binary operators, and implicit/explicit conversion operators. Parameter attribute sections remain a separate parameter-specific opaque slot. Attribute targets remain host-validated; the structural grammar does not determine whether a particular attribute target is legal. Return-target attachment is represented only through the metadata target token and requires host-specific target validation. The structural map does not resolve attribute names or type parameters, enforce constraint ordering/satisfiability, or decide whether a particular constraint is legal for a particular declaration.
+All token identities are supplied by the host from ProtocolAi. Cross-resource types, expressions, blocks, metadata, and explicit-interface specifiers are opaque references; GrammarAi does not duplicate their maps. Parameter attributes have a distinct parameter-level slot. Declaration-level attribute attachment is represented across all listed member families. Metadata roots remain independently composable rather than being attached automatically to every declaration production.
+
+The C# 11 profile is explicit metadata. It does not filter productions or establish complete compiler conformance. Variance legality, attribute target legality, finalizer name/type-context legality, explicit-interface resolution, modifier/parameter legality, constraint ordering/satisfiability, name resolution, and semantic legality remain host/compiler responsibilities. These are bounded structural slices, not a complete C# language definition or source parser.
 
 ## Pinned compiler corpus
 
-`CSharp11CompilerCorpusTests` is a **test-only** compiler-backed corpus pinned to Roslyn 4.11.0 and explicit language-version settings. Positive cases cover init-only accessors, checked unary/binary operator pairs, expression-bodied methods, optional parameters, indexers, custom events, constructor initializers, attributes, representative generic constraints, generic class/interface/delegate/struct declarations, variance, and positional records. Earlier-version cases prove init-only accessors are rejected by C# 8 and checked operators by C# 10. Negative C# 11 cases cover malformed indexers and attributes, wrong operator arity, incomplete custom events, and recursive constructor initializers.
+`CSharp11CompilerCorpusTests` is a **test-only** compiler-backed corpus pinned to Roslyn 4.11.0 and explicit language-version settings. Positive cases cover representative member forms, attributes, generic constraints, generic type declarations, variance, positional records, explicit-interface implementations, and block/expression-bodied finalizers. Earlier-version cases check selected feature gates; negative C# 11 cases cover malformed declarations and attributes, wrong operator arity, incomplete custom events, and recursive constructor initializers.
 
 The Roslyn dependency is confined to the test project, not the GrammarAi runtime or package.
 
@@ -34,17 +38,9 @@ The Roslyn dependency is confined to the test project, not the GrammarAi runtime
 
 The profile is metadata; it does not filter or rewrite productions. Future language-version upgrades must update the profile, feature inventory, corpus, and source provenance together.
 
+## Follow-up inventory (2026-11-11)
 
-## Member declaration attribute attachment (2026-11-11)
-
-The bounded member grammar now contains 90 productions. Declaration-level attribute sections are attached as opaque host references across all represented member families: methods, properties, fields, constructors (block, expression-body, and semicolon forms), indexers, field-like/custom events, ordinary and checked unary/binary operators, and implicit/explicit conversions (block and expression-body forms). Parameter attributes retain their distinct parameter-level slot. Attribute syntax remains owned by `CSharpMetadataGrammar`; the host resolves the references and validates target legality. This expands structural attachment coverage only and does not claim full C# 11 member grammar coverage.
-
-
-## Explicit-interface member implementations (2026-11-11)
-
-The member grammar adds five structural alternatives for explicit-interface methods (block and expression-body forms), properties, indexers, and custom events. Each consumes an opaque `ExplicitInterfaceSpecifierReference` representing the host-mapped interface specifier; ordinary modifier lists are intentionally absent from these forms. Event implementations use the existing paired add/remove accessor structure. The host remains responsible for resolving the interface, checking that the member is a valid implementation, and enforcing interface/member compatibility. This does not claim full explicit-interface syntax coverage beyond the listed forms.
-
-
-## Finalizer declarations (2026-11-11)
-
-The member grammar now includes block-bodied and expression-bodied C# finalizer declarations. The finalizer name and declaration context are represented structurally; the host remains responsible for validating that the name matches the containing type and enforcing finalizer restrictions. Static constructors are already structurally representable through the constructor shape and host-supplied modifier vocabulary; constructor modifier/parameter legality remains host validation.
+- Declaration-level attributes were attached to the represented member families without moving metadata syntax into the declaration grammar.
+- Explicit-interface member alternatives use an opaque host-owned interface-specifier reference; ordinary modifier lists are intentionally absent from those forms.
+- Finalizers have block and expression-body alternatives with a dedicated tilde token role.
+- The production counts above reflect the current implementation after these follow-ups.
