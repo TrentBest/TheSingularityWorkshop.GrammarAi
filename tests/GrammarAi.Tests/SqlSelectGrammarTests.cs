@@ -43,12 +43,14 @@ public sealed class SqlSelectGrammarTests
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.And]));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 12 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Or]));
-        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
-            rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.And]));
+        Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 14 &&
+            rule.RightHandSide.Count == 1 &&
+            rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Equals]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 16 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Not]));
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 && rule.RightHandSide.Count == 0);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 18 &&
+            rule.RightHandSide.Count == 1 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Outer]);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 13 &&
             rule.RightHandSide.Any(symbol => symbol.ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Is]));
