@@ -36,6 +36,7 @@ public sealed class SqlSelectGrammarTests
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 8 && rule.RightHandSide.Count == 2);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 && rule.RightHandSide.Count == 0);
         Assert.Contains(grammar.Rules, rule => rule.LeftHandSide == 11 &&
+            rule.RightHandSide.Count == 2 &&
             rule.RightHandSide[0].ProtocolReference?.SymbolId == Tokens()[SqlSelectGrammarToken.Where]);
 
         // OR is lower precedence than AND; NOT binds at the next tighter level. Grouping, comparisons, and NULL predicates remain explicit.
