@@ -1,28 +1,24 @@
-# GrammarAi proposal for Visualize
+# GrammarAi assessment for Visualize
 
 **Consumer coordination:** [Visualize issue #47](https://github.com/TrentBest/TheSingularityWorkshop.Visualize/issues/47)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use  
+**Status:** source-reviewed assessment; future authored-scene boundary only
 
-## Proposed use
+## Source-backed finding
 
-Use GrammarAi only if a genuinely shared authored scene/representation contract emerges across tools: typed scene nodes, child/relationship slots, and references to domain objects. Visualize owns visualization and world representation behavior; Physics owns physical models; Ontology owns semantic identity. Do not move rendering, simulation, spatial truth, or scene execution into GrammarAi. First identify an existing scene model and demonstrate lossless mapping. If no common authored contract exists, retain local types and close the proposal as no current use.
+Visualize currently defines backend-neutral presentation contracts around VisualizerFrame, geometry/material resources, draw commands, and resource revisions. Its direct SVG artifact backend consumes those contracts; the optional GUI.SVG interoperability path is explicitly separate. The architecture describes the intended Renderer → Visualize → GPU/backend → host flow, while clearly stating that GPU execution remains future work. The broader environment/scene composition document is an architectural direction, not proof of a single serialized authored scene graph.
 
-## Minimal adoption path
+The reviewed contracts are presentation-work and resource APIs, not a general nested scene-authoring language shared across independent producers. Adding GrammarAi now would risk conflating a structural authoring proposal with Visualize's frame submission, resource validation, backend execution, or rendering semantics.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Reconsider only when
 
-## Non-goals and safety boundary
+A real editor or AI authoring surface produces a versioned scene/representation graph that multiple independent consumers must validate before mapping it into VisualizerFrame and resource contracts. First identify the canonical graph type and prove lossless mapping. GrammarAi may validate only the graph's structure and references; it must not choose representations, simulate the world, execute rendering work, or certify physical truth.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+## Ownership boundary
 
-## Decision requested from the consumer owner
+Visualize retains presentation data contracts, resource revisions, frame validation, backend execution, diagnostics, and manifestation. Renderer retains observer-relative representation policy; Physics retains physical models; Ontology retains semantic identity. Renderer and Visualize remain MicroBundles in the Workshop consumption model, not GrammarAi/NuGet dependencies.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+No consumer source or dependency changes are proposed.
 
 ---
 
