@@ -1,28 +1,31 @@
-# GrammarAi proposal for SingularityBot
+# GrammarAi assessment for SingularityBot
 
 **Consumer coordination:** [SingularityBot issue #12](https://github.com/TrentBest/TheSingularityWorkshop.SingularityBot/issues/12)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use; revisit at a real external strategy interchange boundary  
+**Source reviewed:** `TheSingularityWorkshop.SingularityBot` `master` at `34844c385ff0cb09cedbcc7ee81a692e700c01df`
 
-## Proposed use
+## Evidence
 
-Consider GrammarAi only for a shared authored capability/interaction-plan declaration exchanged across agents or hosts. Prefer CommandAi for atomic commands and ProtocolAi for canonical protocol identities; do not duplicate SingularityBot's strategy model or introduce grammar into its decision loop without evidence. SingularityBot retains strategy, agent state, and behavior; host authorization/execution remain external. Test one concrete cross-agent declaration and malformed references. If the only use is internal strategy representation, keep the existing model.
+The repository README explicitly describes the bot as foundation-in-progress and says the strategy format is currently architecture/documentation plus an illustrative JSON file, not a working or ladder-ready bot. `docs/strategy-format.md` describes a proposed versioned declarative strategy format and compilation pipeline, while `strategies/terran-opening.example.json` is explicitly illustrative and not executable.
 
-## Minimal adoption path
+The reviewed source tree does not yet contain a strategy compiler, strategy-domain model, grammar integration, or a project/package reference to GrammarAi. The architecture's mention of GrammarAi/ProtocolAi as vocabulary support is a planned responsibility, not proof of a current GrammarAi consumer.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Recommendation
 
-## Non-goals and safety boundary
+Do not add GrammarAi solely because a future strategy format is planned. First implement the strategy schema and compiler against the actual game ontology and runtime, then determine whether its structure is already adequately expressed by its own versioned JSON contract.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+Reconsider GrammarAi only if a distinct structural language is authored by an independent editor/agent and consumed by multiple tools, or if reusable nested strategy composition requires bounded structural validation beyond the strategy schema. Avoid duplicating the strategy validator.
 
-## Decision requested from the consumer owner
+Ownership remains:
+- ProtocolAi: canonical protocol and vocabulary identities.
+- GrammarAi, if later justified: reusable structural composition and bounded structural validation.
+- SingularityBot: strategy semantics, ontology mapping, game-state interpretation, goals, constraints, tactics, compilation, and bot behavior.
+- CommandAi: atomic command/proposal contracts.
+- Host/runtime: authorization and execution.
+- CiAi/HeadlessAi: build and replay evaluation evidence.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+No SingularityBot source or dependency changes are proposed.
+
 
 ---
 
