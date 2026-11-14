@@ -1,28 +1,24 @@
-# GrammarAi proposal for Economy
+# GrammarAi assessment for Economy
 
 **Consumer coordination:** [Economy issue #28](https://github.com/TrentBest/TheSingularityWorkshop.Economy/issues/28)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use  
+**Status:** source-reviewed assessment; future external proposal boundary only
 
-## Proposed use
+## Source-backed finding
 
-Consider GrammarAi for authoring-time structure of an offer/order/market proposal: typed item and party references, bounded line-item collections, and explicit option/condition slots. Economy owns currency, pricing, accounting, transaction state, risk, and policy. A valid proposal structure must never authorize or execute a transaction or establish a price. Prototype against one real Economy model; test missing parties/items, malformed quantities, invalid nesting, and structurally valid proposals rejected by business rules, risk controls, or authorization.
+The current Economy surface already separates CommerceItem, MarketplaceOffer, EconomyTransfer, and EconomicExecutionResult as typed C# domain contracts. EconomyTransfer validates nonnegative amounts and currency agreement across its accounts and amount. EconomicExecutionResult records a reported environment/status and explicitly does not establish settlement. The architecture distinguishes offer, intent, execution, and outcome; the casino slice adds explicit simulation-ledger and wager lifecycle types.
 
-## Minimal adoption path
+These are important semantic and accounting boundaries, but the reviewed source does not show a shared serialized order/market proposal language or an independent authoring producer that needs GrammarAi. The issue's broader examples—orders, market snapshots, and transaction proposals—are not all established current domain contracts. A grammar now would risk inventing an extra proposal model over the existing typed types.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Reconsider only when
 
-## Non-goals and safety boundary
+An external creator/editor/AI authoring surface must submit a versioned, structured economic proposal consumed by more than one independent tool. Select one concrete existing Economy type, define a lossless mapping, and prove structural validation adds value beyond the domain constructor/validator. Keep business rules and all transaction authority out of GrammarAi.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+## Ownership boundary
 
-## Decision requested from the consumer owner
+Economy retains currency identity, pricing, accounting, offer and transfer meaning, risk, simulation-ledger invariants, and execution-observation semantics. The host/provider boundary retains authorization, execution, reconciliation, and settlement evidence. Structural validity must never authorize or execute a transaction or imply that value moved.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+No consumer source or dependency changes are proposed.
 
 ---
 
