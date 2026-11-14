@@ -1,28 +1,60 @@
-# GrammarAi proposal for FSM_COS
+# GrammarAi assessment for FSM_COS
 
 **Consumer coordination:** [FSM_COS issue #55](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/issues/55)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Current recommendation:** no direct GrammarAi dependency in the composition kernel; consider a host-side authoring adapter only if a real proposal language emerges  
+**Status:** source-based assessment; awaiting consumer-owner review
 
-## Proposed use
+## What FSM_COS owns today
 
-Use a narrow adapter if FSM_COS accepts AI-/author-proposed composition declarations that need independent structural checks: typed capability references, input/output ports, and bounded composition relationships. FSM_COS remains the authority for catalog resolution, composition, context, trust, security, policy, and runtime availability. GrammarAi must not become a dependency of the runtime core by default and must never authorize capabilities. Test the adapter against real composition request objects and prove that structurally valid but unavailable, untrusted, or policy-denied capabilities are still rejected by FSM_COS.
+FSM_COS is a composition kernel. A host supplies a typed `RuntimeManifest`, catalog, and optional configuration source. FSM_COS resolves the reachable MicroBundle dependency closure, validates identities and dependencies, loads prerequisites before dependents, performs bounded arbitration, and returns a `RuntimeAssembly` only after convergence.
 
-## Minimal adoption path
+The current manifest model already includes:
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+- versioned root MicroBundle requests;
+- optional host-provided `SemanticIntent`;
+- optional load-plan metadata;
+- optional `RuntimeManifestSchedule` with entries and dependency edges;
+- explicit dependency-closure and cycle validation against the host-supplied catalog.
 
-## Non-goals and safety boundary
+The architecture documentation explicitly says that staged metadata is not a live deployment engine: FSM_COS does not localize artifacts, verify content hashes, activate deferred bundles, schedule the application, or render an Experience. Those responsibilities remain with artifact providers and hosts.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+## Why GrammarAi should not be added to the kernel
 
-## Decision requested from the consumer owner
+The current `RuntimeManifest` and schedule are fixed typed contracts, and FSM_COS already validates the composition-specific invariants that matter: reachable dependency closure, identity/version matching, missing dependencies, cycles, schedule consistency, dependency-first loading, and bounded arbitration.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+Adding GrammarAi inside the kernel would risk duplicating or competing with those checks. GrammarAi must not become a second composition engine, catalog resolver, dependency planner, deployment system, or authority layer.
+
+**Recommendation today: no direct GrammarAi dependency in FSM_COS.** Keep the composition kernel focused on the typed manifest and its own domain validation.
+
+## A legitimate future adapter boundary
+
+GrammarAi may be useful outside the kernel if a host or authoring tool introduces a reusable, AI-/author-authored composition language that is richer than the current `RuntimeManifest`—for example, a nested composition proposal with typed roles, ordered stages, qualified references, and bounded cardinalities.
+
+If that need emerges:
+
+1. Define the language in the host/authoring layer that owns request context and trust.
+2. Use GrammarAi only for grammar identity, node kinds, slots, productions, typed composition, and bounded structural validation.
+3. Map a validated structure into the existing `RuntimeManifest` and related typed contracts.
+4. Keep MicroBundle identity resolution, catalog lookup, dependency closure, cycle checks, configuration, load ordering, arbitration, and assembly creation in FSM_COS.
+5. Keep artifact retrieval/hash verification in the repository/provider layer and application lifecycle/policy/authorization in the host.
+6. Test malformed and over-limit proposals, unknown/stale references, valid-but-unresolvable compositions, and host-denied requests.
+7. Prove the grammar adds reusable structural value beyond FSM_COS's existing manifest and graph validation.
+
+Such an integration belongs in a host-side or dedicated authoring adapter, not in the FSM_COS runtime core.
+
+## Decision requested from FSM_COS
+
+Please review this assessment on [FSM_COS issue #55](https://github.com/TrentBest/TheSingularityWorkshop.FSM_COS/issues/55) and confirm one disposition:
+
+- **No direct use / document-only** — recommended for the current kernel;
+- **Adapter-only later** — if a reusable authored composition language emerges outside the kernel;
+- **Adopt** — only with a real host-owned language and consumer tests proving non-duplicative value.
+
+No FSM_COS source, dependency, package, publication, or deployment changes are included or requested.
+
+## Ownership and safety boundary
+
+GrammarAi owns bounded structural composition. MicroBundleDomain owns the MicroBundle contract. FSM_COS owns composition resolution and arbitration. The artifact provider owns retrieval and integrity verification. The host owns application lifecycle, context, policy, authorization, execution, and presentation. A structurally valid manifest is not proof that a bundle exists, an artifact is trusted, or a host is authorized to run it.
 
 ---
 
