@@ -8,7 +8,7 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 |---|---|---|
 | CiAi | Adopt; implementation underway | [CiAi](CiAi.md) |
 | StoryBuilder | Document-only; reconsider if a reusable external grammar emerges | [StoryBuilder](StoryBuilder.md) |
-| CommandAi | Optional structural composition | [CommandAi](CommandAi.md) |
+| CommandAi | Optional opaque GrammarAi body seam in draft PR #8; end-to-end consumer proof pending | [CommandAi](CommandAi.md) |
 | FSM_UserIO | No core dependency; host-side adapter only if a real proposal language emerges | [FSM_UserIO](FSM_UserIO.md) |
 | Experiences | Conditional authoring/adapter | [Experiences](Experiences.md) |
 | FSM_COS | Conditional narrow adapter | [FSM_COS](FSM_COS.md) |
