@@ -1,28 +1,24 @@
-# GrammarAi proposal for GUI
+# GrammarAi assessment for GUI
 
 **Consumer coordination:** [GUI issue #79](https://github.com/TrentBest/TheSingularityWorkshop.GUI/issues/79)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use  
+**Status:** source-reviewed assessment; future serialized-view boundary only
 
-## Proposed use
+## Source-backed finding
 
-Consider GrammarAi as an optional authoring/interchange schema for view composition: component kinds, named slots, child ordering, and typed binding references. GUI remains responsible for rendering, interaction mechanics, layout behavior, and presentation semantics; domain repositories retain canonical state. Map to real GUI composition types rather than duplicating them. Test missing required slots, invalid component nesting, unknown binding references, and structurally valid bindings that fail runtime type, permission, or availability checks.
+GUI already has a neutral recursive GuiNode model: kind, stable identity, optional text/source, string-valued properties, and ordered child nodes. GuiBuilder constructs immutable snapshots and rejects cyclic builder composition. The GUI model documentation explicitly states that serialization is a future capability, not an implicit requirement of the current API. Platform adapters manifest the semantic tree; consuming applications retain domain meaning and behavior.
 
-## Minimal adoption path
+This is a real recursive structure, but it is currently represented directly by GUI's own typed model and builder. The reviewed source does not establish an external serialized authoring contract or a second independent producer/consumer that needs GrammarAi. Introducing GrammarAi now would duplicate the current Core model before the proposed interchange boundary exists.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Reconsider only when
 
-## Non-goals and safety boundary
+A concrete editor or AI authoring surface needs to exchange versioned GUI trees independently of the GUI assembly, with multiple adapters/tools consuming the same serialized semantic structure. At that point, prove a lossless mapping to actual GuiNode semantics and define which properties are truly platform-neutral. GrammarAi must not encode WPF/Blazor/HTML implementation details, callbacks, rendering lifecycle, or domain state.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+## Ownership boundary
 
-## Decision requested from the consumer owner
+GUI Core retains semantic node meaning, identity, hierarchy, ordered children, and neutral property contracts. GUI adapters retain platform manifestation and lifecycle. Consuming domains retain canonical state and command authorization. GrammarAi could validate only a future interchange representation; it is not a UI framework or rendering engine.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+No consumer source or dependency changes are proposed.
 
 ---
 
