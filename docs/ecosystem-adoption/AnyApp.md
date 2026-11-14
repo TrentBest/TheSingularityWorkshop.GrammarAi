@@ -2,14 +2,23 @@
 
 **Consumer coordination:** [AnyApp issue #59](https://github.com/TrentBest/AnyApp/issues/59)  
 **Disposition:** existing host-side integration  
-**Source reviewed:** `AnyApp` `master` at `6de7c1d6af3f57330bb1ecdc68bfd7f27b58338f`  
-**Status:** implemented integration seam; consumer contract hardening remains
+**Source reviewed:** `AnyApp` `development` at `f256e9286ff766b6de72d1f4bcd13d5e85a76451`  
+**Status:** implemented and exercised; keep host-owned and bounded
 
 ## What exists
 
-AnyApp already references `TheSingularityWorkshop.GrammarAi` (`0.1.0-alpha.2`) alongside ProtocolAi and FSM_UserIO. `WorkshopSemanticExchange.cs` defines a host-owned `GrammarDefinition` for Experience intents. Its terminals refer to ProtocolAi symbols using qualified `(ProtocolId, SymbolId)` identities. The host resolves an `FSM_UserIO.SemanticIntent` through ProtocolAi and checks whether that reference appears in the GrammarAi definition.
+AnyApp references GrammarAi in both dependency modes: a released `PackageReference` and a source `ProjectReference` for repository-source builds. `WorkshopSemanticExchange.cs` defines a host-owned GrammarAi `GrammarDefinition` whose productions admit selected, qualified ProtocolAi symbols. The host resolves `FSM_UserIO.SemanticIntent` values against its ProtocolAi vocabulary and checks whether the resolved symbol is admitted by the grammar.
 
-`ExperienceManifest` can carry a serialized semantic intent. The AnyApp test suite currently verifies intent resolution, grammar admission, protocol decoding, and manifest round-tripping. This is a concrete consumer integration—not merely a proposed future use.
+This is used in the actual launch path: `MainWindow.LaunchManifestAsync` calls `WorkshopSemanticExchange.ValidateManifestIntent(manifest)` before configuring/starting host services or composing the destination Experience. The manifest's optional intent is therefore checked before launch, not merely represented in a test helper.
+
+The current test suite covers:
+- admitted intent resolution and protocol decoding;
+- a ProtocolAi-known symbol that the GrammarAi grammar deliberately does not admit;
+- unknown and foreign protocol intents;
+- rejection of a manifest carrying a known-but-not-admitted intent;
+- acceptance of a manifest with no intent or an admitted intent.
+
+This is a concrete, real consumer integration—not a speculative proposal.
 
 ## Ownership boundary
 
@@ -19,23 +28,13 @@ AnyApp already references `TheSingularityWorkshop.GrammarAi` (`0.1.0-alpha.2`) a
 - AnyApp owns Experience meaning, manifest handling, host policy, user/session context, catalog resolution, and execution.
 - FSM_COS remains the runtime composition boundary.
 
-Keep the grammar host-owned. Do not move Experience meaning, trust, policy, authorization, or execution into GrammarAi, and do not add a dependency between the foundation packages.
-
-## Remaining proof / hardening
-
-The current tests prove a narrow positive path. They do not yet establish a complete fail-closed consumer contract. Before calling the integration robust, add consumer-owned negative tests for at least:
-
-1. Unknown protocol and unknown symbol identities.
-2. Known-but-not-admitted symbols and wrong protocol IDs.
-3. Missing, malformed, and unsupported intent payloads in serialized manifests.
-4. Structurally admitted intents that host policy or authorization still rejects.
-5. Exact GrammarAi schema identity/version compatibility, with no silent fallback.
-
-Also verify the actual startup/launch path invokes the structural check before any intent-driven action; the reviewed tests establish the helper behavior and manifest round-trip, not by themselves the complete host enforcement path.
+Keep the grammar host-owned. Do not move Experience meaning, trust, policy, authorization, or execution into GrammarAi, and do not add dependencies between the foundation packages.
 
 ## Recommendation
 
-Keep the existing optional host-side integration. Do not broaden GrammarAi into a general AnyApp runtime dependency or replace Experiences/FSM_COS manifest contracts with it. Treat the remaining work as a focused consumer contract-hardening task, coordinated in AnyApp issue #59. No AnyApp source changes are included here.
+Retain the existing integration as-is. Its value is narrow and concrete: a host can distinguish a protocol-known symbol from one admitted by this host's structural grammar before acting on the manifest. Do not broaden this into a general Experience-manifest validator or make GrammarAi responsible for artifact identity, content hashes, capability resolution, authorization, or composition.
+
+No further AnyApp implementation is proposed by this adoption assessment.
 
 
 ---
