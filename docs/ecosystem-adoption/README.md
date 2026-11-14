@@ -20,7 +20,7 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 | Physics | No current use; future symbolic authoring only | [Physics](Physics.md) |
 | Economy | No current use; future external proposal boundary only | [Economy](Economy.md) |
 | Visualize | No current use; future authored-scene boundary only | [Visualize](Visualize.md) |
-| GUI | Conditional authoring/interchange | [GUI](GUI.md) |
+| GUI | No current use; future serialized-view boundary only | [GUI](GUI.md) |
 | AnyApp | Shared host adapter only | [AnyApp](AnyApp.md) |
 | WebApp | Shared host adapter only | [WebApp](WebApp.md) |
 | ServerApp | Conditional protocol/manifest adapter | [ServerApp](ServerApp.md) |
