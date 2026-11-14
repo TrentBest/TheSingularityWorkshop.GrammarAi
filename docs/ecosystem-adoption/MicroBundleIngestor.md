@@ -1,30 +1,38 @@
-# GrammarAi proposal for MicroBundleIngestor
+# GrammarAi assessment for MicroBundleIngestor
 
 **Consumer coordination:** [MicroBundleIngestor issue #5](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor/issues/5)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use; reconsider only for a distinct shared envelope outside the OpenAPI ingestion path  
+**Status:** source-informed assessment for consumer-owner review; not an approved integration
 
-## Proposed use
+## What exists today
 
-Consider a bounded grammar for ingestion request/result envelopes or source descriptions when multiple producers need one interoperable structure. Keep acquisition, archive inspection, malware/content checks, trust evaluation, validation policy, and publication entirely in MicroBundleIngestor. GrammarAi can validate only the shape of the request or metadata proposal; it must not ingest, inspect, trust, or publish content. Start with one real ingestion request and test missing source fields, malformed metadata, unsupported content categories, and a structurally valid envelope whose payload later fails inspection.
+MicroBundleIngestor already has a defined ingestion pipeline. Its OpenAPI/Swagger JSON URL adapter produces a canonical API experience definition; a capability compiler maps that into a transport-neutral capability definition with operations, ports, and semantic hints. The README documents separate capability-API, content-producing-API, and repository-capability paths.
 
-## Minimal adoption path
+OpenAPI is already a formal, structured contract for the primary ingestion source. Introducing GrammarAi to describe or validate that same source would duplicate an existing schema language and ingestion path. The current domain documentation also separates source description, capability definition, and Experience composition.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Recommendation
 
-## Non-goals and safety boundary
+Do not add GrammarAi to the current OpenAPI ingestion path, and do not invent a generic ingestion request/result grammar without a concrete cross-repository consumer. GrammarAi is not needed merely because the input is structured JSON.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+Reconsider only if multiple independent producers and consumers need a shared, versioned envelope that is distinct from the OpenAPI document—for example, a source-provenance/ingestion-job handoff or a normalized capability proposal exchanged across process boundaries. That envelope should contain references and bounded metadata, not replace the source document or claim that content is trustworthy.
 
-## Decision requested from the consumer owner
+MicroBundleIngestor retains source acquisition, OpenAPI parsing, canonicalization, capability compilation, inspection, validation behavior, error handling, and artifact lifecycle. The host retains credentials, network policy, approval, and publication authorization. A structurally valid envelope must not imply that its source or payload has been inspected, trusted, approved, or published.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+## Minimal proof if a separate envelope appears
 
----
+1. Identify two real independent producers/consumers and the exact handoff they share.
+2. Keep OpenAPI and source payloads opaque; define only the distinct envelope.
+3. Pin GrammarAi and map the envelope to existing Ingestor types.
+4. Test missing provenance, malformed references, unsupported categories, stale identities, and size/depth bounds.
+5. Separately prove that payload inspection and trust checks still reject malicious or invalid content after structural validation.
 
-<!-- THE SINGULARITY WORKSHOP FOOTER -->
-<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
+## Evidence and ownership boundaries
+
+- [MicroBundleIngestor README](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor/blob/development/README.md) documents the OpenAPI adapter, canonical API definition, capability compiler, and distinct repository REST opt-in.
+- [Domain model](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleIngestor/blob/development/docs/DOMAIN.md) separates source description, capability definition, and Experience composition, and states that policy metadata is not enforcement.
+
+ProtocolAi may provide stable vocabulary identities and typed lifecycle envelopes if a cross-process consumer actually needs them. GrammarAi owns structural shape only; neither package acquires, inspects, trusts, authorizes, or publishes content.
+
+## Decision requested
+
+Please confirm **no current use** for the existing local OpenAPI ingestion pipeline, or point to a real multi-party envelope contract that is not already represented by OpenAPI or the Ingestor's canonical domain types. No consumer source changes or dependency additions are proposed.
