@@ -1,18 +1,20 @@
 # GrammarAi assessment for MyVR
 
 **Consumer coordination:** [MyVR issue #32](https://github.com/TrentBest/TheSingularityWorkshop.MyVR/issues/32)  
-**Disposition:** no current use  
-**Source reviewed:** `TheSingularityWorkshop.MyVR` `master` at `7f4143284f7da975018f0a123be02803b8dd1202`
+**Disposition:** no current use; architecture is documented, implementation contract not yet present  
+**Source reviewed:** `TheSingularityWorkshop.MyVR` `development` at `7fb3a286e6142e85ea7ee8bd996b765b94f6afca`
 
-## Evidence
+## What exists
 
-The reviewed repository tree contains only a minimal README, Sith policy workflow, and policy asset. It does not currently expose a device interaction contract, serialized Experience request, sensor/gesture proposal schema, or independent producer/consumer boundary.
+The development branch contains substantive architecture, Experience manifestation, companion-boundary, and security documentation, but no C# implementation or project files. It defines MyVR as a VR-device manifestation of an Experience, with capability negotiation, device-local pose/input state, bounded Experience interactions, and optional companion communication with AnyApp.
+
+Those are important architectural boundaries, but the reviewed branch does not yet provide a versioned MyVR-authored interaction graph, serialized device-to-host proposal, or concrete producer/consumer data contract for GrammarAi to validate.
 
 ## Recommendation
 
-Do not add GrammarAi or create a MyVR-specific grammar now. Reassess when a real device-to-host interaction or Experience structure is authored and consumed across independent components. Reuse the existing Experiences and FSM_UserIO contracts where they already express the required structure.
+Do not add GrammarAi yet. First establish the actual device/session and bounded-interaction contracts in source and tests. Reassess only if an independently authored structural interaction or Experience-composition artifact must be exchanged across MyVR, AnyApp, WebApp, or an authoring tool.
 
-MyVR must retain device/runtime behavior and spatial interaction. Gestures and FSM_UserIO retain interaction semantics; Visualize retains representation. GrammarAi must not interpret sensor data, infer intent, validate physical truth, or authorize actions.
+MyVR retains device/runtime behavior, capability reporting, immersive-session lifecycle, spatial interaction, and device privacy. GrammarAi must not interpret sensor data, infer intent, establish physical truth, authenticate companion peers, or authorize actions.
 
 No MyVR source or dependency changes are proposed.
 
