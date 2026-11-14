@@ -21,11 +21,11 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 | Economy | No current use; future external proposal boundary only | [Economy](Economy.md) |
 | Visualize | No current use; future authored-scene boundary only | [Visualize](Visualize.md) |
 | GUI | No current use; future serialized-view boundary only | [GUI](GUI.md) |
-| AnyApp | Shared host adapter only | [AnyApp](AnyApp.md) |
-| WebApp | Shared host adapter only | [WebApp](WebApp.md) |
-| ServerApp | Conditional protocol/manifest adapter | [ServerApp](ServerApp.md) |
-| MyVR | Shared experience/interaction adapter | [MyVR](MyVR.md) |
-| SingularityBot | Conditional capability/plan declaration | [SingularityBot](SingularityBot.md) |
+| AnyApp | Existing host-side GrammarAi integration; contract hardening remains | [AnyApp](AnyApp.md) |
+| WebApp | No current use; repository is still scaffolding | [WebApp](WebApp.md) |
+| ServerApp | No current use; repository is still scaffolding | [ServerApp](ServerApp.md) |
+| MyVR | No current use; repository is still scaffolding | [MyVR](MyVR.md) |
+| SingularityBot | No current use yet; strategy format remains illustrative and unimplemented | [SingularityBot](SingularityBot.md) |
 
 ## Integration rule
 
