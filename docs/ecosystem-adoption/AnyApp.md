@@ -1,6 +1,6 @@
 # GrammarAi proposal for AnyApp
 
-**Consumer coordination:** [AnyApp issue #59](https://github.com/TrentBest/TheSingularityWorkshop.AnyApp/issues/59)  
+**Consumer coordination:** [AnyApp issue #59](https://github.com/TrentBest/AnyApp/issues/59)  
 **Disposition:** adapter  
 **Status:** proposal for consumer-owner review; not an approved integration
 
