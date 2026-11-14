@@ -1,28 +1,24 @@
-# GrammarAi proposal for Gestures
+# GrammarAi assessment for Gestures
 
 **Consumer coordination:** [Gestures issue #35](https://github.com/TrentBest/TheSingularityWorkshop.Gestures/issues/35)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use  
+**Status:** source-reviewed assessment; future authoring opportunity only
 
-## Proposed use
+## Source-backed finding
 
-Use GrammarAi only to structure authored gesture/activity descriptions: ordered phases, actor/target/action references, and bounded parameter slots. Gestures owns recognition, temporal and spatial interpretation, sensor-derived meaning, and execution-facing gesture semantics; Physics owns physical validity. GrammarAi must not claim that a gesture was recognized, that intent is known, or that a movement is physically possible. Test one real gesture/activity definition, including missing phase targets, invalid ordering, unknown action identities, and structurally valid but physically or perceptually invalid cases.
+The current repository has a deterministic, stateless pose evaluator, caller-driven single-gesture and fixed ordered-sequence playback, provider-offer eligibility, and an initial immutable ActivityDefinition builder. The activity builder validates local IDs, versions, duplicate classifications/phases/roles/references, participant bounds, and nonempty phases. The documented activity model explicitly distinguishes reusable Gesture procedures, versioned ActivityDefinitions, live sessions, assignments, runtime patches, observations, and presentation.
 
-## Minimal adoption path
+That is meaningful domain structure, but the current evidence does not establish a shared serialized grammar boundary. The implemented builder is a local typed authoring API; the documented broader activity graph, serialization, provider resolution, live session coordinator, deterministic role assignment, and atomic session patching remain future work. GestureSequencePlayback is a fixed ordered list, not a branching or parallel choreography language. Introducing GrammarAi now would risk duplicating local C# contracts before a second producer or consumer exists.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Reconsider only when
 
-## Non-goals and safety boundary
+A real authoring or interchange surface needs to submit versioned, nested activity/gesture proposals independently of the Gestures assembly—for example, an editor or AI authoring client producing the same serialized graph consumed by more than one tool. At that point, test one actual ActivityDefinition against a pinned GrammarAi grammar, including qualified Gesture/provider references, cardinality, ordering, depth, stale identities, and structurally valid but domain-invalid cases.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+## Ownership boundary
 
-## Decision requested from the consumer owner
+Gestures retains pose data, deterministic evaluation, playback lifecycle, provider eligibility, recognition, and temporal/spatial interpretation. Physics retains contact, obstruction, reachability, and physical outcomes. The activity host retains intent, participation policy, authorization, session coordination, and application of runtime changes. A structurally valid sequence is not proof of intent, recognition, permission, or physical success.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+No consumer source or dependency changes are proposed.
 
 ---
 
