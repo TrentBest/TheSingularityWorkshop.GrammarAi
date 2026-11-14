@@ -1,28 +1,63 @@
-# GrammarAi proposal for Experiences
+# GrammarAi assessment for Experiences
 
 **Consumer coordination:** [Experiences issue #60](https://github.com/TrentBest/TheSingularityWorkshop.Experiences/issues/60)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Current recommendation:** no direct GrammarAi dependency; keep manifest structure in the existing JSON Schema and Experiences.Contracts layer  
+**Status:** source-based assessment; awaiting consumer-owner review
 
-## Proposed use
+## What Experiences already owns
 
-Consider GrammarAi as an authoring-time structural validator for an Experience manifest: required sections, typed references, composition relationships, and bounded dependency/closure declarations. Bind it to the actual manifest representation and keep Experiences authoritative for artifact identity, canonical manifest meaning, integrity/hash verification, publication, materialization, and lifecycle. GrammarAi must not establish trust or authorize requested capabilities. Begin with a non-runtime adapter and representative manifests; only add a dependency if it removes duplicated structural validation. Test missing sections, unresolved references, malformed composition edges, and valid structure with invalid integrity to prove the boundary.
+Experiences defines host-independent Experience identity, authored artifact roots, semantic requirements, and publishable MicroBundle artifacts. Its current generic manifest contract is already explicit:
 
-## Minimal adoption path
+- `docs/contracts/experience-manifest.schema.json` defines schema version 1, required Experience identity/version/title, immutable artifact references, and capability requirements with contract-version ranges.
+- The schema rejects additional properties and defines required fields, collection shape, string constraints, SHA-256 formatting, and nested contract-version objects.
+- `TheSingularityWorkshop.Experiences.Contracts` implements pure validation, deterministic provider matching, immutable artifact identity checks, and dependency-closure validation, with executable tests in `tests/Contracts.Tests`.
+- The semantic interaction requirements contract distinguishes Experience-authored requirements, host-discovered providers, immutable artifact identity, authorization, and composition.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+This is a real typed manifest boundary, but it already has a dedicated schema and domain-owned validator.
 
-## Non-goals and safety boundary
+## Why GrammarAi is not justified today
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+Adding GrammarAi to the Experience manifest path would currently duplicate structural validation already expressed by JSON Schema and the Experiences.Contracts assembly. It would also risk confusing several distinct owners:
 
-## Decision requested from the consumer owner
+- Experiences owns the authored manifest and requirement semantics.
+- MicroBundleDomain owns the neutral bundle/provider contract.
+- MicroBundleRepository owns immutable artifact storage and delivery.
+- FSM_COS owns host-boundary composition and arbitration.
+- The host owns trust, authorization, and activation.
+- Physics and other domain repositories own their own model/run semantics.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+GrammarAi must not verify artifact hashes, select providers, decide capability compatibility, authorize requirements, or execute composition. A manifest that passes structural validation is not proof that an artifact is trusted, a provider is available, or a composition is authorized.
+
+**Recommendation today: no direct GrammarAi dependency.** Keep the JSON Schema and Experiences.Contracts validator authoritative.
+
+## A future trigger for reconsideration
+
+Revisit GrammarAi only if Experiences introduces a genuinely reusable, externally authored composition language that goes beyond the fixed manifest shape—for example, nested, typed composition expressions or authored dependency graphs shared across multiple producers/consumers and requiring bounded structural validation independent of the manifest schema.
+
+If that need emerges:
+
+1. Name the exact language and producer/consumer boundary.
+2. Keep the current manifest schema as the canonical Experience identity/artifact/requirement contract unless a deliberate versioned replacement is approved.
+3. Use GrammarAi only for the additional structural language, not to restate the JSON Schema.
+4. Keep capability matching, immutable artifact verification, dependency closure, arbitration, policy, authorization, and runtime composition in their current owners.
+5. Test real Experience manifests and composition fixtures, including unknown symbols, wrong categories, stale versions, unresolved dependencies, malformed nesting, and valid structures that still fail domain/provider checks.
+6. Compare the new checks with existing schema and Contracts tests to prove that GrammarAi adds non-duplicative value.
+
+Any such integration should begin in a host-side or authoring adapter and remain optional until consumer tests prove reuse. It should not make the Experiences repository depend on a runtime grammar engine merely to validate its existing fixed manifest.
+
+## Decision requested from Experiences
+
+Please review this assessment on [Experiences issue #60](https://github.com/TrentBest/TheSingularityWorkshop.Experiences/issues/60) and confirm one disposition:
+
+- **No current use / document-only** — recommended for the existing manifest and validator;
+- **Adapter-only later** — if a separate reusable composition language emerges;
+- **Adopt** — only with a concrete language and tests proving value beyond the existing JSON Schema and Contracts validator.
+
+No Experiences source, dependency, package, publication, or deployment changes are included or requested.
+
+## Ownership and safety boundary
+
+GrammarAi owns grammar identity, node kinds, slots, productions, typed composition, and bounded structural validation. Experiences owns Experience identity, authored manifest meaning, artifact requirements, and Experience lifecycle. Other owners retain bundle contracts, repository integrity, provider matching, host composition, trust, authorization, and execution. Structural validity does not prove availability, trust, compatibility, or permission.
 
 ---
 
