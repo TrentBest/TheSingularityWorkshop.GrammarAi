@@ -1,30 +1,31 @@
-# GrammarAi proposal for FSM_Foundry
+# GrammarAi assessment for FSM_Foundry
 
 **Consumer coordination:** [FSM_Foundry issue #37](https://github.com/TrentBest/TheSingularityWorkshop.FSM_Foundry/issues/37)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use; revisit only for a separately authored declarative workflow language  
+**Status:** source-informed assessment for consumer-owner review; not an integration proposal
 
-## Proposed use
+## What exists today
 
-Consider GrammarAi only for a shared declarative plan format authored outside Foundry: typed step nodes, inputs/outputs, dependency edges, and bounded nested groups. Foundry continues to own scheduling, state progression, retries, lifecycle, cancellation, and execution. CiAi owns CI evidence and gates; CommandAi owns atomic command contracts. Avoid recreating a workflow engine or moving runtime state into grammar definitions. Prototype an adapter over an existing Foundry plan, then test malformed edges, missing ports, cycles, unsupported step kinds, and structurally valid plans that Foundry must still reject on runtime policy or resource constraints.
+The current Foundry workflow contract is a data-only, version-1 definition containing an identifier, name, schema version, and ordered steps. Each step has an identifier and a host-registered handler key. Foundry validates the complete definition before invoking handlers, then owns sequential execution, lifecycle, cancellation, outcomes, and retained run snapshots.
 
-## Minimal adoption path
+This is a concrete and deliberately narrow contract. The inspected source does not establish a reusable external grammar for nested groups, typed input/output ports, dependency edges, triggers, or a general orchestration language. The broader proposal would therefore design a new language before identifying a real producer/consumer boundary.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Recommendation
 
-## Non-goals and safety boundary
+Do not add GrammarAi to Foundry for the current workflow definition. The existing typed C# contract and Foundry validator are the clearer owners of its fixed shape. GrammarAi would add a second schema layer without a demonstrated structural gap.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+Reconsider only if Foundry introduces a real externally authored/interchanged plan format whose structure is shared across independent producers and consumers—for example, typed step composition with explicit ports and references. In that case, GrammarAi may validate the authored structure before conversion to Foundry's canonical workflow types.
 
-## Decision requested from the consumer owner
+Foundry must continue to own workflow semantics, scheduling, state progression, retries, lifecycle, cancellation, resource limits, and execution. Structural validity must never imply that a handler is registered, permitted, safe, or executable.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+## Evidence and ownership boundaries
 
----
+- [WorkflowDefinition.cs](https://github.com/TrentBest/TheSingularityWorkshop.FSM_Foundry/blob/development/src/Foundry.Workflow/WorkflowDefinition.cs) defines the current version-1 data-only contract.
+- [Foundry domain and ownership](https://github.com/TrentBest/TheSingularityWorkshop.FSM_Foundry/blob/development/docs/DOMAIN.md) assigns validation and execution semantics to Foundry.
+- [Contract inspection ledger](https://github.com/TrentBest/TheSingularityWorkshop.FSM_Foundry/blob/development/docs/CONTRACT_INSPECTION.md) explicitly distinguishes Foundry workflows from FSM_COS RuntimeManifest/RuntimeAssembly.
 
-<!-- THE SINGULARITY WORKSHOP FOOTER -->
-<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
+FSM_COS composition is not Foundry workflow execution. CommandAi owns atomic command contracts. CiAi owns CI evidence and gate decisions. GrammarAi must not become a workflow engine, scheduler, authorization layer, or executor.
+
+## Decision requested
+
+Please confirm **no current use** for the existing version-1 workflow contract, or identify a concrete independently authored plan format that is not already covered by Foundry's typed model. No consumer source changes or dependency additions are proposed.
