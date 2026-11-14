@@ -1,18 +1,20 @@
 # GrammarAi assessment for ServerApp
 
 **Consumer coordination:** [ServerApp issue #12](https://github.com/TrentBest/TheSingularityWorkshop.ServerApp/issues/12)  
-**Disposition:** no current use  
-**Source reviewed:** `TheSingularityWorkshop.ServerApp` `master` at `2eb6bf608c86e2d1dd2796a7e294649773a91240`
+**Disposition:** no current use; existing schema and domain validators are sufficient  
+**Source reviewed:** `TheSingularityWorkshop.ServerApp` `development` at `834c209404251322593d24d061ba59663f532434`
 
-## Evidence
+## What exists
 
-The reviewed repository tree contains only a minimal README, Sith policy workflow, and policy asset. No server-role manifest, session/message envelope, network request model, or other source-level structural contract is currently present to map to GrammarAi.
+ServerApp has a real, versioned `ServerRoleManifest` and a published JSON Schema v1. The contract is explicitly distinct from FSM_COS `RuntimeManifest`: it describes one requested server instance, role identity, server-instance dependencies, and resource requirements. Unknown JSON members are rejected during parsing. `ManifestValidator` enforces supported schema version, identifier constraints, duplicate dependency rejection, and CPU/memory bounds.
+
+The repository also contains a separate `ProvisioningPlanBuilder` that validates closed batches, missing/self/cyclic dependencies, and deterministic topological order. The host maps a role ID through an allowlisted `IServerRoleCompositionCatalog` to trusted FSM_COS roots. The core project has no GrammarAi dependency.
 
 ## Recommendation
 
-Do not add GrammarAi or design a speculative server grammar yet. Reassess when ServerApp has a concrete versioned structure authored by one producer and independently consumed by another. ProtocolAi should continue to own canonical protocol/message identities; ServerApp must retain server behavior, request identity/context, persistence, authentication, authorization, security, and network execution.
+Do not add GrammarAi to the current server-role manifest or provisioning plan. JSON Schema plus the typed manifest and domain validator already express the fixed v1 contract. Wrapping that contract in GrammarAi would duplicate validation without introducing a demonstrated independent authoring language.
 
-A GrammarAi-valid message shape would not prove authenticity, trust, permission, or safe execution. Those checks remain outside GrammarAi.
+Reassess only if ServerApp later accepts an independently authored, reusable nested provisioning/placement language that multiple independent tools must structurally validate. ServerApp retains role semantics, resource feasibility, dependency readiness, allowlisted adapter resolution, security, and provisioning execution. FSM_COS composition remains a separate contract.
 
 No ServerApp source or dependency changes are proposed.
 
