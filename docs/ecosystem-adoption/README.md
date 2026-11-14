@@ -12,9 +12,9 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 | FSM_UserIO | No core dependency; host-side adapter only if a real proposal language emerges | [FSM_UserIO](FSM_UserIO.md) |
 | Experiences | No direct dependency; existing JSON Schema and Contracts validator own manifest structure | [Experiences](Experiences.md) |
 | FSM_COS | No kernel dependency; host-side authoring adapter only if a richer proposal language emerges | [FSM_COS](FSM_COS.md) |
-| FSM_Foundry | Conditional declarative-plan adapter | [FSM_Foundry](FSM_Foundry.md) |
-| MicroBundleDomain | Conditional schema adapter | [MicroBundleDomain](MicroBundleDomain.md) |
-| MicroBundleIngestor | Conditional envelope adapter | [MicroBundleIngestor](MicroBundleIngestor.md) |
+| FSM_Foundry | No current use for version-1 workflow contract; revisit only for an external plan language | [FSM_Foundry](FSM_Foundry.md) |
+| MicroBundleDomain | Conditional optional authoring adapter; no runtime dependency | [MicroBundleDomain](MicroBundleDomain.md) |
+| MicroBundleIngestor | No current use for OpenAPI ingestion; revisit for a distinct shared envelope | [MicroBundleIngestor](MicroBundleIngestor.md) |
 | Gestures | Conditional authoring draft | [Gestures](Gestures.md) |
 | Learning | Conditional single-artifact pilot | [Learning](Learning.md) |
 | Physics | Conditional symbolic authoring | [Physics](Physics.md) |
