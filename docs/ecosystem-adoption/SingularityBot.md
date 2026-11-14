@@ -1,30 +1,29 @@
 # GrammarAi assessment for SingularityBot
 
 **Consumer coordination:** [SingularityBot issue #12](https://github.com/TrentBest/TheSingularityWorkshop.SingularityBot/issues/12)  
-**Disposition:** no current use; revisit at a real external strategy interchange boundary  
-**Source reviewed:** `TheSingularityWorkshop.SingularityBot` `master` at `34844c385ff0cb09cedbcc7ee81a692e700c01df`
+**Disposition:** conditional; optional authoring/knowledge-graph adapter only  
+**Source reviewed:** `TheSingularityWorkshop.SingularityBot` `development` at `1b5e6bdfa1110f663d0ba2aad354ac60874336f4`
 
-## Evidence
+## What exists
 
-The repository README explicitly describes the bot as foundation-in-progress and says the strategy format is currently architecture/documentation plus an illustrative JSON file, not a working or ladder-ready bot. `docs/strategy-format.md` describes a proposed versioned declarative strategy format and compilation pipeline, while `strategies/terran-opening.example.json` is explicitly illustrative and not executable.
+SingularityBot now has a real `BotDefinition` model and a strict JSON parsing/validation path. The artifact composes bot-owned runtime declarations, opening production plans, default goals, strategy transitions, and bounded AI consultation policy. Existing validators enforce schema version and domain-specific invariants. The project references CommandAi and HeadlessAi, but does not reference GrammarAi or ProtocolAi.
 
-The reviewed source tree does not yet contain a strategy compiler, strategy-domain model, grammar integration, or a project/package reference to GrammarAi. The architecture's mention of GrammarAi/ProtocolAi as vocabulary support is a planned responsibility, not proof of a current GrammarAi consumer.
+CommandAi is already consumed through a bot-owned vocabulary and `BotCommandProposalValidator`. That layer validates action/parameter identity and basic value semantics while deliberately leaving ontology resolution, live-state checks, scheduling, and SC2 legality downstream.
+
+The BotDefinition documentation identifies a possible future GrammarAi role: exposing a typed graph of capabilities, goals, evidence types, strategy relationships, prerequisites, and constraints for Forge or LLM-assisted authoring. However, that graph is not yet a concrete GrammarAi consumer contract. The current BotDefinition JSON and its existing validators remain the authoritative bot-domain artifact.
+
+## Conditional opportunity
+
+Consider a thin optional authoring adapter only if Forge/LLM authoring needs a reusable structural graph that is independently consumed by more than one tool—for example, a versioned strategy/knowledge graph with typed capability, goal, evidence, prerequisite, and constraint relationships. In that case:
+- GrammarAi validates the reusable graph structure and bounded composition.
+- ProtocolAi may own stable vocabulary identities if/when adopted.
+- SingularityBot owns game meaning, ontology resolution, feasibility, strategy validation, and runtime behavior.
+- CommandAi remains the bounded action/proposal envelope.
+- The host retains authorization and execution.
 
 ## Recommendation
 
-Do not add GrammarAi solely because a future strategy format is planned. First implement the strategy schema and compiler against the actual game ontology and runtime, then determine whether its structure is already adequately expressed by its own versioned JSON contract.
-
-Reconsider GrammarAi only if a distinct structural language is authored by an independent editor/agent and consumed by multiple tools, or if reusable nested strategy composition requires bounded structural validation beyond the strategy schema. Avoid duplicating the strategy validator.
-
-Ownership remains:
-- ProtocolAi: canonical protocol and vocabulary identities.
-- GrammarAi, if later justified: reusable structural composition and bounded structural validation.
-- SingularityBot: strategy semantics, ontology mapping, game-state interpretation, goals, constraints, tactics, compilation, and bot behavior.
-- CommandAi: atomic command/proposal contracts.
-- Host/runtime: authorization and execution.
-- CiAi/HeadlessAi: build and replay evaluation evidence.
-
-No SingularityBot source or dependency changes are proposed.
+Do not add GrammarAi to the bot runtime or duplicate the current BotDefinition JSON Schema and domain validators. Keep this as a conditional authoring-layer opportunity, with a real multi-tool producer/consumer example and mapping tests required before adoption. No SingularityBot source or dependency changes are proposed.
 
 
 ---
