@@ -1,6 +1,6 @@
 # GrammarAi proposal for FSM_UserIO
 
-**Consumer coordination:** [FSM_UserIO issue #12](https://github.com/TrentBest/TheSingularityWorkshop.FSM_UserIO/issues/12)  
+**Consumer coordination:** [FSM_UserIO issue #12](https://github.com/TrentBest/FSM_UserIO/issues/12)  
 **Disposition:** candidate  
 **Status:** proposal for consumer-owner review; not an approved integration
 
