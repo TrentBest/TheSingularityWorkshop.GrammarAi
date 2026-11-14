@@ -18,7 +18,9 @@ GrammarAi defines how symbols can be arranged into grammar productions. The gram
 | Review typed node/slot graphs and the v1/v2 proposal contract | [Typed structural schema](docs/STRUCTURAL_SCHEMA.md) |
 | Find where GrammarAi can help other Workshop repositories | [Ecosystem applications](docs/ECOSYSTEM_APPLICATIONS.md) |
 | Review repository-by-repository adoption decisions and coordination status | [Ecosystem adoption audit](docs/ECOSYSTEM_ADOPTION_AUDIT.md) |
-| Review implemented capabilities and the remaining domain gaps | [Domain completeness audit](docs/DOMAIN_COMPLETENESS.md) |\n| Understand the RFC 5234 / RFC 7405 ABNF model and its validation boundary | [ABNF representation](docs/ABNF_REPRESENTATION_BOUNDARY.md) |
+| Read the tailored integration proposal for a specific consumer repository | [Consumer adoption guides](docs/ecosystem-adoption/README.md) |
+| Review implemented capabilities and the remaining domain gaps | [Domain completeness audit](docs/DOMAIN_COMPLETENESS.md) |
+| Understand the RFC 5234 / RFC 7405 ABNF model and its validation boundary | [ABNF representation](docs/ABNF_REPRESENTATION_BOUNDARY.md) |
 | Follow the textbook-style theory learning path | [GrammarAi Theory](docs/THEORY.md) |
 | Add GrammarAi to a .NET application | [Consuming GrammarAi](docs/CONSUMING.md) |
 | Understand the host/LLM exchange design and its ownership boundaries | [AI Exchange design note](docs/AI_EXCHANGE.md) |
