@@ -1,30 +1,41 @@
-# GrammarAi proposal for MicroBundleDomain
+# GrammarAi assessment for MicroBundleDomain
 
 **Consumer coordination:** [MicroBundleDomain issue #27](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleDomain/issues/27)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** conditional; optional authoring/interchange adapter only  
+**Status:** source-informed assessment for consumer-owner review; not an approved integration
 
-## Proposed use
+## What exists today
 
-Use GrammarAi as an optional authoring/interchange layer for draft MicroBundle declarations where typed ports, capability relationships, configuration slots, or nested composition need validation before conversion to the canonical domain contract. MicroBundleDomain owns the canonical MicroBundle schema, domain meaning, and compatibility rules. Do not make GrammarAi the source of truth or a mandatory runtime dependency. Demonstrate the mapping against one real MicroBundle definition and verify conversion preserves identifiers, cardinality, required/optional status, and version constraints. Reject unknown port identities and malformed connections before handing the result to MicroBundleDomain.
+MicroBundleDomain already owns the canonical capability contract. Its runtime descriptor carries identity, version, dependencies, and providers. Its tooling-facing MicroBundleDefinition describes fields using a bounded set of kinds: String, Integer, Float, Boolean, and Object. Configuration bytes remain opaque to the domain package. The package deliberately does not choose a serializer, transport, storage provider, or composition host.
 
-## Minimal adoption path
+The documentation also describes a future curated knowledge model, but explicitly distinguishes that possibility from the current human-first Markdown. It is not evidence that a machine-readable knowledge grammar is already required.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Recommendation
 
-## Non-goals and safety boundary
+There is a plausible but narrow GrammarAi opportunity at an authoring boundary: an independent editor, AI author, or external tool could propose a nested capability/field declaration, and a host could structurally validate that proposal before converting it into the canonical MicroBundleDefinition.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+This should remain an optional adapter, not a GrammarAi dependency of the MicroBundleDomain runtime. MicroBundleDomain owns canonical identity/version/dependency/provider semantics, field meaning, compatibility, and domain validation. GrammarAi may own only the reusable proposal shape and bounded structural checks.
 
-## Decision requested from the consumer owner
+Do not duplicate the existing field-kind model merely to wrap it in a grammar. Adoption is justified only if a real external producer needs richer structural composition—such as typed nested fields, cardinality, qualified references, or versioned relationships—and the mapping demonstrably adds validation that the canonical model does not already provide.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+## Minimal proof if a real authoring boundary appears
 
----
+1. Select one real MicroBundleDefinition authored outside the domain package.
+2. Define a pinned GrammarAi schema for only the proposed authoring structure.
+3. Convert the proposal to the existing canonical types with explicit mapping.
+4. Prove preservation of identity, version, dependencies, providers, field kinds, nesting, required/optional status, and limits.
+5. Test malformed nesting, duplicate or unknown references, invalid cardinality, over-limit depth, and domain-invalid-but-structurally-valid declarations.
 
-<!-- THE SINGULARITY WORKSHOP FOOTER -->
-<p align="center"><img src="https://raw.githubusercontent.com/TrentBest/FSM_API/master/Documentation/Branding/TheSingularityWorkshop.png" alt="The Singularity Workshop" width="200" /></p>
+No GrammarAi structure may grant execution authority or replace host-side composition and authorization.
+
+## Evidence and ownership boundaries
+
+- [Architecture](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleDomain/blob/development/docs/ARCHITECTURE.md) distinguishes the runtime descriptor from the tooling-facing definition and keeps composition with the host.
+- [Knowledge model](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleDomain/blob/development/docs/KNOWLEDGE_MODEL.md) treats a machine-readable knowledge domain as a future possibility requiring curation, not an existing contract.
+- [MicroBundleDomain README](https://github.com/TrentBest/TheSingularityWorkshop.MicroBundleDomain/blob/development/README.md) defines the WHAT/WHERE/HOW boundary: domain, repository, composition host.
+
+MicroBundleRepository owns artifact storage/retrieval. FSM_COS owns composition. MicroBundleIngestor owns ingestion. GrammarAi must not absorb any of those responsibilities.
+
+## Decision requested
+
+Please identify one real external authoring/interchange producer and a representative MicroBundleDefinition to justify the optional adapter. If none exists today, record **document-only / no current runtime use**. No consumer source changes or dependency additions are proposed.
