@@ -7,7 +7,7 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 | Consumer | Disposition | Proposal |
 |---|---|---|
 | CiAi | Adopt; implementation underway | [CiAi](CiAi.md) |
-| StoryBuilder | Next independent pilot | [StoryBuilder](StoryBuilder.md) |
+| StoryBuilder | Document-only; reconsider if a reusable external grammar emerges | [StoryBuilder](StoryBuilder.md) |
 | CommandAi | Optional structural composition | [CommandAi](CommandAi.md) |
 | FSM_UserIO | Strong candidate | [FSM_UserIO](FSM_UserIO.md) |
 | Experiences | Conditional authoring/adapter | [Experiences](Experiences.md) |
