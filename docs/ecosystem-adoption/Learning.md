@@ -1,28 +1,24 @@
-# GrammarAi proposal for Learning
+# GrammarAi assessment for Learning
 
 **Consumer coordination:** [Learning issue #3](https://github.com/TrentBest/TheSingularityWorkshop.Learning/issues/3)  
-**Disposition:** conditional  
-**Status:** proposal for consumer-owner review; not an approved integration
+**Disposition:** no current use  
+**Status:** source-reviewed assessment; future authored-artifact opportunity only
 
-## Proposed use
+## Source-backed finding
 
-Consider one grammar for an actual authored learning artifact—such as a lesson composed of explanation, activity, observation, and reflection sections—only if those structures are shared across authoring tools or consumers. Learning retains pedagogy, learner adaptation, assessment, grading, and mastery decisions. Avoid creating a second curriculum model. Map to one existing lesson/lab model and test required/optional sections, ordering, nested activities, invalid references, and the important distinction between a well-formed lesson and an effective or mastered lesson.
+The current Learning repository is a learning center and course-navigation surface. Its plans are guided Markdown trails through separate repositories; the learning journey is explicitly a teaching sequence, not one deployed application or a unified runtime curriculum schema. Lessons such as From Problem to Proof are authored documentation with source links, worked examples, and evidence descriptions. The repository's visible structure does not establish a reusable machine-readable lesson/activity graph shared with another producer or consumer.
 
-## Minimal adoption path
+GrammarAi would therefore introduce a second lesson or curriculum representation without a demonstrated cross-boundary need. Markdown, links, and existing source-owned lesson material are adequate for the current contract.
 
-1. Identify the existing consumer model and one real producer/consumer boundary; do not invent a parallel domain model.
-2. Define only the reusable structural contract: grammar identity/version, node kinds, typed slots, productions, cardinality, ordering, and qualified external references as needed.
-3. Pin an immutable GrammarAi revision and, where applicable, ProtocolAi identities. Map the grammar to real consumer types with explicit conversion code.
-4. Add consumer-owned positive and negative tests: valid instances, missing/extra fields, wrong categories, unknown or stale references, cardinality/depth limits, and domain-invalid-but-structurally-valid cases.
-5. Keep domain truth, semantic validation, security, policy, authorization, evidence, and execution in their existing owners. Record exact commit and CI evidence before calling adoption complete.
+## Reconsider only when
 
-## Non-goals and safety boundary
+A concrete authoring workflow creates a versioned, machine-readable learning artifact that must be independently authored and consumed by multiple tools—for example, a lesson graph with typed explanation, activity, observation, and reflection nodes. Start with one real Learning-owned artifact and prove that GrammarAi adds bounded structural validation beyond the consumer's own schema. Do not build a parallel curriculum ontology merely to use the package.
 
-GrammarAi validates structure only. It does not parse arbitrary generated text, infer meaning, establish truth, verify evidence, authenticate content, authorize capabilities, execute actions, or replace the consumer's domain model. A structurally valid proposal can still be semantically invalid, unsafe, untrusted, unauthorized, or impossible to execute.
+## Ownership boundary
 
-## Decision requested from the consumer owner
+Learning retains pedagogy, sequencing, learner adaptation, accessibility, assessment, grading, and mastery decisions. GrammarAi could validate only the shape of a future authored artifact; it cannot establish instructional quality, correctness, learner understanding, or mastery.
 
-Please review the proposal against current source and choose one explicit outcome: **adopt** (with a real-model test), **adapter-only**, **document-only**, or **no current use**. If the proposed structure does not correspond to a real shared contract, prefer no current use over a speculative dependency. No consumer source changes are included in this proposal.
+No consumer source or dependency changes are proposed.
 
 ---
 
