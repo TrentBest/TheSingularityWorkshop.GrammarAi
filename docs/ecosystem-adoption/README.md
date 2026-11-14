@@ -15,9 +15,9 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 | FSM_Foundry | No current use for version-1 workflow contract; revisit only for an external plan language | [FSM_Foundry](FSM_Foundry.md) |
 | MicroBundleDomain | Conditional optional authoring adapter; no runtime dependency | [MicroBundleDomain](MicroBundleDomain.md) |
 | MicroBundleIngestor | No current use for OpenAPI ingestion; revisit for a distinct shared envelope | [MicroBundleIngestor](MicroBundleIngestor.md) |
-| Gestures | Conditional authoring draft | [Gestures](Gestures.md) |
-| Learning | Conditional single-artifact pilot | [Learning](Learning.md) |
-| Physics | Conditional symbolic authoring | [Physics](Physics.md) |
+| Gestures | No current use; future external activity-authoring boundary only | [Gestures](Gestures.md) |
+| Learning | No current use; future machine-readable lesson artifact only | [Learning](Learning.md) |
+| Physics | No current use; future symbolic authoring only | [Physics](Physics.md) |
 | Economy | Conditional proposal shape | [Economy](Economy.md) |
 | Visualize | Conditional shared scene contract | [Visualize](Visualize.md) |
 | GUI | Conditional authoring/interchange | [GUI](GUI.md) |
