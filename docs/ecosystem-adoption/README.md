@@ -11,7 +11,7 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 | CommandAi | Optional opaque GrammarAi body seam in draft PR #8; end-to-end consumer proof pending | [CommandAi](CommandAi.md) |
 | FSM_UserIO | No core dependency; host-side adapter only if a real proposal language emerges | [FSM_UserIO](FSM_UserIO.md) |
 | Experiences | No direct dependency; existing JSON Schema and Contracts validator own manifest structure | [Experiences](Experiences.md) |
-| FSM_COS | Conditional narrow adapter | [FSM_COS](FSM_COS.md) |
+| FSM_COS | No kernel dependency; host-side authoring adapter only if a richer proposal language emerges | [FSM_COS](FSM_COS.md) |
 | FSM_Foundry | Conditional declarative-plan adapter | [FSM_Foundry](FSM_Foundry.md) |
 | MicroBundleDomain | Conditional schema adapter | [MicroBundleDomain](MicroBundleDomain.md) |
 | MicroBundleIngestor | Conditional envelope adapter | [MicroBundleIngestor](MicroBundleIngestor.md) |
