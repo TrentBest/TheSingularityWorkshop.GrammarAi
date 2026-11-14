@@ -18,8 +18,8 @@ These proposals turn the ecosystem triage into actionable, repository-specific s
 | Gestures | No current use; future external activity-authoring boundary only | [Gestures](Gestures.md) |
 | Learning | No current use; future machine-readable lesson artifact only | [Learning](Learning.md) |
 | Physics | No current use; future symbolic authoring only | [Physics](Physics.md) |
-| Economy | Conditional proposal shape | [Economy](Economy.md) |
-| Visualize | Conditional shared scene contract | [Visualize](Visualize.md) |
+| Economy | No current use; future external proposal boundary only | [Economy](Economy.md) |
+| Visualize | No current use; future authored-scene boundary only | [Visualize](Visualize.md) |
 | GUI | Conditional authoring/interchange | [GUI](GUI.md) |
 | AnyApp | Shared host adapter only | [AnyApp](AnyApp.md) |
 | WebApp | Shared host adapter only | [WebApp](WebApp.md) |
