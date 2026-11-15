@@ -96,7 +96,7 @@ jobs:
           fi
           consumer_dir="$(mktemp -d)"
           trap 'rm -rf "$consumer_dir"' EXIT
-          dotnet new console --framework net8.0 --output "$consumer_dir" --no-restore
+          dotnet new console --framework net10.0 --output "$consumer_dir" --no-restore
           dotnet add "$consumer_dir" package "$package_id" --version "$package_version" --source "$PWD/artifacts"
           dotnet build "$consumer_dir" --configuration Release
       - name: Upload NuGet package artifact
