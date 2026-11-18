@@ -13,7 +13,7 @@
 
 GrammarAi is the **HOW / structure layer**. It composes grammar symbols and ordered productions, validating internal consistency. ProtocolAi owns the meanings and identities of terminal symbols; GrammarAi stores references to those identities but does not load ProtocolAi definitions or prove that references resolve. The consuming host must perform that cross-package link step.
 
-**Current assessment: 70% ready.** This is a qualitative working estimate, not a measured score. The latest source-boundary update passed the build-and-test job; publication was skipped as intended. Package version remains 0.1.0-alpha.2 on .NET 8. This is not publication approval.
+**Current assessment: 70% ready.** This is a qualitative working estimate, not a measured score. The latest source-boundary update passed the build-and-test job; publication was skipped as intended. The `development` source candidate is `0.1.0-alpha.3` targeting .NET 10 (`net10.0`). The already-published `0.1.0-alpha.2` package is the prior .NET 8 build and remains consumable by .NET 10 applications. This is not publication approval.
 
 - Candidate commit: [e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0)
 - CI: [run #39726325238](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39726325238)
@@ -57,7 +57,7 @@ GrammarAi's internal validation is not a grammar compiler, termination proof, pa
 2. **Grammar correctness:** unique rule IDs, start symbol, missing nonterminals, recursive productions, and epsilon semantics.
 3. **External references:** distinguish stored identity pairs from references proven to exist in a specific ProtocolAi definition. Linking belongs to the consumer today.
 4. **Consumer/package proof:** run quickstart, test a clean consumer project, inspect package contents, and verify README, license, XML docs, version, and metadata.
-5. **Release policy:** confirm .NET 8 support, release notes, package instructions, and Trusted Publishing configuration without enabling publication.
+5. **Release policy:** verify the .NET 10-only source/package candidate, release notes, package instructions, and Trusted Publishing configuration without enabling publication.
 
 ## Five-minute review path
 
