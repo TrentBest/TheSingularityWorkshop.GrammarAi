@@ -693,7 +693,7 @@ See **[GrammarAI Theory](https://github.com/TrentBest/TheSingularityWorkshop.Gra
 
 # 16. Current alpha boundary
 
-**Current source version: `0.1.0-alpha.2`.**
+**Current source candidate: `0.1.0-alpha.3` targeting .NET 10 (`net10.0`).** The currently published `0.1.0-alpha.2` package predates this target-framework standardization; it remains installable on .NET 10, but new source builds and the next package candidate target .NET 10 only.
 
 This release establishes:
 
