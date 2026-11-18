@@ -25,18 +25,18 @@ Or add this to your project file:
 <PackageReference Include="TheSingularityWorkshop.GrammarAi" Version="0.1.0-alpha.2" />
 ```
 
-Use the version currently published on NuGet when consuming a later release.
+The currently published `0.1.0-alpha.2` package can be consumed by a .NET 10 application, but it was built before this repository standardized on .NET 10. The next source package candidate is `0.1.0-alpha.3` and targets `net10.0`; it is not available on NuGet until explicitly released.
 
 ### Visual Studio walkthrough
 
-1. Create a **Console App** project targeting **.NET 8**.
+1. Create a **Console App** project targeting **.NET 10** (`net10.0`).
 2. Open **View → Terminal** and change to the directory containing the new project's `.csproj` file.
 3. Run the package-install command above (or use **Manage NuGet Packages** and select `TheSingularityWorkshop.GrammarAi`).
 4. Paste the complete example from [Define a grammar](#3-define-a-grammar) into `Program.cs`.
 5. Run the project with Visual Studio's **Run** button or `dotnet run`.
 
 
-## 2. Start with protocol identities
+## Framework requirement\n\nNew GrammarAI development, tests, examples, and package candidates target **.NET 10 (`net10.0`)**. .NET 8 is no longer a supported target for new GrammarAI builds. The .NET 10 SDK is pinned in `global.json`, and CI verifies a clean .NET 10 consumer.\n\n## 2. Start with protocol identities
 
 GrammarAI deliberately does not need a direct ProtocolAI package reference. Instead, it refers to externally owned symbols by:
 
