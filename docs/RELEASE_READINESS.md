@@ -21,15 +21,15 @@ Latest candidate checkpoint: [e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0](https://
 
 ## Current package status
 
-The project on `development` declares **`0.1.0-alpha.2`** and targets **.NET 8 (`net8.0`)**. This checklist tracks evidence for a future package release; it does not authorize publication or change the package version.
+The `development` source candidate declares **`0.1.0-alpha.3`** and targets **.NET 10 (`net10.0`)**. The currently published `0.1.0-alpha.2` package is the prior .NET 8 build and remains consumable by .NET 10 applications; it is not the framework target for new source development. This checklist tracks evidence for a future package release and does not authorize publication.
 
 GrammarAI is the structural layer: it composes integer-backed grammar rules and references protocol-owned terminal identities. It does not own the vocabulary, call a model, interpret application meaning, or execute commands.
 
-## Latest verified CI baseline — 2026-10-22 UTC
+## Historical CI baseline — 2026-10-22 UTC
 
 Latest green `development` commit: `2e8c18bcbb0dbae5e44d6640cdebef02f55a8556`. [Workflow run #39723634834](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39723634834) passed for this exact commit, including restore, Release build, tests/coverage, package creation, packaged documentation-path verification, and a clean consumer smoke test. NuGet publication was skipped and remains hard-disabled. The AI Exchange document and SVG are explicitly labelled as design direction, separate from the implemented grammar-definition API.
 
-This is the latest verified green baseline, not publication approval. This readiness-document update must itself pass CI before its new head is treated as verified.
+This is historical evidence for an earlier source commit, not verification of the current .NET 10 candidate. The current candidate must pass the .NET 10 workflow on its exact HEAD before it is treated as verified. This is not publication approval.
 
 ## Verified foundation
 
@@ -58,7 +58,7 @@ These checks are evidence of a sound foundation, not a completed release audit.
 
 ### Package and consumer experience
 
-- [ ] Confirm whether .NET 8 only is the intended target-framework support policy.
+- [x] Standardize new source, tests, examples, and clean-consumer verification on .NET 10 (`net10.0`); .NET 8 is not a target for new builds.
 - [ ] Inspect the generated `.nupkg` and `.snupkg` (if produced), including README, license, XML documentation, and the intended documentation/image assets.
 - [ ] Verify package metadata, release notes, and installation instructions against the release being prepared.
 - [ ] Verify the published NuGet version and package page before making claims about distribution status.
@@ -77,7 +77,7 @@ These checks are evidence of a sound foundation, not a completed release audit.
 
 1. Complete the API and package audits.
 2. Reconcile open PRs and stale branches without losing unique work.
-3. Decide the supported framework and compatibility contract.
+3. Verify the .NET 10-only target-framework contract and its clean-consumer proof.
 4. Prepare and review the intended package artifact.
 5. Publish only after explicit authorization.
 
