@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="860" viewBox="0 0 1440 860" role="img" aria-labelledby="title desc">
+<title id="title">GrammarAi and SingularityBot integration boundary</title>
+<desc id="desc">Current SingularityBot uses its own BotDefinition and BotCommandVocabulary with CommandAi proposals. GrammarAi is not a runtime dependency. A future optional authoring adapter may use ProtocolAi identities, GrammarAi structures, and an opaque GrammarAi body in enriched CommandAi proposals. SingularityBot retains domain validation, authorization, and StarCraft II action dispatch.</desc>
+<defs>
+<style>
+.bg{fill:#0b1020}.panel{fill:#121b2e;stroke:#52627a;stroke-width:2}.current{stroke:#22c55e}.future{stroke:#a78bfa;stroke-dasharray:9 7}.title{fill:#f8fafc;font:700 30px Arial}.head{fill:#e2e8f0;font:700 22px Arial}.body{fill:#cbd5e1;font:17px Arial}.small{fill:#94a3b8;font:15px Arial}.mono{fill:#f8fafc;font:17px monospace}.arrow{stroke:#94a3b8;stroke-width:3;fill:none;marker-end:url(#arr)}.futureArrow{stroke:#a78bfa;stroke-width:3;stroke-dasharray:9 7;fill:none;marker-end:url(#arr2)}
+</style>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#94a3b8"/></marker>
+<marker id="arr2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#a78bfa"/></marker>
+</defs>
+<rect class="bg" width="1440" height="860"/>
+<text x="720" y="55" text-anchor="middle" class="title">SINGULARITYBOT · GRAMMARAI BOUNDARY</text>
+<text x="720" y="88" text-anchor="middle" class="small">Current implementation versus an optional future authoring path</text>
+
+<rect x="55" y="135" width="1330" height="285" rx="24" class="panel current"/>
+<text x="90" y="178" class="head">CURRENT · IMPLEMENTED COMMAND PATH</text>
+<rect x="95" y="215" width="255" height="150" rx="16" class="panel"/>
+<text x="222" y="252" text-anchor="middle" class="head">BotDefinition</text>
+<text x="222" y="286" text-anchor="middle" class="body">Bot-owned goals</text>
+<text x="222" y="315" text-anchor="middle" class="body">and strategy profile</text>
+<path d="M355 290H415" class="arrow"/>
+<rect x="425" y="215" width="260" height="150" rx="16" class="panel"/>
+<text x="555" y="252" text-anchor="middle" class="head">BotCommandVocabulary</text>
+<text x="555" y="286" text-anchor="middle" class="body">Stable bot action IDs</text>
+<text x="555" y="315" text-anchor="middle" class="body">and parameter meanings</text>
+<path d="M690 290H750" class="arrow"/>
+<rect x="760" y="215" width="220" height="150" rx="16" class="panel"/>
+<text x="870" y="252" text-anchor="middle" class="head">CommandAi</text>
+<text x="870" y="286" text-anchor="middle" class="body">CommandProposal</text>
+<text x="870" y="315" text-anchor="middle" class="body">validated by bot host</text>
+<path d="M985 290H1045" class="arrow"/>
+<rect x="1055" y="215" width="280" height="150" rx="16" class="panel"/>
+<text x="1195" y="252" text-anchor="middle" class="head">SingularityBot</text>
+<text x="1195" y="286" text-anchor="middle" class="body">Live state + policy</text>
+<text x="1195" y="315" text-anchor="middle" class="body">SC2 adapter is sole dispatcher</text>
+<text x="720" y="397" text-anchor="middle" class="small">No ProtocolAi or GrammarAi runtime dependency is established by this current path.</text>
+
+<rect x="55" y="465" width="1330" height="330" rx="24" class="panel future"/>
+<text x="90" y="508" class="head">OPTIONAL FUTURE · ONLY IF A SHARED AUTHORING GRAPH IS JUSTIFIED</text>
+<rect x="95" y="555" width="240" height="155" rx="16" class="panel future"/>
+<text x="215" y="590" text-anchor="middle" class="head">ProtocolAi</text>
+<text x="215" y="625" text-anchor="middle" class="body">Bot/domain vocabulary</text>
+<text x="215" y="654" text-anchor="middle" class="body">qualified identities</text>
+<path d="M340 632H400" class="futureArrow"/>
+<rect x="410" y="555" width="260" height="155" rx="16" class="panel future"/>
+<text x="540" y="590" text-anchor="middle" class="head">GrammarAi</text>
+<text x="540" y="625" text-anchor="middle" class="body">Typed nodes + slots</text>
+<text x="540" y="654" text-anchor="middle" class="body">bounded structure checks</text>
+<path d="M675 632H735" class="futureArrow"/>
+<rect x="745" y="555" width="260" height="155" rx="16" class="panel future"/>
+<text x="875" y="590" text-anchor="middle" class="head">CommandAi</text>
+<text x="875" y="625" text-anchor="middle" class="body">Optional opaque grammar</text>
+<text x="875" y="654" text-anchor="middle" class="body">body on enriched command</text>
+<path d="M1010 632H1070" class="futureArrow"/>
+<rect x="1080" y="555" width="255" height="155" rx="16" class="panel future"/>
+<text x="1207" y="590" text-anchor="middle" class="head">Bot host adapter</text>
+<text x="1207" y="625" text-anchor="middle" class="body">Resolve exact snapshot</text>
+<text x="1207" y="654" text-anchor="middle" class="body">domain-check + authorize</text>
+<text x="720" y="752" text-anchor="middle" class="small">This path is a design option, not implemented integration or permission to execute.</text>
+</svg>
