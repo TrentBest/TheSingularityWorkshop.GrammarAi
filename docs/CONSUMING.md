@@ -28,7 +28,7 @@ Or:
 <PackageReference Include="TheSingularityWorkshop.GrammarAi" Version="0.1.0-alpha.2" />
 ```
 
-That published package can be consumed by a .NET 10 application, but it predates the repository's .NET 10 source standardization and does not contain the newer development-branch API surface.
+That published package can be consumed by a .NET 10 application, but it predates the repository's .NET 10 source standardization. Do not assume that a published package contains every API currently present on the moving development branch; verify the exact package contract before depending on a newer type.
 
 The current source candidate is `0.1.0-alpha.3`, targeting `net10.0`. It is not published on NuGet. To build from the repository:
 
