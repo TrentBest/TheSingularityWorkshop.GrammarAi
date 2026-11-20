@@ -5,50 +5,52 @@
   </a>
 </p>
 
-# Consuming GrammarAI
+# Consuming GrammarAi
 
-GrammarAI is consumed by the application or tool that owns the **structure** of an AI-facing protocol.
+GrammarAi provides two structural models:
 
-It does not call a model, parse generated text, execute tools, or provide a provider-specific grammar compiler in the current alpha.
+1. **Production grammar:** grammar identity, start symbol, nonterminals, ordered productions, and qualified external terminal references.
+2. **Typed knowledge map:** versioned node kinds, contextual slots, typed relationships, cardinality, graph instances, and a compact proposal codec.
 
-> **Define an integer-backed grammar that describes how externally owned protocol symbols may be connected.**
+The application/host owns vocabulary meaning, the active catalog snapshot, identifier lifecycle, semantic validation, policy, authorization, and execution. GrammarAi validates structure; it does not call a model or execute the result.
 
 ## 1. Install the package
+
+The latest published package remains `0.1.0-alpha.2`:
 
 ```bash
 dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.2
 ```
 
-Or add this to your project file:
+Or:
 
 ```xml
 <PackageReference Include="TheSingularityWorkshop.GrammarAi" Version="0.1.0-alpha.2" />
 ```
 
-The currently published `0.1.0-alpha.2` package can be consumed by a .NET 10 application, but it was built before this repository standardized on .NET 10. The next source package candidate is `0.1.0-alpha.3` and targets `net10.0`; it is not available on NuGet until explicitly released.
+That published package can be consumed by a .NET 10 application, but it predates the repository's .NET 10 source standardization and does not contain the newer development-branch API surface.
 
-### Visual Studio walkthrough
+The current source candidate is `0.1.0-alpha.3`, targeting `net10.0`. It is not published on NuGet. To build from the repository:
 
-1. Create a **Console App** project targeting **.NET 10** (`net10.0`).
-2. Open **View → Terminal** and change to the directory containing the new project's `.csproj` file.
-3. Run the package-install command above (or use **Manage NuGet Packages** and select `TheSingularityWorkshop.GrammarAi`).
-4. Paste the complete example from [Define a grammar](#3-define-a-grammar) into `Program.cs`.
-5. Run the project with Visual Studio's **Run** button or `dotnet run`.
+```bash
+dotnet restore TheSingularityWorkshop.GrammarAi.slnx
+dotnet build TheSingularityWorkshop.GrammarAi.slnx --configuration Release
+dotnet test TheSingularityWorkshop.GrammarAi.slnx --configuration Release
+```
 
+New GrammarAi development, tests, examples, and package candidates target **.NET 10 (`net10.0`)**. The .NET 10 SDK is pinned in `global.json`.
 
-## Framework requirement\n\nNew GrammarAI development, tests, examples, and package candidates target **.NET 10 (`net10.0`)**. .NET 8 is no longer a supported target for new GrammarAI builds. The .NET 10 SDK is pinned in `global.json`, and CI verifies a clean .NET 10 consumer.\n\n## 2. Start with protocol identities
+## 2. Production grammar: reference protocol identities
 
-GrammarAI deliberately does not need a direct ProtocolAI package reference. Instead, it refers to externally owned symbols by:
+GrammarAi deliberately does not need a direct ProtocolAi package reference. An external terminal is represented by the qualified pair:
 
 ```text
 [protocolId:symbolId]
 ```
 
-For example, `[1001:2001]` means protocol 1001 owns symbol 2001. The protocol remains owned elsewhere.
+For example, `[1001:2001]` means protocol/category 1001 owns member symbol 2001.
 
-## 3. Define a grammar
-
-Suppose ProtocolAI owns these identities:
+Suppose the host's ProtocolAi definition owns these identities:
 
 ```text
 [1001] People
@@ -56,7 +58,7 @@ Suppose ProtocolAI owns these identities:
 [2002] Jane
 ```
 
-The grammar can define a Greeting structure:
+A grammar can define a Greeting structure:
 
 ```csharp
 using TheSingularityWorkshop.GrammarAi;
@@ -78,43 +80,28 @@ var grammar = new GrammarBuilder(
     .Build();
 ```
 
-This means:
+GrammarAi owns grammar IDs and rules. The external vocabulary owner retains the meaning of symbols 2001 and 2002.
 
-```text
-[3001] Greeting
-    start = [4001]
-    [5001] [4001] -> [1001:2001]
-    [5002] [4001] -> [1001:2002]
-```
-
-GrammarAI owns the grammar IDs and rules. Protocol 1001 owns symbols 2001 and 2002.
-
-## 4. Understand the two symbol types
-
-### Nonterminal
+### Nonterminals and terminals
 
 A nonterminal belongs to the grammar:
 
 ```csharp
-var greeting = GrammarSymbol.NonTerminal(4001);
+var person = GrammarSymbol.NonTerminal(4001);
 ```
 
-A referenced nonterminal must have a production rule.
-
-### Protocol terminal
-
-A protocol terminal belongs to an external vocabulary:
+A protocol terminal references an externally owned identity:
 
 ```csharp
 var bob = GrammarSymbol.Terminal(
     new GrammarProtocolReference(1001, 2001));
 ```
 
-The grammar references Bob; it does not redefine Bob.
+A referenced nonterminal must have a production. Multiple rules with the same left-hand side are alternatives; symbols within one rule form an ordered sequence.
 
-## 5. Check external protocol links
+### Check external references
 
-Building a grammar validates its internal structure, but it cannot tell whether an external protocol registry actually contains every referenced terminal. The host owns that registry, so pass a lookup into `FindUnresolvedProtocolReferences`:
+Building a production grammar validates its internal structure. It cannot establish whether a host's external catalog contains or exposes every terminal. Supply the host's own lookup:
 
 ```csharp
 var unresolved = grammar.FindUnresolvedProtocolReferences(reference =>
@@ -122,151 +109,108 @@ var unresolved = grammar.FindUnresolvedProtocolReferences(reference =>
 
 if (unresolved.Count > 0)
 {
-    // Report missing protocol/symbol identities before using the grammar.
+    // Reject or report missing protocol/symbol identities.
 }
 ```
 
-Here, `protocolRegistry.ContainsSymbol` represents your own lookup API; it is not a GrammarAi method.
+Here, `protocolRegistry.ContainsSymbol` is illustrative host code, not a GrammarAi API. The host must resolve identities against the catalog/capability snapshot selected for the request. This check is not protocol-version compatibility, semantic validation, or authorization.
 
-The result contains each unresolved `GrammarProtocolReference` once, in first-use order. If the host can resolve every reference, the result is empty. A resolver exception is allowed to propagate so the host can handle registry failures according to its own policy.
+Inspect the production grammar with `grammar.Describe()`.
 
-This is an identity-link check, not a protocol-version compatibility check, semantic validation, grammar compiler, or generated-output validator. GrammarAi stays independent of ProtocolAi and does not load protocol definitions itself.
+## 3. Typed knowledge maps: node kinds and contextual slots
 
-## 6. Inspect the grammar
+The newer typed structural model represents a bounded graph rather than only a sequence of production symbols.
 
-Grammar definitions are self-describing:
+- `GrammarNodeDefinition` declares a grammar-owned node kind.
+- `GrammarSlotDefinition` declares a contextual relationship role owned by a node kind.
+- Each slot targets exactly one declared GrammarAi node kind or one opaque external ProtocolAi category identity.
+- Minimum/maximum occurrence counts express required, optional, repeated, and bounded relationships.
+- `GrammarStructureDefinition` is immutable and versioned.
+- `GrammarNodeInstance` and `GrammarRelationship` represent a candidate graph.
+- `GrammarStructureInstance` validates the graph against its definition.
+- `GrammarStructureProposalCodec` serializes/deserializes the compact proposal format.
 
-```csharp
-Console.WriteLine(grammar.Describe());
-```
+A slot such as `Condition` or `Body` is a contextual grammatical role. It is not a global ProtocolAi vocabulary category. The external category identifies the namespace of a member; the slot identifies the role that member plays in this particular structure.
 
-Example output:
+See [Typed Structural Schema](STRUCTURAL_SCHEMA.md) for the complete public contract, worked control-flow schema, resolver behavior, wire tuples, compatibility rules, and limits.
+
+### Snapshot-bound external reference resolution
+
+When a graph contains an external protocol/category member, the host supplies an `IGrammarExternalReferenceResolver` bound to the exact catalog/capability snapshot used for the model request.
+
+Only `GrammarExternalReferenceStatus.ResolvedAndExposed` is accepted. The other defined outcomes are `UnknownProtocol`, `UnknownSymbol`, and `NotExposed`; each fails closed. GrammarAi has no global registry and cannot widen the selected request view.
+
+The proposal includes separate version dimensions:
+
+- `v`: wire encoding version;
+- `g`: grammar definition identity;
+- `gv`: grammar definition/schema version.
+
+The current serializer emits canonical wire v2 and can read the supported legacy v1 nested-node form. Old v1-only readers cannot consume v2; the host must negotiate the wire version before sending. GrammarAi does not migrate schemas automatically.
+
+### What structural validation establishes
+
+It establishes that the graph matches the selected definition's structural contract: identities, target kinds, slot ownership, cardinality, relationship shape/order, and required relationships. It does **not** establish that a node or external symbol is meaningful, that a proposed operation is valid in the domain, that evidence is true, or that an action is safe or authorized.
+
+## 4. Use with CommandAi
+
+CommandAi is an independent command-proposal contract. Its enriched atomic-command representation can carry an optional opaque GrammarAi body, including a positive grammar wire version and bounded payload bytes. CommandAi validates framing and resource limits; it does not decode or validate the grammar body.
+
+A trusted consumer must pin the expected GrammarAi definition ID/schema version, decode the body with that exact definition, and resolve external references against the request's exact snapshot. The older compact `Command=` proposal form does not gain this enriched body capability automatically.
+
+See [CommandAi usage](https://github.com/TrentBest/TheSingularityWorkshop.CommandAi/blob/development/docs/USAGE.md). The observer schema token `TheSingularityWorkshop.GrammarAi.Observer@1` is a separate observer contract identity; it must not be confused with the typed structural schema's definition ID/version or wire version.
+
+## 5. SingularityBot integration status
+
+SingularityBot currently uses its own `BotDefinition` and `BotCommandVocabulary` with CommandAi proposal objects. Its bot host validates the proposals and retains live-state checks, authorization input, objective mutation, and the SC2 action path.
+
+**GrammarAi is not currently a SingularityBot runtime dependency.** The defensible future use is an optional authoring/interchange graph only if Forge, an LLM authoring tool, and another independent consumer need a shared versioned graph that is not already covered by BotDefinition and its validators. It must not duplicate BotDefinition, replace the bot's domain validation, or become a second strategy engine.
+
+See [GrammarAi and SingularityBot](INTEGRATION_SINGULARITYBOT.md) for the source-audited current path, optional composition, boundaries, and required consumer tests.
+
+## 6. Where GrammarAi fits
 
 ```text
-[3001] Greeting start=[4001]
-  rule [5001] [4001] -> [1001:2001]
-  rule [5002] [4001] -> [1001:2002]
-```
-
-This is useful for diagnostics, documentation, tests, and future translation layers.
-
-## 7. Build a nested structure
-
-A grammar can connect nonterminals as well as protocol terminals:
-
-```csharp
-var grammar = new GrammarBuilder(
-        3001,
-        "Greeting",
-        4001)
-    .Rule(5001, 4001, GrammarSymbol.NonTerminal(4002))
-    .Rule(
-        5002,
-        4002,
-        GrammarSymbol.Terminal(
-            new GrammarProtocolReference(1001, 2001)))
-    .Build();
-```
-
-Conceptually:
-
-```text
-[4001]
-  |
-  +--> [4002]
+domain vocabulary / identity
           |
-          +--> [1001:2001]
+          v
+       ProtocolAi
+          |
+          | qualified external references
+          v
+        GrammarAi
+          |
+          | validated structure
+          v
+    host/domain adapter
+          |
+          +--> semantic validation
+          +--> policy and authorization
+          +--> interpretation / execution
 ```
 
-The grammar defines the relationship. The protocol still owns the terminal.
+ProtocolAi defines **WHAT** an external identity refers to. GrammarAi defines **HOW** identities and grammar-owned nodes may be arranged. The host owns the meaning of the resulting structure and decides what may happen.
 
-## 8. Where GrammarAI fits
+GrammarAi does not own model integration, provider formatting, grammar compilation, prompt transport, protocol compatibility policy, persistence, workflow lifecycle, GUI presentation, or execution.
 
-```text
-domain meaning
-      |
-      v
-ProtocolAI — WHAT
-      |
-      v
-GrammarAI — HOW
-      |
-      v
-provider / host adapter
-      |
-      v
-model and host validation
-      |
-      v
-execution
+## 7. Verify and explore
+
+```bash
+dotnet restore TheSingularityWorkshop.GrammarAi.slnx
+dotnet build TheSingularityWorkshop.GrammarAi.slnx --configuration Release
+dotnet test TheSingularityWorkshop.GrammarAi.slnx --configuration Release
+dotnet run --project examples/GrammarAi.QuickStart/GrammarAi.QuickStart.csproj
 ```
 
-The current alpha provides the vocabulary-reference and grammar representations, including an optional host-driven check that external references exist. The adapter, model integration, compatibility policy, and execution layers remain outside this package.
-
-### Workshop workflow integration
-
-When used inside the Workshop runtime, FSM_Foundry owns Hub workflow lifecycle and invokes registered handlers. A handler may consume GrammarAi for structural validation, but GrammarAi does not own workflow registration, event delivery, scheduling, retries, persistence, authorization, or execution. The host may add GUI presentation independently; GrammarAi has no GUI or FSM_Foundry dependency.
-
-## 9. Complete small example
-
-```csharp
-using TheSingularityWorkshop.GrammarAi;
-
-const ulong peopleProtocol = 1001;
-const ulong bob = 2001;
-const ulong jane = 2002;
-
-var grammar = new GrammarBuilder(3001, "Greeting", 4001)
-    .Rule(5001, 4001,
-        GrammarSymbol.Terminal(new GrammarProtocolReference(peopleProtocol, bob)))
-    .Rule(5002, 4001,
-        GrammarSymbol.Terminal(new GrammarProtocolReference(peopleProtocol, jane)))
-    .Build();
-
-Console.WriteLine(grammar);
-```
-
-Output:
-
-```text
-[3001] Greeting start=[4001]
-  rule [5001] [4001] -> [1001:2001]
-  rule [5002] [4001] -> [1001:2002]
-```
-
-## What GrammarAI gives you
-
-- Grammar identity and start symbol.
-- Integer nonterminals and ordered production rules.
-- References to externally owned protocol symbols.
-- Structural validation and deterministic self-description.
-- Host-driven discovery of missing external protocol/symbol identities.
-
-## What you still provide
-
-- Protocol definitions and the resolver used to look up their identities.
-- Model integration and grammar compilation or provider translation.
-- Protocol-version compatibility and generated-output validation policy.
-- Execution semantics, persistence, and version negotiation.
-
-GrammarAI stays a reusable structural artifact: **ProtocolAI defines WHAT; GrammarAI defines HOW; the host owns execution.**
-
-For the architectural reasoning and current limits, see [Theory](THEORY.md), [Examples](EXAMPLES.md), and [Reflection](REFLECTION.md).
-
----
-
-<p align="center">
-  <a href="https://github.com/TrentBest">GitHub</a> ·
-  <a href="https://coderlegion.com/">Coder Legion</a> ·
-  <a href="https://www.patreon.com/c/TheSingularityWorkshop">Patreon</a> ·
-  <a href="https://www.paypal.com/donate/?hosted_button_id=3Z7263LCQMV9J">PayPal</a>
-  <br>
-  <a href="https://github.com/TrentBest/FSM_API">FSM_API</a> ·
-  <a href="https://github.com/TrentBest/TheSingularityWorkshop.FSM_Serialization">FSM_Serialization</a> ·
-  <a href="https://github.com/TrentBest/WebPage">WebPage</a>
-</p>
-
-<p align="center"><em>The Singularity Workshop — Tools for the curious, the bold, and the systemically inclined.</em><br><strong>Because state shouldn't be a mess.</strong><br><em>And because static boundaries are invitations to cause trouble.</em></p>
+Read next:
+- [Knowledge Mapping Model](KNOWLEDGE_MAPPING_MODEL.md)
+- [Typed Structural Schema](STRUCTURAL_SCHEMA.md)
+- [Examples](EXAMPLES.md)
+- [Gallery](GALLERY.md)
+- [Theory](THEORY.md)
+- [Domain Completeness](DOMAIN_COMPLETENESS.md)
+- [Ecosystem Adoption Audit](ECOSYSTEM_ADOPTION_AUDIT.md)
+- [GrammarAi and SingularityBot](INTEGRATION_SINGULARITYBOT.md)
 
 ---
 
