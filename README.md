@@ -154,15 +154,22 @@ It produces a self-description such as:
 
 GrammarAI is a deliberately small structural layer.
 
-It gives an application a way to describe:
+It gives an application two complementary structural representations.
 
-- a grammar identity;
-- a start symbol;
-- integer-backed nonterminals;
-- ordered production rules;
+**Production grammar:**
+- a grammar identity and start symbol;
+- integer-backed nonterminals and ordered production rules;
 - references to externally owned protocol symbols;
-- deterministic structural validation;
-- deterministic self-description.
+- deterministic structural validation and self-description.
+
+**Typed knowledge map:**
+- versioned grammar-owned node kinds and contextual slots;
+- typed relationships to nested nodes or external ProtocolAi category/member identities;
+- required, optional, repeated, and bounded cardinality;
+- immutable graph instances and a compact, versioned proposal codec;
+- host-supplied external-reference resolution against the exact request snapshot.
+
+The production grammar and typed graph model solve related but distinct representation problems. See the [Typed Structural Schema](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/STRUCTURAL_SCHEMA.md) and [Knowledge Mapping Model](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/KNOWLEDGE_MAPPING_MODEL.md).
 
 ```text
 application meaning
@@ -695,15 +702,12 @@ See **[GrammarAI Theory](https://github.com/TrentBest/TheSingularityWorkshop.Gra
 
 **Current source candidate: `0.1.0-alpha.3` targeting .NET 10 (`net10.0`).** The currently published `0.1.0-alpha.2` package predates this target-framework standardization; it remains installable on .NET 10, but new source builds and the next package candidate target .NET 10 only.
 
-This release establishes:
+The current source candidate establishes two structural surfaces:
 
-- grammar identity;
-- integer start symbols;
-- integer nonterminals;
-- ordered production rules;
-- external protocol references;
-- deterministic self-description;
-- structural validation of referenced nonterminals.
+- production grammar identity, start symbols, nonterminals, ordered productions, external protocol references, self-description, and structural validation;
+- typed node/slot definitions, versioned structural schemas, immutable graph instances, typed nested/external relationships, cardinality and ordering checks, snapshot-bound external-reference resolution, and compact proposal serialization/deserialization.
+
+The current QuickStart exercises both surfaces, including bounded C# expression/type/declaration grammar resources and a conditional-control-flow graph. These are bounded structural resources, not a complete C# language definition or compiler.
 
 It does **not** establish:
 
@@ -749,9 +753,9 @@ The intended flow is:
 7. Give the artifact to a host or adapter
 ```
 
-The first six steps are where the current package is useful.
+For production grammars, the steps above build and inspect ordered productions. For typed knowledge maps, the host instead selects a versioned `GrammarStructureDefinition`, supplies a snapshot-bound external-reference resolver when needed, and validates a `GrammarStructureInstance` or proposal through `GrammarStructureProposalCodec`.
 
-The final step deliberately belongs outside the core.
+The final interpretation, semantic/domain checks, policy, authorization, and execution deliberately belong outside the core. See the [consuming guide](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) for both paths.
 
 ---
 
