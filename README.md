@@ -35,7 +35,7 @@ flowchart TD
 
 ## 🟦 01 — What
 
-GrammarAI is a small structural .NET library for integer-backed grammar definitions. It owns grammar identity, the start symbol, nonterminals, and ordered productions. Terminal symbols reference protocol-owned identities; GrammarAI validates its own structure without loading external protocol definitions or executing the resulting content.
+GrammarAI is a structural .NET library with two complementary models: an integer-backed production grammar, and a typed knowledge-map model built from versioned node kinds, contextual slots, and bounded graph relationships. Both can reference externally owned ProtocolAI identities. GrammarAI validates structure without taking ownership of vocabulary meaning, host context, domain semantics, or execution.
 
 ## 🟣 02 — Why
 
@@ -53,7 +53,7 @@ Define terminals and nonterminals, compose grammar rules, and validate structure
 
 The picture teaches the core distinction: **different rules offer alternatives; symbols inside one rule are an ordered sequence.** Building the grammar checks its internal structure, but external protocol references still need to be resolved by the host, and no grammar check authorizes an action. Use `FindUnresolvedProtocolReferences` with a host-owned lookup to list missing protocol/symbol pairs in first-use order, without adding a ProtocolAi dependency.
 
-Start with the [visual tour](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md), then follow the quick-start below to build a small grammar and inspect its description and validation behavior. Grammar describes structure; it does not execute commands.
+Start with the [visual tour](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md), then follow the quick-start below. For the typed graph API, read the [Typed Structural Schema](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/STRUCTURAL_SCHEMA.md) and [Knowledge Mapping Model](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/KNOWLEDGE_MAPPING_MODEL.md). For the bot-specific boundary, see [GrammarAi and SingularityBot](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/INTEGRATION_SINGULARITYBOT.md). Grammar describes structure; it does not execute commands.
 
 ## 🟪 05 Documentation and theory
 
@@ -68,7 +68,7 @@ Start with the [visual tour](https://github.com/TrentBest/TheSingularityWorkshop
 **The structure layer for self-defining, integer-backed AI protocols.**
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/master/docs/images/grammar-ai-money-shot.svg" alt="GrammarAI architecture: ProtocolAI identities become structured through GrammarAI" width="1100">
+  <img src="https://raw.githubusercontent.com/TrentBest/TheSingularityWorkshop.GrammarAi/development/docs/images/grammar-ai-money-shot.svg" alt="GrammarAI architecture: ProtocolAI identities become structured through GrammarAI" width="1100">
 </p>
 
 <p align="center"><strong>ProtocolAI gives meaning an address. GrammarAI gives those addresses a language.</strong></p>
