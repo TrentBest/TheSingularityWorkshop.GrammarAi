@@ -3,8 +3,8 @@
 
 # GrammarAi domain completeness audit
 
-**Audit scope:** current `development` implementation and documentation  
-**Current package version:** `0.1.0-alpha.2`  
+**Audit scope:** current `development` implementation and documentation (snapshot 2026-11-20 UTC)  
+**Current source package candidate:** `0.1.0-alpha.3` (`net10.0`); published package remains `0.1.0-alpha.2` (.NET 8)  
 **Status:** integer-first typed structural mapping and the first versioned proposal codec are implemented; domain-specific maps and host integration remain in progress.
 
 ## Executive finding
