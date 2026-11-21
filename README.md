@@ -833,12 +833,17 @@ The linked documents are the **rooms**.
 
 | Need | Go here |
 |---|---|
-| Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
-| Visual tour and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
-| Visual overview | [Gallery](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
-| Concrete patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
-| Architectural reasoning | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |\n| ABNF expression model and RFC 5234 / RFC 7405 boundary | [ABNF representation](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/ABNF_REPRESENTATION_BOUNDARY.md) |
-| Install and consume | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
+| Install, define, and validate | [CONSUMING.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/CONSUMING.md) |
+| Knowledge-mapping architecture | [KNOWLEDGE_MAPPING_MODEL.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/KNOWLEDGE_MAPPING_MODEL.md) |
+| Typed structural schemas and proposal codec | [STRUCTURAL_SCHEMA.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/STRUCTURAL_SCHEMA.md) |
+| Observer conditions and gate-intent structure | [OBSERVER_GRAMMAR.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/OBSERVER_GRAMMAR.md) |
+| ProtocolAi / consumer boundaries | [ECOSYSTEM_ADOPTION_AUDIT.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/ECOSYSTEM_ADOPTION_AUDIT.md) |
+| SingularityBot integration boundary | [INTEGRATION_SINGULARITYBOT.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/INTEGRATION_SINGULARITYBOT.md) |
+| Runnable patterns | [EXAMPLES.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/EXAMPLES.md) |
+| Theory and design rationale | [THEORY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/THEORY.md) |
+| Gallery and evidence links | [GALLERY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/GALLERY.md) |
+| ABNF expression model and RFC 5234 / RFC 7405 boundary | [ABNF_REPRESENTATION_BOUNDARY.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/ABNF_REPRESENTATION_BOUNDARY.md) |
+| Release readiness | [RELEASE_READINESS.md](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/blob/development/docs/RELEASE_READINESS.md) |
 | Package | [NuGet](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi) |
 | Source | [GitHub](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi) |
 
