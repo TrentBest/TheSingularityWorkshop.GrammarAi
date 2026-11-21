@@ -7,17 +7,18 @@
 
 # GrammarAi — Release Review Brief
 
-> Phone-first review | Snapshot: 2026-10-22 UTC
+> Phone-first review | Snapshot: 2026-11-20 UTC
 
 ## The decision in one minute
 
 GrammarAi is the **HOW / structure layer**. It composes grammar symbols and ordered productions, validating internal consistency. ProtocolAi owns the meanings and identities of terminal symbols; GrammarAi stores references to those identities but does not load ProtocolAi definitions or prove that references resolve. The consuming host must perform that cross-package link step.
 
-**Current assessment: 70% ready.** This is a qualitative working estimate, not a measured score. The latest source-boundary update passed the build-and-test job; publication was skipped as intended. The `development` source candidate is `0.1.0-alpha.3` targeting .NET 10 (`net10.0`). The already-published `0.1.0-alpha.2` package is the prior .NET 8 build and remains consumable by .NET 10 applications. This is not publication approval.
+**Current assessment: pre-release; no numeric readiness percentage is asserted.** The candidate is `0.1.0-alpha.3` targeting .NET 10 (`net10.0`). The already-published `0.1.0-alpha.2` package is the prior .NET 8 build and remains consumable by .NET 10 applications. Package workflow #44654565337 passed every build/test/coverage/pack/clean-consumer step on `eaebd301d1b417f5c8c6a241ffdbeb8ebacafb3b`; the current `development` HEAD `848aed468300df89d57b1b6a248fc3a1995a9d6e` differs only by the Sith evidence JSON refresh. There are no check-run/status contexts on the current HEAD itself. The package publication job was skipped and remains hard-disabled. This is not publication approval.
 
-- Candidate commit: [e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0)
-- CI: [run #39726325238](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39726325238)
-- Build/test passed; NuGet publish was skipped.
+- Current development HEAD: [848aed468300df89d57b1b6a248fc3a1995a9d6e](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/848aed468300df89d57b1b6a248fc3a1995a9d6e)
+- Package CI: [run #44654565337](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/44654565337) on the unchanged source/package tree at parent commit `eaebd301d1b417f5c8c6a241ffdbeb8ebacafb3b`.
+- The only later commit refreshes `assets/sith-policy.json`; no source or package input changed. Current HEAD has no check-run/status contexts.
+- Build, tests/coverage, Codecov, pack, package documentation, clean-consumer verification, and artifact uploads passed. NuGet publish was skipped and remains hard-disabled.
 - No version change, PR merge, or branch deletion is authorized by this documentation work.
 
 ## What is implemented
