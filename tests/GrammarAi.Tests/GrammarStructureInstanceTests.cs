@@ -443,6 +443,87 @@ public sealed class GrammarStructureInstanceTests
         Assert.Throws<ArgumentException>(() => GrammarStructureProposalCodec.Deserialize(oversized, CreateConditionalSchema()));
     }
 
+    [Fact]
+    public void External_resolution_uses_exact_qualified_members_from_the_pinned_host_snapshot()
+    {
+        // The host supplies a resolver bound to the exact catalog/capability snapshot
+        // selected for this request. The same member ID may exist in separate namespaces.
+        var resolver = new PinnedSnapshotResolver(
+            "ladder-catalog:revision-17",
+            new Dictionary<GrammarProtocolReference, GrammarExternalReferenceStatus>
+            {
+                [new GrammarProtocolReference(900, 42)] = GrammarExternalReferenceStatus.ResolvedAndExposed,
+                [new GrammarProtocolReference(901, 42)] = GrammarExternalReferenceStatus.ResolvedAndExposed,
+                [new GrammarProtocolReference(900, 43)] = GrammarExternalReferenceStatus.UnknownSymbol,
+                [new GrammarProtocolReference(901, 43)] = GrammarExternalReferenceStatus.NotExposed,
+                [new GrammarProtocolReference(902, 42)] = GrammarExternalReferenceStatus.UnknownProtocol
+            });
+
+        var schema = new GrammarStructureDefinition(
+            709, "PinnedQualifiedCatalog",
+            [new GrammarNodeDefinition(1, "CompetitionEntry")],
+            [
+                new GrammarSlotDefinition(10, 1, "TeamFormat", GrammarSlotTarget.ExternalProtocolCategory(900), 1, 1),
+                new GrammarSlotDefinition(11, 1, "ParticipantRole", GrammarSlotTarget.ExternalProtocolCategory(901), 1, 1)
+            ]);
+
+        var valid = new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42)),
+                new GrammarRelationship(100, 11, new GrammarProtocolReference(901, 42))
+            ],
+            resolver);
+
+        Assert.Equal("ladder-catalog:revision-17", resolver.SnapshotRevision);
+        Assert.Equal(new GrammarProtocolReference(900, 42), valid.Relationships[0].ExternalReference);
+        Assert.Equal(new GrammarProtocolReference(901, 42), valid.Relationships[1].ExternalReference);
+
+        // A symbol ID known in another namespace is not implicitly valid here.
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 43)),
+                new GrammarRelationship(100, 11, new GrammarProtocolReference(901, 42))
+            ],
+            resolver));
+
+        // A known identity that the request snapshot does not expose also fails closed.
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            schema,
+            [new GrammarNodeInstance(100, 1)],
+            [
+                new GrammarRelationship(100, 10, new GrammarProtocolReference(900, 42)),
+                new GrammarRelationship(100, 11, new GrammarProtocolReference(901, 43))
+            ],
+            resolver));
+
+        var unknownProtocolSchema = new GrammarStructureDefinition(
+            710, "UnknownProtocol",
+            [new GrammarNodeDefinition(1, "Request")],
+            [new GrammarSlotDefinition(10, 1, "Value", GrammarSlotTarget.ExternalProtocolCategory(902), 1, 1)]);
+        Assert.Throws<ArgumentException>(() => new GrammarStructureInstance(
+            unknownProtocolSchema,
+            [new GrammarNodeInstance(100, 1)],
+            [new GrammarRelationship(100, 10, new GrammarProtocolReference(902, 42))],
+            resolver));
+    }
+
+    private sealed class PinnedSnapshotResolver(
+        string snapshotRevision,
+        IReadOnlyDictionary<GrammarProtocolReference, GrammarExternalReferenceStatus> entries)
+        : IGrammarExternalReferenceResolver
+    {
+        public string SnapshotRevision { get; } = snapshotRevision;
+
+        public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) =>
+            entries.TryGetValue(reference, out var status)
+                ? status
+                : GrammarExternalReferenceStatus.UnknownSymbol;
+    }
+
     private sealed class FixedStatusResolver(GrammarExternalReferenceStatus status) : IGrammarExternalReferenceResolver
     {
         public GrammarExternalReferenceStatus Resolve(GrammarProtocolReference reference) => status;
