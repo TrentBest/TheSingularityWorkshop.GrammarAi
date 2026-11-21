@@ -761,6 +761,10 @@ The final interpretation, semantic/domain checks, policy, authorization, and exe
 
 # 18. Install and use
 
+The following package command installs the **historical published `0.1.0-alpha.2`** release. It predates the current .NET 10 source standardization and does not contain every API on `development`. It remains available for consumers that intentionally target that older package contract; it is not the current source candidate.
+
+The current source candidate is `0.1.0-alpha.3`, targeting **.NET 10 (`net10.0`)**, and has not been published. To use the current implementation, build and reference the project from this repository rather than assuming the older NuGet package has the same API.
+
 ```bash
 dotnet add package TheSingularityWorkshop.GrammarAi --version 0.1.0-alpha.2
 ```
