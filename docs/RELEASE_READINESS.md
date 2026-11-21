@@ -7,17 +7,29 @@
 
 # GrammarAI Release Readiness
 
+## Current evidence snapshot — 2026-11-20 UTC
+
+- Current `development` HEAD: [`848aed468300df89d57b1b6a248fc3a1995a9d6e`](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/848aed468300df89d57b1b6a248fc3a1995a9d6e).
+- Permanent branch inventory: exactly `master` and `development`; no feature branches.
+- Package candidate: `0.1.0-alpha.3`, targeting .NET 10 (`net10.0`). The published `0.1.0-alpha.2` remains the prior .NET 8 package.
+- Latest full Package GrammarAI workflow: [run #44654565337](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/44654565337), successful on `eaebd301d1b417f5c8c6a241ffdbeb8ebacafb3b). All build, test/coverage, Codecov, pack, packaged-documentation, clean-consumer, and artifact-upload steps passed.
+- The current HEAD is one commit after that run; the only intervening change is `assets/sith-policy.json` (fresh branch-policy evidence). Therefore the package/source tree tested by run #44654565337 is unchanged at the current HEAD. The current HEAD itself has no check-run/status contexts; do not describe it as having a new exact-SHA workflow run.
+- The workflow's `publish_nuget` job was skipped and remains hard-disabled (`if: \${{ false }}`). No NuGet publication occurred.
+- Open follow-through: [#14](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/issues/14) requires the real consumer observer-contract proof; [#19](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/issues/19) tracks the broader knowledge-mapping domain; [#20](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/issues/20) coordinates actual consumer adoption. These are not all GrammarAi-owned release blockers: consumer proofs must be supplied by their owning repositories.
+- This snapshot is evidence, not a release approval. NuGet publication remains prohibited until the owner explicitly authorizes that publication.
+
+
 ## Branch reconciliation
 
 See [BRANCH_RECONCILIATION.md](BRANCH_RECONCILIATION.md) for the evidence-backed `master`/`development` and feature-branch preservation checklist. It is an audit record, not permission to merge, close PRs, or delete branches.
 
 
 
-## Phone-first release review — 2026-10-22 UTC
+## Historical phone-first release review — 2026-10-22 UTC
 
 Start with the [Release Review Brief](RELEASE_REVIEW_BRIEF.md) for the concise current contract, package boundaries, top remaining risks, and a guided reading order. It is a review aid, not a substitute for the checks below and not authorization to publish.
 
-Latest candidate checkpoint: [e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0). CI evidence: [workflow run #39726325238](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39726325238). Current readiness estimate: **70%** (qualitative working estimate, not a test metric). Recheck CI on the exact final candidate after all changes.
+Latest candidate checkpoint: [e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/commit/e15f61f6cc6c7a747eb8383ecf2a00e07cd56fb0). CI evidence: [workflow run #39726325238](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/39726325238). Historical readiness estimate: **70%** (qualitative working estimate from 2026-10-22, not a current measurement). Use the 2026-11-20 evidence snapshot above for current status.
 
 ## Current package status
 
