@@ -6,12 +6,13 @@
     "master"
   ],
   "actual_branches": [
+    "chore/rename-execution-adoption-doc",
     "development",
     "master"
   ],
-  "branch_count": 2,
-  "status": "COMPLIANT",
-  "evaluated_at": "2026-11-23T14:48:21Z",
-  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/45198090527",
-  "triggering_commit": "be764731c7a7bbf7437d50829812f4aab68c3974"
+  "branch_count": 3,
+  "status": "NON-COMPLIANT",
+  "evaluated_at": "2026-11-24T14:56:20Z",
+  "workflow_run": "https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/runs/45419658943",
+  "triggering_commit": "7e78cdc5ae80c597de35dc2d47327356d82cac7a"
 }
