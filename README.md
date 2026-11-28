@@ -8,6 +8,11 @@
 
 # TheSingularityWorkshop.GrammarAi
 
+[![GrammarAi Pages](https://img.shields.io/website?url=https%3A%2F%2Ftrentbest.github.io%2FTheSingularityWorkshop.GrammarAi%2F&label=Pages&style=flat-square)](https://trentbest.github.io/TheSingularityWorkshop.GrammarAi/)
+[![Pages workflow](https://img.shields.io/github/actions/workflow/status/TrentBest/TheSingularityWorkshop.GrammarAi/pages.yml?branch=development&style=flat-square&label=Pages%20build)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/pages.yml)
+
+**Explore the [GrammarAi structure portal](https://trentbest.github.io/TheSingularityWorkshop.GrammarAi/)** — production grammars, typed knowledge maps, and explicit ownership boundaries.
+
 [![Build](https://img.shields.io/github/actions/workflow/status/TrentBest/TheSingularityWorkshop.GrammarAi/build.yml?branch=development&style=flat-square&logo=github)](https://github.com/TrentBest/TheSingularityWorkshop.GrammarAi/actions/workflows/build.yml)
 [![NuGet version](https://img.shields.io/nuget/v/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
 [![NuGet downloads](https://img.shields.io/nuget/dt/TheSingularityWorkshop.GrammarAi?style=flat-square&logo=nuget&logoColor=white)](https://www.nuget.org/packages/TheSingularityWorkshop.GrammarAi)
