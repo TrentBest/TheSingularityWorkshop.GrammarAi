@@ -1,0 +1,62 @@
+name: GrammarAi Pages
+
+on:
+  push:
+    branches: [development]
+    paths:
+      - "docs/site/**"
+      - ".github/workflows/pages.yml"
+  pull_request:
+    branches: [development]
+    paths:
+      - "docs/site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: grammarai-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify GrammarAi and Pages artifact
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore solution
+        run: dotnet restore TheSingularityWorkshop.GrammarAi.slnx
+
+      - name: Build solution
+        run: dotnet build TheSingularityWorkshop.GrammarAi.slnx --configuration Release --no-restore
+
+      - name: Test solution
+        run: dotnet test TheSingularityWorkshop.GrammarAi.slnx --configuration Release --no-build --verbosity normal
+
+      - name: Verify static Pages entry point
+        run: |
+          test -s docs/site/index.html
+          grep -q 'Production grammar' docs/site/index.html
+          grep -q 'Typed knowledge map' docs/site/index.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/site
+
+  deploy:
+    if: github.ref == 'refs/heads/development'
+    needs: verify
+    permissions:
+      pages: write
+      id-token: write
+    uses: TrentBest/TheSingularityWorkshop.CiAi/.github/workflows/deploy-pages.yml@5083c452b555d7645dd0c8ab01d76008026da436
